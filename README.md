@@ -2,7 +2,7 @@
 
 ### Overview
 
-* The first SPA sample using OAuth 2.0 and Open Id Connect, referenced in my blog at http://authguidance.com
+* The first SPA sample using OAuth 2.0 and Open Id Connect, referenced in my blog at https://authguidance.com
 * **The goal of this sample is to integrate a Web UI and API with an external Authorization Server**
 
 ### Details
