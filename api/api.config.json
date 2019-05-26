@@ -1,13 +1,14 @@
 {
-    "app": {
-        "port": 80,
-        "trusted_origins": [
+    "api": {
+        "trustedOrigins": [
             "http://web.mycompany.com"
-        ]
+        ],
+        "useProxy": false,
+        "proxyUrl": "http://127.0.0.1:8888"
     },
     "oauth": {
-        "introspection_url":  "https://dev-843469.oktapreview.com/oauth2/default/v1/introspect",
-        "client_id":          "0oac5s69rjXE0HcZO0h7",
-        "client_secret":      "VEEe9m9WDneeUSUJUOMKZiso_X6xwKvAqRInT2kg"
+        "authority":    "https://dev-843469.oktapreview.com/oauth2/default",
+        "clientId":     "0oac5s69rjXE0HcZO0h7",
+        "clientSecret": "VEEe9m9WDneeUSUJUOMKZiso_X6xwKvAqRInT2kg"
     }
 }
