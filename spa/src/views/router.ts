@@ -78,11 +78,8 @@ export class Router {
      */
     public async executeUserInfoFragment(): Promise<void> {
 
-        const hashData = UrlHelper.getLocationHashData();
-        if (!hashData.loggedout) {
-            const view = new UserInfoFragment(this._authenticator, this._configuration.apiBaseUrl);
-            await view.execute();
-        }
+        const view = new UserInfoFragment(this._authenticator);
+        await view.execute();
     }
 
     /*

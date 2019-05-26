@@ -48,11 +48,11 @@ class App {
 
             // We must be prepared for page invocation to be an OAuth login response
             await this._handleLoginResponse();
+            
+            // Try to show OAuth user info for the UI
+            await this._renderUserInfo();
 
-            // Get claims from our API to display the logged in user
-            await this._getUserClaims();
-
-            // Execute the main view at the current hash location
+            // Execute the main view at the current hash location, which will call our API
             await this._runPage();
 
         } catch (e) {
@@ -92,9 +92,9 @@ class App {
     }
 
     /*
-     * Get and display user claims from the API, which can contain any data we need, not just token data
+     * Get and display user info
      */
-    private async _getUserClaims(): Promise<void> {
+    private async _renderUserInfo(): Promise<void> {
 
         try {
             // Get user data and display data in the user region of the page
@@ -198,7 +198,7 @@ class App {
     private _setupCallbacks(): void {
         this._initialiseApp = this._initialiseApp.bind(this);
         this._handleLoginResponse = this._handleLoginResponse.bind(this);
-        this._getUserClaims = this._getUserClaims.bind(this);
+        this._renderUserInfo = this._renderUserInfo.bind(this);
         this._runPage = this._runPage.bind(this);
         this._onHashChange = this._onHashChange.bind(this);
         this._onHome = this._onHome.bind(this);

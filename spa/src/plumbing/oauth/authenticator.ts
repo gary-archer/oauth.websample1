@@ -1,4 +1,5 @@
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
+import {UserInfoClaims} from '../../entities/userInfoClaims';
 import {ErrorHandler} from '../errors/errorHandler';
 import {UrlHelper} from '../utilities/urlHelper';
 import {CustomUserManager} from './customUserManager';
@@ -25,11 +26,11 @@ export class Authenticator {
             redirect_uri: config.appUri,
             scope: config.scope,
 
-            // Initially we'll use this flow for simplicity
+            // Initially we'll use this flow for simplicity and the UI will get user info directly
             response_type: 'token',
+            loadUserInfo: true,
 
             // Disable these features which we are not using in this sample
-            loadUserInfo: false,
             automaticSilentRenew: false,
             monitorSession: false,
         };
@@ -67,6 +68,26 @@ export class Authenticator {
             // Handle OAuth specific errors, such as those calling the metadata endpoint
             throw ErrorHandler.getFromOAuthRequest(e, 'login_request_failed');
         }
+    }
+
+    /*
+     * Get user info, which is available once authentication has completed
+     */
+    public async getUserInfo(): Promise<UserInfoClaims | null> {
+
+        const user = await this._userManager.getUser();
+        if (user && user.profile) {
+            if (user.profile.given_name && user.profile.family_name && user.profile.email) {
+
+                return {
+                    givenName: user.profile.given_name,
+                    familyName: user.profile.family_name,
+                    email: user.profile.email,
+                } as UserInfoClaims;
+            }
+        }
+
+        return null;
     }
 
     /*

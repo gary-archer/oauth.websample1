@@ -1,6 +1,4 @@
 import * as $ from 'jquery';
-import {UserInfoClaims} from '../entities/userInfoClaims';
-import {HttpClient} from '../plumbing/api/httpClient';
 import {Authenticator} from '../plumbing/oauth/authenticator';
 
 /*
@@ -12,30 +10,21 @@ export class UserInfoFragment {
      * Dependencies
      */
     private readonly _authenticator: Authenticator;
-    private readonly _apiBaseUrl: string;
 
     /*
      * Receive dependencies
      */
-    public constructor(authenticator: Authenticator, apiBaseUrl: string) {
+    public constructor(authenticator: Authenticator) {
         this._authenticator = authenticator;
-        this._apiBaseUrl = apiBaseUrl;
     }
 
     /*
-     * Run the view
+     * Run the view, which will get user info from the authenticator's session storage
      */
     public async execute(): Promise<void> {
 
-        // Make the API call
-        const claims = await HttpClient.callApi(
-            `${this._apiBaseUrl}/userclaims/current`,
-            'GET',
-            null,
-            this._authenticator) as UserInfoClaims;
-
-        // If we could get name info then render it
-        if (claims && claims.givenName && claims.familyName) {
+        const claims = await this._authenticator.getUserInfo();
+        if (claims) {
             $('.logincontainer').removeClass('hide');
             $('.logintext').text(`${claims.givenName} ${claims.familyName}`);
         }
