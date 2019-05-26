@@ -38,7 +38,7 @@ class App {
      * Start the download of application configuration
      */
     _requestAppConfig()  {
-        let httpClient = new HttpClient();
+        const httpClient = new HttpClient();
         return httpClient.loadAppConfiguration('spa.config.json');
     }
     
@@ -68,7 +68,7 @@ class App {
      * Start the request for the page data
      */
     _requestPageData() {
-        let httpClient = new HttpClient();
+        const httpClient = new HttpClient();
         return httpClient.callApi(`${this.appConfig.app.api_base_url}/data`, 'GET', null, this.authenticator);
     }
     
@@ -93,5 +93,5 @@ class App {
 /*
  * Start the application
  */
-let app = new App();
+const app = new App();
 app.execute();

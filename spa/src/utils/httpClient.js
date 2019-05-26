@@ -20,7 +20,7 @@ export default class HttpClient {
                 cache: false
             })
             .catch(xhr => {
-                let errorText = ErrorHandler.ajaxErrorToString(xhr, filePath);
+                const errorText = ErrorHandler.ajaxErrorToString(xhr, filePath);
                 return Promise.reject(errorText);
             });
     }
@@ -45,7 +45,7 @@ export default class HttpClient {
 
                         // Report erors other than 401
                         if (xhr1.status !== 401) {
-                            let ajaxError = ErrorHandler.ajaxErrorToString(xhr1, url);
+                            const ajaxError = ErrorHandler.ajaxErrorToString(xhr1, url);
                             return Promise.reject(ajaxError);
                         }
 
@@ -63,7 +63,7 @@ export default class HttpClient {
                                     .catch(xhr2 => {
 
                                         // Report erors
-                                        let ajaxError = ErrorHandler.ajaxErrorToString(xhr2, url);
+                                        const ajaxError = ErrorHandler.ajaxErrorToString(xhr2, url);
                                         return Promise.reject(ajaxError);
                                     });
                             });

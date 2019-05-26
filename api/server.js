@@ -31,17 +31,17 @@ app.get('/spa/*', function (request, response) {
 	      resourcePath = 'index.html';
     }
     
-    let webFilePath = path.join(`${__dirname}/${webFilesRoot}/${resourcePath}`);
+    const webFilePath = path.join(`${__dirname}/${webFilesRoot}/${resourcePath}`);
     response.sendFile(webFilePath);
 });
 
 app.get('/spa', function (request, response) {
-    let webFilePath = path.join(`${__dirname}/${webFilesRoot}/index.html`);
+    const webFilePath = path.join(`${__dirname}/${webFilesRoot}/index.html`);
     response.sendFile(webFilePath);
 });
 
 app.get('/favicon.ico', function (request, response) {
-    let webFilePath = path.join(`${__dirname}/${webFilesRoot}/favicon.ico`);
+    const webFilePath = path.join(`${__dirname}/${webFilesRoot}/favicon.ico`);
     response.sendFile(webFilePath);
 });
 
@@ -57,7 +57,7 @@ app.use('/api/*', function (request, response, next) {
     AppLogger.info('API call', 'Validating token and getting claims');
 
     // Do token validation
-    let authenticator = new Authenticator(apiConfig);
+    const authenticator = new Authenticator(apiConfig);
     authenticator.validateAccessToken(request.header('authorization'))
         .then(claims => {
         
@@ -68,7 +68,7 @@ app.use('/api/*', function (request, response, next) {
         .catch(error => {
             
             // Handle failed tokens
-            let clientInfo = ErrorHandler.handleOAuthError(error);
+            const clientInfo = ErrorHandler.handleOAuthError(error);
             response.status(clientInfo.statusCode).send(JSON.stringify(clientInfo.error));
         });
 });
@@ -79,8 +79,8 @@ app.get('/api/*', function (request, response, next) {
 
     // Set the response data
     response.setHeader('Content-Type', 'application/json');
-    let datetime = new Date().toLocaleTimeString();
-    let data = {
+    const datetime = new Date().toLocaleTimeString();
+    const data = {
         message: `API call from user ${response.locals.claims.userId} at ${datetime}`
     };
     response.end(JSON.stringify(data));
@@ -91,7 +91,7 @@ app.use('/api/*', function (unhandledException, request, response, next) {
     AppLogger.info('API call', `Unhandled exception: ${unhandledException}`);
 
     // Handle exceptions
-    let clientInfo = ErrorHandler.handleException(unhandledException);
+    const clientInfo = ErrorHandler.handleException(unhandledException);
     response.status(clientInfo.statusCode).send(JSON.stringify(clientInfo.error));
 });
 

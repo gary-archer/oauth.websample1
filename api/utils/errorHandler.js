@@ -16,7 +16,7 @@ class ErrorHandler {
     static handleOAuthError(serverError) {
         
         // Log details to the service
-        AppLogger.warn('OAuth Error', JSON.stringify(serverError));
+        AppLogger.error('OAuth Error', JSON.stringify(serverError, null, 2));
 
         // Return details to the client
         return {
@@ -34,13 +34,13 @@ class ErrorHandler {
     static handleException(exception) {
 
         // Log details to the service
-        let serverError = {
+        const serverError = {
             statusCode: 500,
             status: 'ServerError',
             message: 'Problem Encountered',
             details: exception.toString()
         };
-        AppLogger.error('Exception', JSON.stringify(serverError));
+        AppLogger.error('Exception', JSON.stringify(serverError, null, 2));
 
         // Return client error details
         return {
@@ -86,14 +86,12 @@ class ErrorHandler {
             return responseError;
         }
         
-        let error = {
+        return {
             statusCode: 500,
             status: 'ServerError',
             message: 'Token introspection call failed',
             details: responseError
         };
-        
-        return error;
     }
 }
 

@@ -15,7 +15,7 @@ export default class Authenticator {
     constructor(config) {
         
         // Create OIDC settings from our application configuration
-        let settings = {
+        const settings = {
             authority: config.authority,
             client_id: config.client_id,
             redirect_uri: config.redirect_uri,
@@ -59,7 +59,7 @@ export default class Authenticator {
     getNewAccessToken() {
         
         // Store the SPA's client side location
-        let data = {
+        const data = {
             hash: location.hash.length > 0 ? location.hash : '#'
         };
         
@@ -68,7 +68,7 @@ export default class Authenticator {
             .then(request => {
 
                 // Okta requires a nonce parameter with response_type=token so generate one before redirecting
-                let nonce = this._generateNonce();
+                const nonce = this._generateNonce();
                 request.url += `&nonce=${nonce}`;
 
                 // Pause to see all log output before redirecting
@@ -95,9 +95,11 @@ export default class Authenticator {
         return this.userManager.signinRedirectCallback()
             .then(response => {
 
-                // Restore the SPA's client side location
-                let data = JSON.parse(response.state);
-                location.replace(location.pathname + data.hash);
+                // Get the hash URL before the redirect
+                const data = JSON.parse(response.state);
+
+                // Replace the browser location, to prevent tokens being available during back navigation
+                history.replaceState({}, document.title, data.hash);
                 return Promise.resolve();
             });
     }

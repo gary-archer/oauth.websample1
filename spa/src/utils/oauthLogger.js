@@ -36,8 +36,8 @@ export default class OAuthLogger {
      */
     static _output(prefix, args) {
         
-        let text = Array.prototype.slice.call(args).join(' : ');
-        let html = `<b>${prefix}</b> : ${text}`;
+        const text = Array.prototype.slice.call(args).join(' : ');
+        const html = `<b>${prefix}</b> : ${text}`;
         $('#trace').append($('<li>').html(html));
     }
 }

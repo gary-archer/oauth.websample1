@@ -14,7 +14,7 @@ const ErrorHandler = require('./errorHandler');
  */
 if (process.env.HTTPS_PROXY) {
     
-    let opts = Url.parse(process.env.HTTPS_PROXY);
+    const opts = Url.parse(process.env.HTTPS_PROXY);
     OpenIdClient.Issuer.defaultHttpOptions = {
         agent: TunnelAgent.httpsOverHttp({
             proxy: opts
@@ -40,18 +40,18 @@ class Authenticator {
     validateAccessToken(authorizationHeader) {
 
         // Get the received access token
-        let accessToken = this._readBearerToken(authorizationHeader);
+        const accessToken = this._readBearerToken(authorizationHeader);
         if (!accessToken) {
             return Promise.reject(ErrorHandler.getNoTokenError());
         }
 
         // Create the Open Id Client issuer
-        let issuer = new OpenIdClient.Issuer({
+        const issuer = new OpenIdClient.Issuer({
             introspection_endpoint: this.apiConfig.oauth.introspection_url
         });
 
         // Create the Authorization Server client
-        let client = new issuer.Client({
+        const client = new issuer.Client({
             client_id: this.apiConfig.oauth.client_id,
             client_secret: this.apiConfig.oauth.client_secret
         });
@@ -68,7 +68,7 @@ class Authenticator {
                 else {
                     
                     // If the token is valid then update claims
-                    let claims = {
+                    const claims = {
                         userId: data.sub,
                         clientId: data.cid,
                         scope: data.scope
@@ -91,7 +91,7 @@ class Authenticator {
     _readBearerToken(authorizationHeader) {
     
         if (authorizationHeader) {
-            let parts = authorizationHeader.split(' ');
+            const parts = authorizationHeader.split(' ');
             if (parts.length === 2 && parts[0] === 'Bearer') {
                 return parts[1];
             }

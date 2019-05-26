@@ -62,7 +62,7 @@ class AppLogger {
      * Get the text to output
      */
     static _getText(args) {
-        let text = Array.prototype.slice.call(args).join(' : ');
+        const text = Array.prototype.slice.call(args).join(' : ');
         return text;
     }
 }
