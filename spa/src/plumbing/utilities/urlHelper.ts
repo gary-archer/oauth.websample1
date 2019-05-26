@@ -22,24 +22,4 @@ export class UrlHelper {
 
         return params;
     }
-
-    /*
-     * Parse the query string into an object
-     */
-    public static getLocationQueryData(): any {
-
-        const params: any = {};
-
-        const idx = location.href.indexOf('?');
-        if (idx !== -1) {
-
-            const queryParams = location.href.slice(idx + 1).split('&');
-            queryParams.map((query) => {
-                const [key, val] = query.split('=');
-                params[key] = decodeURIComponent(val);
-            });
-        }
-
-        return params;
-    }
 }
