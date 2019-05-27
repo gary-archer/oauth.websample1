@@ -48,7 +48,7 @@ class App {
 
             // We must be prepared for page invocation to be an OAuth login response
             await this._handleLoginResponse();
-            
+
             // Try to show OAuth user info for the UI
             await this._renderUserInfo();
 

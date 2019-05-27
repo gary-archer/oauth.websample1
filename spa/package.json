@@ -5,8 +5,7 @@
   "main": "app.ts",
   "scripts": {
     "lint": "tslint -c tslint.json src/**/*.ts",
-    "start": "webpack --mode development --watch",
-    "build": "webpack --mode production"
+    "start": "webpack --mode development --watch"
   },
   "keywords": [],
   "author": "Gary Archer",

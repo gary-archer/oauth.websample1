@@ -22,10 +22,10 @@ import {HttpServerConfiguration} from './startup/httpServerConfiguration';
         const expressApp = express();
         const httpServer = new HttpServerConfiguration(expressApp, apiConfig);
         await httpServer.initializeApi();
-        
+
         // We will also host web static content
         httpServer.initializeWebStaticContentHosting();
-        
+
         // Start receiving requests
         httpServer.startListening();
 

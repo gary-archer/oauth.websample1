@@ -56,11 +56,7 @@ export class HttpClient {
             await authenticator.clearAccessToken();
             token = await authenticator.getAccessToken();
 
-            /*
-             * NOTE: Our SPA will never actually reach this point in code
-             * However, this is the general coding model when calling an OAuth secured API
-             * We will use it for mobile apps later, and also when calling B2B APIs
-             */
+            // Our SPA will never actually reach this point in code unless using refresh tokens
             try {
                 // Call the API again
                 return await HttpClient._callApiWithToken(url, method, dataToSend, token);
