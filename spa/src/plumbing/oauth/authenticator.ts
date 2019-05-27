@@ -1,8 +1,8 @@
+import * as Oidc from 'oidc-client';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {UserInfoClaims} from '../../entities/userInfoClaims';
 import {ErrorHandler} from '../errors/errorHandler';
 import {UrlHelper} from '../utilities/urlHelper';
-import {CustomUserManager} from './customUserManager';
 
 /*
  * The entry point for initiating login and token requests
@@ -12,7 +12,7 @@ export class Authenticator {
     /*
      * Our override of the OIDC Client class does all of the real security processing
      */
-    private readonly _userManager: CustomUserManager;
+    private readonly _userManager: Oidc.UserManager;
 
     /*
      * Class setup
@@ -26,17 +26,19 @@ export class Authenticator {
             redirect_uri: config.appUri,
             scope: config.scope,
 
-            // Initially we'll use this flow for simplicity and the UI will get user info directly
-            response_type: 'token',
+            // Use the Authorization Code Flow
+            response_type: 'code',
+
+            // The UI will get the user name from the user info endpoint
             loadUserInfo: true,
 
             // Disable these features which we are not using in this sample
             automaticSilentRenew: false,
             monitorSession: false,
-        };
+        } as Oidc.UserManagerSettings;
 
         // Create the user manager
-        this._userManager = new CustomUserManager(settings);
+        this._userManager = new Oidc.UserManager(settings);
         this._setupCallbacks();
     }
 
@@ -96,7 +98,7 @@ export class Authenticator {
     public async handleLoginResponse(): Promise<void> {
 
         // If the page loads with a state query parameter we classify it as an OAuth response
-        const query = UrlHelper.getLocationHashData();
+        const query = UrlHelper.getLocationQueryData();
         if (!query.state) {
             return;
         }
@@ -108,7 +110,8 @@ export class Authenticator {
             // Get the hash URL before the redirect
             const data = JSON.parse(user.state);
 
-            // Replace the browser location, to prevent tokens being available during back navigation
+            // Replace the browser location, and remove the OAuth code and state parameters from the URL
+            // This avoids potential navigation and page refresh problems
             history.replaceState({}, document.title, data.hash);
 
         } catch (e) {
