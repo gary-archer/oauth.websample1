@@ -48,6 +48,8 @@ export class TransactionsView {
             location.hash = '#';
 
         } else {
+
+            // Rethrow otherwise
             throw uiError;
         }
       }
