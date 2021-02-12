@@ -43,8 +43,7 @@ export class HttpServerConfiguration {
 
         // API routes containing business logic
         this._expressApp.get('/api/companies', this._catch(this._router.getCompanyList));
-        this._expressApp.get('/api/companies/:id/transactions', 
-            this._catch(this._router.getCompanyTransactions));
+        this._expressApp.get('/api/companies/:id/transactions', this._catch(this._router.getCompanyTransactions));
 
         // The not found handler matches any API requests to invalid paths
         this._expressApp.use('/api/*', this._router.notFoundHandler);
