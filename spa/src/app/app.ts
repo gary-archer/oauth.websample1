@@ -3,7 +3,7 @@ import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {Authenticator} from '../plumbing/oauth/authenticator';
-import {OidcLogger} from '../plumbing/oauth/utils/oidcLogger';
+import {OidcLogger} from '../plumbing/utilities/oidcLogger';
 import {ErrorView} from '../views/errorView';
 import {HeaderButtonsView} from '../views/headerButtonsView';
 import {Router} from '../views/router';
