@@ -3,45 +3,33 @@ import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {Authenticator} from '../plumbing/oauth/authenticator';
-import {TraceListener} from '../plumbing/oauth/trace/traceListener';
+import {OidcLogger} from '../plumbing/oauth/utils/oidcLogLevel';
 import {ErrorView} from '../views/errorView';
 import {HeaderButtonsView} from '../views/headerButtonsView';
 import {Router} from '../views/router';
 import {TitleView} from '../views/titleView';
-import {TraceView} from '../views/traceView';
 
 /*
  * The application class
  */
 class App {
 
-    // Global objects
     private _configuration?: Configuration;
     private _authenticator?: Authenticator;
     private _apiClient?: ApiClient;
-
-    // View related objects
+    private _oidcLogger: OidcLogger;
     private _router?: Router;
     private _titleView!: TitleView;
     private _headerButtonsView?: HeaderButtonsView;
     private _errorView?: ErrorView;
-    private _traceView?: TraceView;
-    private _traceListener?: TraceListener;
-
-    // State flags
     private _isInitialised: boolean;
-    private _mainViewLoaded: boolean;
 
     public constructor() {
 
-        // Configure the JQuery namespace
         (window as any).$ = $;
         this._isInitialised = false;
+        this._oidcLogger = new OidcLogger();
         this._setupCallbacks();
-
-        // Initialise state flags
-        this._isInitialised = false;
-        this._mainViewLoaded = false;
     }
 
     /*
@@ -85,9 +73,6 @@ class App {
 
         this._errorView = new ErrorView();
         this._errorView.load();
-
-        this._traceView = new TraceView();
-        this._traceView.load();
     }
 
     /*
@@ -98,9 +83,8 @@ class App {
         // Download application configuration
         this._configuration = await ConfigurationLoader.download('spa.config.json');
 
-        // Initialise our OIDC Client wrapper and start listening for OIDC messages
+        // Initialise our OIDC Client wrapper
         this._authenticator = new Authenticator(this._configuration.oauth);
-        this._traceListener = new TraceListener();
 
         // Create a client to reliably call the API
         this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
@@ -127,14 +111,9 @@ class App {
      */
     private async _loadMainView(): Promise<void> {
 
-        this._mainViewLoaded = false;
-
-        // Call the API and provide a loading UI effect
         this._headerButtonsView!.disableSessionButtons();
         await this._router!.loadView();
         this._headerButtonsView!.enableSessionButtons();
-
-        this._mainViewLoaded = true;
     }
 
     /*
@@ -143,7 +122,7 @@ class App {
     private async _onHashChange(): Promise<void> {
 
         // Handle updates to log levels when the URL log setting is changed
-        this._traceListener!.updateLogLevelIfRequired();
+        this._oidcLogger.updateLogLevelIfRequired();
 
         try {
 
