@@ -8,7 +8,7 @@
 
 ### Overview
 
-* The initial SPA sample, using OAuth 2.x and Open Id Connect, referenced in my blog at https://authguidance.com
+* The initial SPA sample, using OAuth and Open Id Connect, referenced in my blog at https://authguidance.com
 * **The goal of this sample is to integrate a Web UI and API with an external Authorization Server** 
 
 ### Details
