@@ -1,61 +1,53 @@
 import {Request} from 'express';
-import {Client, custom, IntrospectionResponse, Issuer} from 'openid-client';
+import {jwtVerify} from 'jose/jwt/verify';
 import {SampleClaims} from '../../logic/entities/sampleClaims';
-import {ClientError} from '../../logic/errors/clientError';
 import {OAuthConfiguration} from '../configuration/oauthConfiguration';
-import {ErrorHandler} from '../errors/errorHandler';
+import {ErrorFactory} from '../errors/errorFactory';
 import {HttpProxy} from '../utilities/httpProxy';
+import {JwksRetriever} from './jwksRetriever';
 
 /*
  * The entry point for OAuth related operations
  */
 export class Authenticator {
 
-    private readonly _oauthConfig: OAuthConfiguration;
-    private readonly _issuer: Issuer<Client>;
+    private readonly _configuration: OAuthConfiguration;
+    private readonly _jwksRetriever: JwksRetriever;
 
-    public constructor(oauthConfig: OAuthConfiguration, issuer: Issuer<Client>) {
-        this._oauthConfig = oauthConfig;
-        this._issuer = issuer;
+    public constructor(configuration: OAuthConfiguration, httpProxy: HttpProxy) {
+        this._configuration = configuration;
+        this._jwksRetriever = new JwksRetriever(this._configuration, httpProxy);
     }
 
     /*
-     * Out source validation of the access token by using introspection
+     * Perform standard JWT validation
      */
     public async validateToken(request: Request): Promise<SampleClaims> {
 
-        // Create the introspection client
-        const client = new this._issuer.Client({
-            client_id: this._oauthConfig.clientId,
-            client_secret: this._oauthConfig.clientSecret,
-        });
-        client[custom.http_options] = HttpProxy.getOptions;
-
         try {
 
-            // First read the access token and fail if not found
+            // Read the JWT from the HTTP header
             const accessToken = this._readAccessToken(request);
             if (!accessToken) {
-                throw ClientError.create401('No access token was supplied in the bearer header');
+                throw ErrorFactory.fromMissingTokenError();
             }
 
-            // Make a client request to do the introspection
-            const tokenData: IntrospectionResponse = await client.introspect(accessToken);
-            if (!tokenData.active) {
-                throw ClientError.create401('Access token is expired and failed introspection');
-            }
+            // Perform the library validation
+            const options = {
+                algorithms: [this._configuration.algorithm],
+                issuer: this._configuration.issuer,
+                audience: this._configuration.audience,
+            };
+            const result = await jwtVerify(accessToken, this._jwksRetriever.getKey, options);
 
-            // Read protocol claims
-            const userId = this._getClaim((tokenData as any).sub, 'sub');
-            const scope = this._getClaim(tokenData.scope, 'scope');
-
-            // Create and return a claims object
+            // Read claims into a claims principal
+            const userId = this._getClaim(result.payload.sub, 'sub');
+            const scope = this._getClaim(result.payload['scope'], 'scope');
             return new SampleClaims(userId, scope.split(' '));
 
-        } catch (e) {
+        } catch (e: any) {
 
-            // Report introspection exceptions clearly
-            throw ErrorHandler.fromIntrospectionError(e, (this._issuer as any).introspection_endpoint);
+            throw ErrorFactory.fromTokenValidationError(e);
         }
     }
 
@@ -78,10 +70,10 @@ export class Authenticator {
     /*
      * Sanity checks when receiving claims to avoid failing later with a cryptic error
      */
-    private _getClaim(claim: string | undefined, name: string): string {
+    private _getClaim(claim: any, name: string): string {
 
         if (!claim) {
-            throw ErrorHandler.fromMissingClaim(name);
+            throw ErrorFactory.fromMissingClaim(name);
         }
 
         return claim;

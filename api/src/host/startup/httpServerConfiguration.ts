@@ -1,8 +1,8 @@
 import cors from 'cors';
 import {Application, NextFunction, Request, Response} from 'express';
 import {Configuration} from '../configuration/configuration';
-import {Router} from '../routing/router';
-import {ApiLogger} from '../utilities/apiLogger';
+import {ApiController} from '../controller/apiController';
+import {ApiLogger} from '../logging/apiLogger';
 import {WebStaticContent} from './webStaticContent';
 
 /*
@@ -12,39 +12,39 @@ export class HttpServerConfiguration {
 
     private readonly _expressApp: Application;
     private readonly _configuration: Configuration;
-    private readonly _router: Router;
+    private readonly _apiLogger: ApiLogger;
+    private readonly _apiController: ApiController;
     private readonly _webStaticContent: WebStaticContent;
 
-    public constructor(expressApp: Application, configuration: Configuration) {
+    public constructor(expressApp: Application, configuration: Configuration, logger: ApiLogger) {
         this._expressApp = expressApp;
         this._configuration = configuration;
-        this._router = new Router(this._configuration);
+        this._apiLogger = logger;
+        this._apiController = new ApiController(this._configuration);
         this._webStaticContent = new WebStaticContent();
     }
 
     /*
-     * Set up Web API routes and initialize the API
+     * Set up Web API routes to point to the API controller
      */
     public async initializeApi(): Promise<void> {
 
-        // Allow cross origin requests from the SPA and disable API response caching
+        // Manage common headers returned in API responses
         const corsOptions = { origin: this._configuration.api.trustedOrigins };
         this._expressApp.use('/api/*', cors(corsOptions) as any);
-        this._expressApp.use('/api/*', this._router.cacheHandler);
+        this._expressApp.use('/api/*', this._apiController.onWriteHeaders);
 
-        // All API requests are authorized first
-        this._expressApp.use('/api/*', this._catch(this._router.authorizationHandler));
+        // All API requests undergo logging and authorization
+        this._expressApp.use('/api/*', this._catch(this._apiLogger.logRequest));
+        this._expressApp.use('/api/*', this._catch(this._apiController.authorizationHandler));
 
         // API routes containing business logic
-        this._expressApp.get('/api/companies', this._catch(this._router.getCompanyList));
-        this._expressApp.get('/api/companies/:id/transactions', this._catch(this._router.getCompanyTransactions));
+        this._expressApp.get('/api/companies', this._catch(this._apiController.getCompanyList));
+        this._expressApp.get('/api/companies/:id/transactions', this._catch(this._apiController.getCompanyTransactions));
 
         // Handle failure scenarios
-        this._expressApp.use('/api/*', this._router.notFoundHandler);
-        this._expressApp.use('/api/*', this._router.unhandledExceptionHandler);
-
-        // Prepare the API to handle secured requests
-        await this._router.initialize();
+        this._expressApp.use('/api/*', this._apiController.onRequestNotFound);
+        this._expressApp.use('/api/*', this._apiController.onException);
     }
 
     /*
@@ -63,7 +63,7 @@ export class HttpServerConfiguration {
     public startListening(): void {
 
         this._expressApp.listen(this._configuration.api.port, () => {
-            ApiLogger.info(`API is listening on HTTP port ${this._configuration.api.port}`);
+            console.log(`API is listening on HTTP port ${this._configuration.api.port}`);
         });
     }
 
@@ -78,7 +78,7 @@ export class HttpServerConfiguration {
             Promise
                 .resolve(fn(request, response, next))
                 .catch((e) => {
-                    this._router.unhandledExceptionHandler(e, request, response);
+                    this._apiController.onException(e, request, response);
                 });
         };
     }

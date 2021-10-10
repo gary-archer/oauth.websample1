@@ -6,45 +6,36 @@ import {CompanyRepository} from '../../logic/repositories/companyRepository';
 import {CompanyService} from '../../logic/services/companyService';
 import {JsonFileReader} from '../../logic/utilities/jsonFileReader';
 import {Configuration} from '../configuration/configuration';
-import {ErrorHandler} from '../errors/errorHandler';
+import {ErrorFactory} from '../errors/errorFactory';
+import {ExceptionHandler} from '../errors/exceptionHandler';
 import {Authenticator} from '../oauth/authenticator';
-import {IssuerMetadata} from '../oauth/IssuerMetadata';
+import {HttpProxy} from '../utilities/httpProxy';
 import {ResponseWriter} from '../utilities/responseWriter';
 
 /*
- * A class to route API requests to business logic classes
+ * Entry point handling for API requests
  */
-export class Router {
+export class ApiController {
 
-    private _apiConfig: Configuration;
-    private _issuerMetadata: IssuerMetadata;
+    private readonly _authenticator: Authenticator;
+    private readonly _httpProxy: HttpProxy;
 
-    public constructor(apiConfig: Configuration) {
-        this._apiConfig = apiConfig;
-        this._issuerMetadata = new IssuerMetadata(this._apiConfig.oauth);
+    public constructor(configuration: Configuration) {
+
+        this._httpProxy = new HttpProxy(configuration);
+        this._authenticator = new Authenticator(configuration.oauth, this._httpProxy);
         this._setupCallbacks();
     }
 
     /*
-     * Load Open Id Connect metadata at application startup
-     */
-    public async initialize(): Promise<void> {
-        await this._issuerMetadata.load();
-    }
-
-    /*
-     * The entry point for authorization and claims handling
+     * Validate the received JWT on every request, then store the claims principal and move onto business logic
      */
     public async authorizationHandler(
         request: Request,
         response: Response,
         next: NextFunction): Promise<void> {
 
-        // The first sample does the expensive authentication on every request
-        const authenticator = new Authenticator(this._apiConfig.oauth, this._issuerMetadata.issuer);
-        const claims = await authenticator.validateToken(request);
-
-        // On success, set claims against the request context and move on to the business logic
+        const claims = await this._authenticator.validateToken(request);
         response.locals.claims = claims;
         next();
     }
@@ -91,7 +82,7 @@ export class Router {
      * Remove the ETag header from API responses
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
-    public cacheHandler(
+    public onWriteHeaders(
         request: Request,
         response: Response,
         next: NextFunction): void {
@@ -101,19 +92,17 @@ export class Router {
     }
 
     /*
-     * Handle requests to routes that do not exist
+     * Handle requests to routes that do not exist, by logging the error and returning a client response
      */
     /* eslint-disable @typescript-eslint/no-unused-vars */
-    public notFoundHandler(
+    public onRequestNotFound(
         request: Request,
         response: Response,
         next: NextFunction): void {
 
-        // Handle the error to ensure it is logged
-        const clientError = ErrorHandler.fromRequestNotFound();
-        ErrorHandler.handleError(clientError);
+        const clientError = ErrorFactory.fromRequestNotFound();
+        ExceptionHandler.handleError(clientError, response);
 
-        // Return an error to the client
         ResponseWriter.writeObjectResponse(
             response,
             clientError.statusCode,
@@ -121,17 +110,15 @@ export class Router {
     }
 
     /*
-     * The entry point for handling exceptions forwards all exceptions to our handler class
+     * Handle exceptions thrown by the API, by logging the error and returning a client response
      */
-    public unhandledExceptionHandler(
+    public onException(
         unhandledException: any,
         request: Request,
         response: Response): void {
 
-        // Handlke the error to ensure it is logged
-        const clientError = ErrorHandler.handleError(unhandledException);
+        const clientError = ExceptionHandler.handleError(unhandledException, response);
 
-        // Return an error to the client
         ResponseWriter.writeObjectResponse(
             response,
             clientError.statusCode,
@@ -145,6 +132,5 @@ export class Router {
         this.authorizationHandler = this.authorizationHandler.bind(this);
         this.getCompanyList = this.getCompanyList.bind(this);
         this.getCompanyTransactions = this.getCompanyTransactions.bind(this);
-        this.unhandledExceptionHandler = this.unhandledExceptionHandler.bind(this);
     }
 }

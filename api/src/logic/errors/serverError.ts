@@ -1,15 +1,13 @@
 import {ClientError} from './clientError';
 
-/*
- * A range for random error ids
- */
+// A range for random error ids
 const MIN_ERROR_ID = 10000;
 const MAX_ERROR_ID = 99999;
 
 /*
- * An error entity that the API will log
+ * Represents a server side exception reported to callers as a 500 response
  */
-export class ApiError extends Error {
+export class ServerError extends Error {
 
     private readonly _statusCode: number;
     private readonly _apiName: string;
@@ -18,16 +16,13 @@ export class ApiError extends Error {
     private readonly _utcTime: string;
     private _details: any;
 
-    /*
-     * Errors are categorized by error code
-     */
     public constructor(errorCode: string, userMessage: string, stack?: string | undefined) {
 
         super(userMessage);
 
         // Give fields their default values
         this._statusCode = 500;
-        this._apiName = 'BasicApi';
+        this._apiName = 'SampleApi';
         this._errorCode = errorCode;
         this._instanceId = Math.floor(Math.random() * (MAX_ERROR_ID - MIN_ERROR_ID + 1) + MIN_ERROR_ID);
         this._utcTime = new Date().toISOString();

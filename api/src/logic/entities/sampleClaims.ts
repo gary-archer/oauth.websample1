@@ -6,7 +6,7 @@ export class SampleClaims {
     // The immutable user id from the access token
     private _userId: string;
 
-    // OAuth scopes can represent high level areas of the business
+    // OAuth scopes can represent high level privileges
     private _scopes: string[];
 
     public constructor(userId: string, scopes: string[]) {

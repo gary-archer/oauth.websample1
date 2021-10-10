@@ -15,7 +15,7 @@ export class DomUtils {
     }
 
     /*
-     * Set text
+     * Set text for an element
      */
     public static text(selector: string, text: string): void {
 

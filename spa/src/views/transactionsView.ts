@@ -24,16 +24,13 @@ export class TransactionsView {
 
         try {
 
-            // Clear existing content
-            DomUtils.text('#main', '');
-
             // Try to get data
             const data = await this._apiClient.getCompanyTransactions(this._companyId);
 
             // Render new content
             this._renderData(data);
 
-        } catch (uiError) {
+        } catch (uiError: any) {
 
             // Handle invalid input due to typing an id into the browser address bar
             if (uiError.statusCode === 404 && uiError.errorCode === ErrorCodes.companyNotFound) {
@@ -48,7 +45,10 @@ export class TransactionsView {
 
             } else {
 
-                // Rethrow otherwise
+                // Clear previous content on error
+                DomUtils.text('#main', '');
+
+                // Rethrow
                 throw uiError;
             }
         }

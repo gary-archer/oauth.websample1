@@ -19,14 +19,19 @@ export class CompaniesView {
      */
     public async load(): Promise<void> {
 
-        // Clear existing content
-        DomUtils.text('#main', '');
+        try {
+        
+            // Try to get data
+            const data = await this._apiClient.getCompanyList();
 
-        // Try to get data
-        const data = await this._apiClient.getCompanyList();
+            // Render new content
+            this._renderData(data);
 
-        // Render new content
-        this._renderData(data);
+        } catch (e:any) {
+
+            // Clear previous content on error
+            DomUtils.text('#main', '');
+        }
     }
 
     /*

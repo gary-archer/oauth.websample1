@@ -1,23 +1,7 @@
-import {ErrorCodes} from './errorCodes';
-
 /*
  * Manage errors due to invalid client usage
  */
 export class ClientError extends Error {
-
-    /*
-     * A helper method to return a 401 error
-     */
-    public static create401(reason: string): ClientError {
-
-        const error = new ClientError(
-            401,
-            ErrorCodes.unauthorizedRequest,
-            'Missing, invalid or expired access token');
-
-        error.logContext = reason;
-        return error;
-    }
 
     // Common fields for both 4xx and 500 errors
     private readonly _statusCode: number;
@@ -49,6 +33,9 @@ export class ClientError extends Error {
         Object.setPrototypeOf(this, new.target.prototype);
     }
 
+    /*
+     * The status code is included in logs
+     */
     public get statusCode(): number {
         return this._statusCode;
     }

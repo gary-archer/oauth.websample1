@@ -12,14 +12,11 @@ export class ErrorCodes {
     // A generic server error with no error translation
     public static readonly serverError = 'server_error';
 
-    // A problem downloading Open Id Connect metadata
-    public static readonly metadataLookupFailure = 'metadata_lookup_failure';
+    // A problem downloading JWKS keys
+    public static readonly jwksDownloadError = 'jwks_download_error';
 
-    // A problem validating a token via introspection
-    public static readonly introspectionFailure = 'introspection_failure';
-
-    // A problem calling the user info endpoint
-    public static readonly userinfoFailure = 'userinfo_failure';
+    // A problem validating a token
+    public static readonly tokenValidationError = 'token_validation_error';
 
     // A problem reading claims from payloads
     public static readonly claimsFailure = 'claims_failure';
