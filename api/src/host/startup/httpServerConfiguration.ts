@@ -40,7 +40,9 @@ export class HttpServerConfiguration {
 
         // API routes containing business logic
         this._expressApp.get('/api/companies', this._catch(this._apiController.getCompanyList));
-        this._expressApp.get('/api/companies/:id/transactions', this._catch(this._apiController.getCompanyTransactions));
+        this._expressApp.get(
+            '/api/companies/:id/transactions',
+            this._catch(this._apiController.getCompanyTransactions));
 
         // Handle failure scenarios
         this._expressApp.use('/api/*', this._apiController.onRequestNotFound);

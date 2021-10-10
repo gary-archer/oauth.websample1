@@ -1,10 +1,10 @@
 import {Request} from 'express';
+import {createRemoteJWKSet} from 'jose/jwks/remote';
 import {jwtVerify} from 'jose/jwt/verify';
 import {SampleClaims} from '../../logic/entities/sampleClaims';
 import {OAuthConfiguration} from '../configuration/oauthConfiguration';
 import {ErrorFactory} from '../errors/errorFactory';
 import {HttpProxy} from '../utilities/httpProxy';
-import {JwksRetriever} from './jwksRetriever';
 
 /*
  * The entry point for OAuth related operations
@@ -12,11 +12,11 @@ import {JwksRetriever} from './jwksRetriever';
 export class Authenticator {
 
     private readonly _configuration: OAuthConfiguration;
-    private readonly _jwksRetriever: JwksRetriever;
+    private readonly _httpProxy: HttpProxy;
 
     public constructor(configuration: OAuthConfiguration, httpProxy: HttpProxy) {
         this._configuration = configuration;
-        this._jwksRetriever = new JwksRetriever(this._configuration, httpProxy);
+        this._httpProxy = httpProxy;
     }
 
     /*
@@ -32,13 +32,19 @@ export class Authenticator {
                 throw ErrorFactory.fromMissingTokenError();
             }
 
-            // Perform the library validation
+            // Download token signing public keys from the Authorization Server, which are then cached
+            const jwksOptions = {
+                agent: this._httpProxy.agent,
+            };
+            const remoteJwkSet = createRemoteJWKSet(new URL(this._configuration.jwksEndpoint), jwksOptions);
+
+            // Perform the JWT validation according to best practices
             const options = {
                 algorithms: [this._configuration.algorithm],
                 issuer: this._configuration.issuer,
                 audience: this._configuration.audience,
             };
-            const result = await jwtVerify(accessToken, this._jwksRetriever.getKey, options);
+            const result = await jwtVerify(accessToken, remoteJwkSet, options);
 
             // Read claims into a claims principal
             const userId = this._getClaim(result.payload.sub, 'sub');
@@ -47,6 +53,12 @@ export class Authenticator {
 
         } catch (e: any) {
 
+            // Generic errors are returned when the JWKS download fails
+            if (e.code === 'ERR_JOSE_GENERIC') {
+                throw ErrorFactory.fromJwksDownloadError(e);
+            }
+
+            // Otherwise return a 401 error, such as when a JWT with an invalid 'kid' value is supplied
             throw ErrorFactory.fromTokenValidationError(e);
         }
     }

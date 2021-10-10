@@ -20,7 +20,7 @@ export class CompaniesView {
     public async load(): Promise<void> {
 
         try {
-        
+
             // Try to get data
             const data = await this._apiClient.getCompanyList();
 

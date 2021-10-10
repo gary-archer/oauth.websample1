@@ -19,7 +19,7 @@ export class ApiLogger {
             winston.format.printf((logEntry: any) => {
                 return JSON.stringify(logEntry.message, null, 2);
             }));
-        
+
         const consoleOptions = {
             format: prettyPrintFormatter,
         };
@@ -37,7 +37,7 @@ export class ApiLogger {
     /*
      * Report startup errors in the standard format
      */
-    public startupError(error: ServerError) {
+    public startupError(error: ServerError): void {
 
         const logEntry = new LogEntry();
         logEntry.setError(error);

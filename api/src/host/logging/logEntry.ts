@@ -24,7 +24,7 @@ export class LogEntry {
     /*
      * Include some basic request information
      */
-    public start(request: Request) {
+    public start(request: Request): void {
         this._path = request.originalUrl;
         this._method = request.method;
     }
@@ -32,14 +32,14 @@ export class LogEntry {
     /*
      * Include some basic response information
      */
-    public end(response: Response) {
+    public end(response: Response): void {
         this._statusCode = response.statusCode;
     }
 
     /*
      * Record errors
      */
-    public setError(error: ClientError | ServerError) {
+    public setError(error: ClientError | ServerError): void {
         this._error = error;
     }
 
@@ -57,7 +57,6 @@ export class LogEntry {
 
         const data = {
             utcTime: this._utcTime,
-            
         } as any;
 
         if (this._path && this._method) {
