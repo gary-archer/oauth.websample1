@@ -29,13 +29,13 @@ export class HeaderButtonsView {
         const html =
             `<div class='row'>
                 <div class='col-4 my-2 d-flex'>
-                    <button id='btnHome' type='button' class='btn btn-primary btn-block p-1'>Home</button>
+                    <button id='btnHome' type='button' class='btn btn-primary w-100 p-1'>Home</button>
                 </div>
                 <div class='col-4 my-2 d-flex'>
-                    <button id='btnReloadData' type='button' disabled class='btn btn-primary btn-block p-1 sessionbutton'>Reload Data</button>
+                    <button id='btnReloadData' type='button' disabled class='btn btn-primary w-100 p-1 sessionbutton'>Reload Data</button>
                 </div>
                 <div class='col-4 my-2 d-flex'>
-                    <button id='btnExpireAccessToken' type='button' disabled class='btn btn-primary btn-block p-1 sessionbutton'>Expire Token</button>
+                    <button id='btnExpireAccessToken' type='button' disabled class='btn btn-primary w-100 p-1 sessionbutton'>Expire Token</button>
                 </div>
             </div>`;
         DomUtils.html('#headerbuttons', html);
