@@ -1,8 +1,7 @@
 .DS_Store
 .gitignore
 node_modules
+dist
 /spa/spa.config.json
 /api/api.config.json
-/spa/dist/*
-!/spa/dist/unsupported.js
 license.json
