@@ -25,7 +25,7 @@ export class ErrorView {
                 <div class='row'>
                     <div id='errortitle' class='col-10 errorcolor largetext fw-bold text-center'>
                     </div>
-                    <div class='col-2 text-right'>
+                    <div class='col-2 text-end'>
                         <button id='btnClearError' type='button'>x</button>
                     </div>
                 </div>

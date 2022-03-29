@@ -83,15 +83,15 @@ export class TransactionsView {
                                 <div class='card-body'>
                                     <div class='row'>
                                         <div class='col-6'>Transaction ID</div>
-                                        <div class='col-6 text-right valuecolor fw-bold'>{{id}}</div>
+                                        <div class='col-6 text-end valuecolor fw-bold'>{{id}}</div>
                                     </div>
                                     <div class='row'>
                                         <div class='col-6'>Investor ID</div>
-                                        <div class='col-6 text-right valuecolor fw-bold'>{{investorId}}</div>
+                                        <div class='col-6 text-end valuecolor fw-bold'>{{investorId}}</div>
                                     </div>
                                     <div class='row'>
                                         <div class='col-6'>Amount USD</div>
-                                        <div class='col-6 text-right moneycolor fw-bold'>{{formattedAmountUsd}}</div>
+                                        <div class='col-6 text-end moneycolor fw-bold'>{{formattedAmountUsd}}</div>
                                     </div>
                                 </div>
                             </div>
