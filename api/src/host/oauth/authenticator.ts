@@ -1,6 +1,5 @@
 import {Request} from 'express';
-import {createRemoteJWKSet} from 'jose/jwks/remote';
-import {jwtVerify} from 'jose/jwt/verify';
+import {createRemoteJWKSet, jwtVerify} from 'jose';
 import {URL} from 'url';
 import {ClaimsPrincipal} from '../../logic/entities/claimsPrincipal';
 import {OAuthConfiguration} from '../configuration/oauthConfiguration';
