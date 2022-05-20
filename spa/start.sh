@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 #######################################################
 # A script to build the SPA using webpack in watch mode

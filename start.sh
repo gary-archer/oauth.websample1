@@ -1,7 +1,7 @@
-#/bin/bash
+#!/bin/bash
 
 #########################################################################################################
-# A script to spin up the code sample, to be run from a macOS terminal or a Windows Git bash shell
+# A script to spin up the code sample, to be run from a terminal
 # Open source libraries are sued by the SPA and API, with AWS Cognito as the default Authorization Server
 #########################################################################################################
 
@@ -19,18 +19,30 @@ case "$(uname -s)" in
   MINGW64*)
     PLATFORM="WINDOWS"
 	;;
+
+  Linux)
+    PLATFORM="LINUX"
+	;;
 esac
 
 #
 # Run the SPA and API
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
+
     open -a Terminal ./spa/start.sh
     open -a Terminal ./api/start.sh
-else
+
+elif [ "$PLATFORM" == 'WINDOWS' ]; then
+
     GIT_BASH="C:\Program Files\Git\git-bash.exe"
     "$GIT_BASH" -c ./spa/start.sh &
     "$GIT_BASH" -c ./api/start.sh &
+
+elif [ "$PLATFORM" == 'LINUX' ]; then
+
+    gnome-terminal -- ./spa/start.sh
+    gnome-terminal -- ./api/start.sh
 fi
 
 #
@@ -58,7 +70,7 @@ done
 
 #
 # Run the SPA in the default browser, then sign in with these credentials:
-#  standarduser@mycompany.com
+#  guestuser@mycompany.com
 #  Password1
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
@@ -66,4 +78,7 @@ if [ "$PLATFORM" == 'MACOS' ]; then
 fi
 if [ "$PLATFORM" == 'WINDOWS' ]; then
     start $SPA_URL
+fi
+if [ "$PLATFORM" == 'LINUX' ]; then
+    xdg-open $SPA_URL
 fi
