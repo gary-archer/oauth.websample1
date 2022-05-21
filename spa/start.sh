@@ -7,3 +7,7 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 npm install
 npm start
+
+if [ "$(uname -s)" == 'Linux' ]; then
+  read -n 1
+fi

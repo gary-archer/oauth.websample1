@@ -7,29 +7,15 @@
 cd "$(dirname "${BASH_SOURCE[0]}")"
 npm install
 
-#
-# Get the platform
-#
-case "$(uname -s)" in
+if [ "$(uname -s)" == 'Linux' ]; then
 
-  Darwin)
-    PLATFORM="MACOS"
- 	;;
-
-  MINGW64*)
-    PLATFORM="WINDOWS"
-	;;
-
-  Linux)
-    PLATFORM="LINUX"
-	;;
-esac
-
-#
-# On Linux we have to do this to listen on port 80
-#
-if [ "$PLATFORM" != 'LINUX' ]; then
-    npm start
-else
+    # On Linux we must run the underlying command as root, in order to listen on ports below 1024
     sudo ./node_modules/.bin/ts-node --files ./src/host/startup/app.ts
+    read -n 1
+
+else
+
+    # On Windows or macOS we just run the start command
+    npm start
 fi
+

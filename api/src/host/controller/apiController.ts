@@ -9,6 +9,7 @@ import {Configuration} from '../configuration/configuration';
 import {ErrorFactory} from '../errors/errorFactory';
 import {ExceptionHandler} from '../errors/exceptionHandler';
 import {Authenticator} from '../oauth/authenticator';
+import {JwksRetriever} from '../oauth/jwksRetriever';
 import {HttpProxy} from '../utilities/httpProxy';
 import {ResponseWriter} from '../utilities/responseWriter';
 
@@ -18,12 +19,12 @@ import {ResponseWriter} from '../utilities/responseWriter';
 export class ApiController {
 
     private readonly _authenticator: Authenticator;
-    private readonly _httpProxy: HttpProxy;
 
     public constructor(configuration: Configuration) {
 
-        this._httpProxy = new HttpProxy(configuration);
-        this._authenticator = new Authenticator(configuration.oauth, this._httpProxy);
+        const httpProxy = new HttpProxy(configuration);
+        const jwksRetriever = new JwksRetriever(configuration.oauth, httpProxy);
+        this._authenticator = new Authenticator(configuration.oauth, jwksRetriever);
         this._setupCallbacks();
     }
 

@@ -1,10 +1,9 @@
 import {Request} from 'express';
-import {createRemoteJWKSet, jwtVerify} from 'jose';
-import {URL} from 'url';
+import {jwtVerify} from 'jose';
 import {ClaimsPrincipal} from '../../logic/entities/claimsPrincipal';
 import {OAuthConfiguration} from '../configuration/oauthConfiguration';
 import {ErrorFactory} from '../errors/errorFactory';
-import {HttpProxy} from '../utilities/httpProxy';
+import {JwksRetriever} from './jwksRetriever';
 
 /*
  * The entry point for OAuth related operations
@@ -12,11 +11,11 @@ import {HttpProxy} from '../utilities/httpProxy';
 export class Authenticator {
 
     private readonly _configuration: OAuthConfiguration;
-    private readonly _httpProxy: HttpProxy;
+    private readonly _jwksRetriever: JwksRetriever;
 
-    public constructor(configuration: OAuthConfiguration, httpProxy: HttpProxy) {
+    public constructor(configuration: OAuthConfiguration, jwksRetriever: JwksRetriever) {
         this._configuration = configuration;
-        this._httpProxy = httpProxy;
+        this._jwksRetriever = jwksRetriever;
     }
 
     /*
@@ -32,19 +31,13 @@ export class Authenticator {
                 throw ErrorFactory.fromMissingTokenError();
             }
 
-            // Download token signing public keys from the Authorization Server, which are then cached
-            const jwksOptions = {
-                agent: this._httpProxy.agent,
-            };
-            const remoteJwkSet = createRemoteJWKSet(new URL(this._configuration.jwksEndpoint), jwksOptions);
-
             // Perform the JWT validation according to best practices
             const options = {
                 algorithms: [this._configuration.algorithm],
                 issuer: this._configuration.issuer,
                 audience: this._configuration.audience,
             };
-            const result = await jwtVerify(accessToken, remoteJwkSet, options);
+            const result = await jwtVerify(accessToken, this._jwksRetriever.remoteJWKSet, options);
 
             // Read claims into a claims principal object
             const userId = this._getClaim(result.payload.sub, 'sub');
