@@ -30,19 +30,19 @@ esac
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
 
-    open -a Terminal ./spa/start.sh
-    open -a Terminal ./api/start.sh
+  open -a Terminal ./spa/start.sh
+  open -a Terminal ./api/start.sh
 
 elif [ "$PLATFORM" == 'WINDOWS' ]; then
 
-    GIT_BASH="C:\Program Files\Git\git-bash.exe"
-    "$GIT_BASH" -c ./spa/start.sh &
-    "$GIT_BASH" -c ./api/start.sh &
+  GIT_BASH="C:\Program Files\Git\git-bash.exe"
+  "$GIT_BASH" -c ./spa/start.sh &
+  "$GIT_BASH" -c ./api/start.sh &
 
 elif [ "$PLATFORM" == 'LINUX' ]; then
 
-    gnome-terminal -- ./spa/start.sh
-    gnome-terminal -- ./api/start.sh
+  gnome-terminal -- ./spa/start.sh
+  gnome-terminal -- ./api/start.sh
 fi
 
 #
@@ -56,7 +56,7 @@ API_URL='http://localhost/api'
 #
 echo "Waiting for API to become available ..."
 while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$API_URL/companies")" != "401" ]; do
-    sleep 2s
+  sleep 2s
 done
 
 #
@@ -65,7 +65,7 @@ done
 echo "Waiting for SPA to become available ..."
 SPA_BUNDLE='./spa/dist/app.bundle.js'
 while [ ! -f "$SPA_BUNDLE" ]; do
-    sleep 2s
+  sleep 2s
 done
 
 #
@@ -74,11 +74,11 @@ done
 #  Password1
 #
 if [ "$PLATFORM" == 'MACOS' ]; then
-    open $SPA_URL
+  open $SPA_URL
 fi
 if [ "$PLATFORM" == 'WINDOWS' ]; then
-    start $SPA_URL
+  start $SPA_URL
 fi
 if [ "$PLATFORM" == 'LINUX' ]; then
-    xdg-open $SPA_URL
+  xdg-open $SPA_URL
 fi

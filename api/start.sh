@@ -5,7 +5,13 @@
 #########################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-npm install
+
+#
+# Download dependencies
+#
+if [ ! -d 'node_modules' ]; then
+  npm install
+fi
 
 #
 # On Linux ensure that you have first granted Node.js permissions to listen on port 80:

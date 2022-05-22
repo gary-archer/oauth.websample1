@@ -5,7 +5,17 @@
 #######################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
-npm install
+
+#
+# Download dependencies
+#
+if [ ! -d 'node_modules' ]; then
+  npm install
+fi
+
+#
+# Run the command to build and watch Javascript
+#
 npm start
 
 #
