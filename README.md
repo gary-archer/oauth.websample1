@@ -10,10 +10,15 @@
 
 An introductory SPA and API code sample, useful when first learning OAuth and understanding endpoints:
 
-- The SPA uses the traditional OpenID connect flow, with Authorization Code Flow + PKCE.
-- The SPA interacts with an API that validates JWTs and uses claims for authorization.
+- The SPA uses the traditional OpenID connect flow, with Authorization Code Flow + PKCE
+- The SPA interacts with an API that validates JWTs and uses claims for authorization
 
-## Quick Start
+## Views
+
+The SPA is a simple UI with some basic navigation between views, to render fictional resources.
+The data is returned from an API that will, in later sample, authorize using domain specific claims.
+
+## Local Development Quick Start
 
 Ensure that Node.js is installed, then run the start script from a macOS terminal or from Git Bash on Windows:
 
@@ -26,8 +31,6 @@ The browser is invoked and you can sign in with my AWS test credentials:
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 
-## Use your own Authorization Server
-
 If preferred, update the settings in these files to point to your own Authorization Server and users:
 
 - spa/spa.config.json
@@ -38,14 +41,14 @@ If preferred, update the settings in these files to point to your own Authorizat
 * See the [Sample 1 Overview](https://authguidance.com/2017/09/24/basicspa-overview/) for a summary of behaviour
 * See the [Sample 1 Details](https://authguidance.com/2017/09/25/basicspa-execution/) for further details on running the code
 
-## ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) 2021 Security Update
+## ![#f03c15](2021 Security Update)
 
 - In 2021 it is instead recommended to use a [Back End for Front End](https://authguidance.com/2019/09/09/spa-back-end-for-front-end/) approach for SPA security.
 - This requires more moving parts - see the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for an example implementation.
 
 ## Programming Languages
 
-* The SPA is coded in plain TypeScript, so that it can be adapted into your technology of choice
+* Typescripts is used to build the SPA in the simplest way
 * Node.js and TypeScript are used to implement the API
 
 ## Middleware Used
