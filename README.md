@@ -43,15 +43,15 @@ If preferred, update the settings in these files to point to your own Authorizat
 
 ## ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) 2021 Security Update
 
-- In 2021 it is instead recommended to use a [Back End for Front End](https://authguidance.com/2019/09/09/spa-back-end-for-front-end/) approach for SPA security.
-- This requires more moving parts - see the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for an example implementation.
+- In 2021 it is instead recommended to keep tokens out of the browser, using a Back End for Front End approach.
+- See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for an API driven implementation.
 
 ## Programming Languages
 
 * Typescripts is used to build the SPA in the simplest way
 * Node.js and TypeScript are used to implement the API
 
-## Middleware Used
+## Infrastructure
 
 * Express is used to host both the API and the SPA content
 * AWS Cognito is used as the default Authorization Server
