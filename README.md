@@ -31,7 +31,7 @@ The browser is invoked and you can sign in with my AWS test credentials:
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 
-## Details
+## Further Information
 
 * See the [Sample 1 Overview](https://authguidance.com/2017/09/24/basicspa-overview/) for a summary of behaviour
 * See the [Sample 1 Details](https://authguidance.com/2017/09/25/basicspa-execution/) for further details on running the code
