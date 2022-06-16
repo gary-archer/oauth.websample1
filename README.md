@@ -41,7 +41,7 @@ If preferred, update the settings in these files to point to your own Authorizat
 * See the [Sample 1 Overview](https://authguidance.com/2017/09/24/basicspa-overview/) for a summary of behaviour
 * See the [Sample 1 Details](https://authguidance.com/2017/09/25/basicspa-execution/) for further details on running the code
 
-## ![#f03c15](2021 Security Update)
+## ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) 2021 Security Update
 
 - In 2021 it is instead recommended to use a [Back End for Front End](https://authguidance.com/2019/09/09/spa-back-end-for-front-end/) approach for SPA security.
 - This requires more moving parts - see the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for an example implementation.
