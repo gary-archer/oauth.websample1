@@ -14,6 +14,11 @@ if [ ! -d 'node_modules' ]; then
 fi
 
 #
+# Check code quality
+#
+npm run lint
+
+#
 # Run the command to build and watch Javascript
 #
 npm start

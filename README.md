@@ -16,9 +16,18 @@ An introductory standards based SPA and API code sample, useful when first learn
 ## Views
 
 The SPA is a simple UI with some basic navigation between views, to render fictional resources.\
-The data is returned from an API that will, in later sample, authorize using domain specific claims.
+The data is returned from an API that will, in later samples, authorize using domain specific claims.
+
+![SPA Views](./doc/spa-views.png)
 
 ## Local Development Quick Start
+
+Custom development domains are used so you must add these DNS entries to your hosts file:
+
+```bash
+127.0.0.1 web.mycompany.com api.mycompany.com
+::1       localhost
+```
 
 Ensure that Node.js is installed, then run the start script:
 

@@ -98,7 +98,15 @@ class App {
      */
     private async _handleLoginResponse(): Promise<void> {
 
+        // Do the OAuth work
         await this._authenticator!.handleLoginResponse();
+
+        // Cognito requires a localhost return URL when using HTTP, so redirect back to the proper domain if needed
+        if (location.host === 'localhost') {
+            location.href = location.href.replace('http://localhost', this._configuration!.app.webOrigin);
+        }
+
+        console.log(location.href)
         this._titleView.loadUserInfo(this._authenticator!);
     }
 
