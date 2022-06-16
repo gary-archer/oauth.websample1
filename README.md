@@ -25,8 +25,7 @@ The data is returned from an API that will, in later samples, authorize using do
 Custom development domains are used so you must add these DNS entries to your hosts file:
 
 ```bash
-127.0.0.1 web.mycompany.com api.mycompany.com
-::1       localhost
+127.0.0.1 localhost web.mycompany.com api.mycompany.com
 ```
 
 Ensure that Node.js is installed, then run the start script:
