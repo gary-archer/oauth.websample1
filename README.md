@@ -15,7 +15,7 @@ An introductory SPA and API code sample, useful when first learning OAuth and un
 
 ## Views
 
-The SPA is a simple UI with some basic navigation between views, to render fictional resources.
+The SPA is a simple UI with some basic navigation between views, to render fictional resources.\
 The data is returned from an API that will, in later sample, authorize using domain specific claims.
 
 ## Local Development Quick Start
