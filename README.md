@@ -8,7 +8,7 @@
 
 ## Overview
 
-An introductory SPA and API code sample, useful when first learning OAuth and understanding endpoints:
+An introductory standards based SPA and API code sample, useful when first learning about OAuth endpoints:
 
 - The SPA uses the traditional OpenID connect flow, with Authorization Code Flow + PKCE
 - The SPA interacts with an API that validates JWTs and uses claims for authorization
@@ -20,7 +20,7 @@ The data is returned from an API that will, in later sample, authorize using dom
 
 ## Local Development Quick Start
 
-Ensure that Node.js is installed, then run the start script from a macOS terminal or from Git Bash on Windows:
+Ensure that Node.js is installed, then run the start script:
 
 ```bash
 ./start.sh
@@ -31,11 +31,6 @@ The browser is invoked and you can sign in with my AWS test credentials:
 - User: `guestuser@mycompany.com`
 - Password: `GuestPassword1`
 
-If preferred, update the settings in these files to point to your own Authorization Server and users:
-
-- spa/spa.config.json
-- api/api.config.json
-
 ## Details
 
 * See the [Sample 1 Overview](https://authguidance.com/2017/09/24/basicspa-overview/) for a summary of behaviour
@@ -43,8 +38,8 @@ If preferred, update the settings in these files to point to your own Authorizat
 
 ## ![Red icon](https://via.placeholder.com/15/f03c15/f03c15.png) 2021 Security Update
 
-- In 2021 it is instead recommended to keep tokens out of the browser, using a Back End for Front End approach.
-- See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for an API driven implementation.
+- In 2021 it is instead recommended to keep tokens out of the browser, using a Back End for Front End approach
+- See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for an API driven implementation
 
 ## Programming Languages
 
