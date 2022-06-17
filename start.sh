@@ -48,7 +48,7 @@ fi
 #
 # When running in Cognito we have to use 'localhost' URLs with HTTP redirect URIs
 #
-SPA_URL='http://localhost/spa'
+SPA_URL='http://web.mycompany.com/spa'
 API_URL='http://localhost/api'
 
 #
