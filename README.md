@@ -22,7 +22,7 @@ The data is returned from an API that will, in later samples, authorize using do
 
 ## Local Development Quick Start
 
-Custom development domains are used so you must add these DNS entries to your hosts file:
+Custom development domains are used so you must first add these DNS entries to your hosts file:
 
 ```bash
 127.0.0.1 localhost web.mycompany.com api.mycompany.com
