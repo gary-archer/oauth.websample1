@@ -9,13 +9,14 @@ import {ErrorHandler} from '../plumbing/errors/errorHandler';
 export class ConfigurationLoader {
 
     /*
-     * Download JSON data from the app config file
+     * Download JSON data from the app config file and use a timestamp to force this on every reload
      */
     public static async download(fileName: string): Promise<Configuration> {
 
         try {
 
-            const response = await axios.get<Configuration>(fileName);
+            const url = `${fileName}?t=${new Date().getTime()}`;
+            const response = await axios.get<Configuration>(url);
             AxiosUtils.checkJson(response.data);
             return response.data;
 
