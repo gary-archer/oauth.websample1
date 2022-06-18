@@ -51,7 +51,7 @@ The browser is invoked and you can sign in with my AWS test credentials:
 
 ## Programming Languages
 
-* Plain Typescript is used, to build the SPA in the simplest way
+* Plain Typescript is used, to explain SPA OAuth behaviour in the simplest way
 * Node.js and TypeScript are used to implement the API
 
 ## Infrastructure
