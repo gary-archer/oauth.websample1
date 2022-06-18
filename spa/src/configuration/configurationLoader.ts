@@ -9,7 +9,8 @@ import {ErrorHandler} from '../plumbing/errors/errorHandler';
 export class ConfigurationLoader {
 
     /*
-     * Download JSON data from the app config file and use a timestamp to force this on every reload
+     * Download JSON data from the app config file
+     * For development purposes we use a timestamp to force this on every page reload
      */
     public static async download(fileName: string): Promise<Configuration> {
 
