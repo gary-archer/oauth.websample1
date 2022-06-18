@@ -46,7 +46,7 @@ The browser is invoked and you can sign in with my AWS test credentials:
 
 ## ![Red icon](https://via.placeholder.com/15/f03c15/f03c15.png) 2021 Security Update
 
-- In 2021 it is instead recommended to keep tokens out of the browser, using a Back End for Front End approach
+- In 2021 it is instead recommended to keep tokens out of the browser, using a Backend for Frontend
 - See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for an API driven implementation
 
 ## Programming Languages
