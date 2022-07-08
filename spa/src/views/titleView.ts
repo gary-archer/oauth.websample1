@@ -10,6 +10,8 @@ export class TitleView {
     private readonly _userInfoView: UserInfoView;
 
     public constructor() {
+
+        DomUtils.createDiv('#root', 'title');
         this._userInfoView = new UserInfoView();
     }
 

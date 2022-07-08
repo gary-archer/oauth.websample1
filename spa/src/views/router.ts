@@ -1,6 +1,7 @@
 import urlparse from 'url-parse';
 import {ApiClient} from '../api/client/apiClient';
 import {CompaniesView} from './companiesView';
+import {DomUtils} from './domUtils';
 import {ErrorView} from './errorView';
 import {TransactionsView} from './transactionsView';
 
@@ -13,8 +14,10 @@ export class Router {
     private _errorView: ErrorView;
 
     public constructor(apiClient: ApiClient, errorView: ErrorView) {
+
         this._apiClient = apiClient;
         this._errorView = errorView;
+        DomUtils.createDiv('#root', 'main');
     }
 
     /*

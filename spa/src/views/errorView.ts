@@ -12,6 +12,8 @@ import {DomUtils} from './domUtils';
 export class ErrorView {
 
     public constructor() {
+
+        DomUtils.createDiv('#root', 'errorcontainer');
         this._setupCallbacks();
     }
 

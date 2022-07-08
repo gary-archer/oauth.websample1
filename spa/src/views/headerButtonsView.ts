@@ -17,6 +17,7 @@ export class HeaderButtonsView {
         this._onHome = onHome;
         this._onReloadData = onReloadData;
         this._onExpireToken = onExpireToken;
+        DomUtils.createDiv('#root', 'headerbuttons');
     }
 
     /*
