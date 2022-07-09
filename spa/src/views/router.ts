@@ -17,7 +17,6 @@ export class Router {
 
         this._apiClient = apiClient;
         this._errorView = errorView;
-        DomUtils.createDiv('#root', 'main');
     }
 
     /*
@@ -25,7 +24,8 @@ export class Router {
      */
     public async loadView(): Promise<void> {
 
-        // Clear errors from the previous view
+        // Initialise
+        DomUtils.createDiv('#root', 'main');
         this._errorView.clear();
 
         // The transactions view has a URL such as #company=2

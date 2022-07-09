@@ -10,8 +10,6 @@ export class TitleView {
     private readonly _userInfoView: UserInfoView;
 
     public constructor() {
-
-        DomUtils.createDiv('#root', 'title');
         this._userInfoView = new UserInfoView();
     }
 
@@ -20,6 +18,7 @@ export class TitleView {
      */
     public load(): void {
 
+        DomUtils.createDiv('#root', 'title');
         const html =
             `<div class='row'>
                 <div class='col-8 my-auto'>

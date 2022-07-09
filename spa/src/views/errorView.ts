@@ -12,8 +12,6 @@ import {DomUtils} from './domUtils';
 export class ErrorView {
 
     public constructor() {
-
-        DomUtils.createDiv('#root', 'errorcontainer');
         this._setupCallbacks();
     }
 
@@ -22,6 +20,7 @@ export class ErrorView {
      */
     public load(): void {
 
+        DomUtils.createDiv('#root', 'errorcontainer');
         const html =
             `<div class='card border-0'>
                 <div class='row'>

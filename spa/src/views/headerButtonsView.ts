@@ -17,7 +17,6 @@ export class HeaderButtonsView {
         this._onHome = onHome;
         this._onReloadData = onReloadData;
         this._onExpireToken = onExpireToken;
-        DomUtils.createDiv('#root', 'headerbuttons');
     }
 
     /*
@@ -27,6 +26,7 @@ export class HeaderButtonsView {
     public load(): void {
 
         // Render the buttons
+        DomUtils.createDiv('#root', 'headerbuttons');
         const html =
             `<div class='row'>
                 <div class='col-4 my-2 d-flex'>
