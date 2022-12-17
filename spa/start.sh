@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#######################################################
-# A script to build the SPA using webpack in watch mode
-#######################################################
+#################################################
+# A script to build and run the SPA in watch mode
+#################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 

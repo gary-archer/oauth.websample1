@@ -2,7 +2,7 @@
 
 #########################################################################################################
 # A script to spin up the code sample, to be run from a terminal
-# Open source libraries are sued by the SPA and API, with AWS Cognito as the default Authorization Server
+# Open source libraries are useed by the SPA and API, with AWS Cognito as the default Authorization Server
 #########################################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -46,10 +46,10 @@ elif [ "$PLATFORM" == 'LINUX' ]; then
 fi
 
 #
-# When running in Cognito we have to use 'localhost' URLs with HTTP redirect URIs
+# Set URLs to wait for
 #
 SPA_URL='http://web.mycompany.com/spa'
-API_URL='http://localhost/api'
+API_URL='http://api.mycompany.com/api'
 
 #
 # Wait for the API to come up
