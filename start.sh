@@ -56,7 +56,7 @@ API_URL='http://api.mycompany.com/api'
 #
 echo "Waiting for API to become available ..."
 while [ "$(curl -k -s -o /dev/null -w ''%{http_code}'' "$API_URL/companies")" != "401" ]; do
-  sleep 2s
+  sleep 2
 done
 
 #
@@ -65,7 +65,7 @@ done
 echo "Waiting for SPA to become available ..."
 SPA_BUNDLE='./spa/dist/app.bundle.js'
 while [ ! -f "$SPA_BUNDLE" ]; do
-  sleep 2s
+  sleep 2
 done
 
 #
