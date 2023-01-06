@@ -1,5 +1,4 @@
-import {createRemoteJWKSet, JWSHeaderParameters, FlattenedJWSInput, RemoteJWKSetOptions} from 'jose';
-import {GetKeyFunction} from 'jose/dist/types/types';
+import {createRemoteJWKSet, JWTVerifyGetKey, RemoteJWKSetOptions} from 'jose';
 import {OAuthConfiguration} from '../configuration/oauthConfiguration';
 import {HttpProxy} from '../utilities/httpProxy';
 
@@ -8,7 +7,7 @@ import {HttpProxy} from '../utilities/httpProxy';
  */
 export class JwksRetriever {
 
-    private readonly _remoteJWKSet: GetKeyFunction<JWSHeaderParameters, FlattenedJWSInput>;
+    private readonly _remoteJWKSet: JWTVerifyGetKey;
 
     public constructor(configuration: OAuthConfiguration, httpProxy: HttpProxy) {
 
@@ -21,7 +20,7 @@ export class JwksRetriever {
         this._remoteJWKSet = createRemoteJWKSet(new URL(configuration.jwksEndpoint), jwksOptions);
     }
 
-    public get remoteJWKSet(): GetKeyFunction<JWSHeaderParameters, FlattenedJWSInput> {
+    public get remoteJWKSet(): JWTVerifyGetKey {
         return this._remoteJWKSet;
     }
 }
