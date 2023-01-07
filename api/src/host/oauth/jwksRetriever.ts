@@ -1,6 +1,6 @@
 import {createRemoteJWKSet, JWTVerifyGetKey, RemoteJWKSetOptions} from 'jose';
-import {OAuthConfiguration} from '../configuration/oauthConfiguration';
-import {HttpProxy} from '../utilities/httpProxy';
+import {OAuthConfiguration} from '../configuration/oauthConfiguration.js';
+import {HttpProxy} from '../utilities/httpProxy.js';
 
 /*
  * A singleton that caches the result of createRemoteJWKSet, to ensure efficient lookup

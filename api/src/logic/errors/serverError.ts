@@ -1,4 +1,4 @@
-import {ClientError} from './clientError';
+import {ClientError} from './clientError.js';
 
 // A range for random error ids
 const MIN_ERROR_ID = 10000;

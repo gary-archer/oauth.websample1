@@ -1,6 +1,6 @@
-import {ClientError} from '../../logic/errors/clientError';
-import {ErrorCodes} from '../../logic/errors/errorCodes';
-import {ServerError} from '../../logic/errors/serverError';
+import {ClientError} from '../../logic/errors/clientError.js';
+import {ErrorCodes} from '../../logic/errors/errorCodes.js';
+import {ServerError} from '../../logic/errors/serverError.js';
 
 /*
  * A class to handle extracting information and creating errors

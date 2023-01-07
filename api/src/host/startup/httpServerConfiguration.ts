@@ -1,9 +1,9 @@
 import cors from 'cors';
 import {Application, NextFunction, Request, Response} from 'express';
-import {Configuration} from '../configuration/configuration';
-import {ApiController} from '../controller/apiController';
-import {ApiLogger} from '../logging/apiLogger';
-import {WebStaticContent} from './webStaticContent';
+import {Configuration} from '../configuration/configuration.js';
+import {ApiController} from '../controller/apiController.js';
+import {ApiLogger} from '../logging/apiLogger.js';
+import {WebStaticContent} from './webStaticContent.js';
 
 /*
  * Configure behaviour of the HTTP server during application startup
