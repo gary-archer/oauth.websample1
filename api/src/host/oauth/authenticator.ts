@@ -1,9 +1,9 @@
 import {Request} from 'express';
 import {jwtVerify} from 'jose';
-import {ClaimsPrincipal} from '../../logic/entities/claimsPrincipal';
-import {OAuthConfiguration} from '../configuration/oauthConfiguration';
-import {ErrorFactory} from '../errors/errorFactory';
-import {JwksRetriever} from './jwksRetriever';
+import {ClaimsPrincipal} from '../../logic/entities/claimsPrincipal.js';
+import {OAuthConfiguration} from '../configuration/oauthConfiguration.js';
+import {ErrorFactory} from '../errors/errorFactory.js';
+import {JwksRetriever} from './jwksRetriever.js';
 
 /*
  * The entry point for OAuth related operations

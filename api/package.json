@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "description": "A Basic OAuth secured API that validates JWTs",
   "main": "app.ts",
-  "scripts": {
-    "lint": "npx eslint . --ext .ts",
-    "build": "ts-node --files src/host/startup/app.ts",
-    "start": "nodemon -e ts --exec \"npm run build\""
-  },
   "keywords": [],
   "author": "Gary Archer",
   "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "lint": "npx eslint . --ext .ts",
+    "build": "node --loader ts-node/esm --no-warnings src/host/startup/app.ts",
+    "start": "nodemon -e ts --exec \"npm run build\""
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.2",

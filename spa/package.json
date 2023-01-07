@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "description": "A Basic SPA using the oidc-client security library",
   "main": "app.ts",
-  "scripts": {
-    "lint": "npx eslint . --ext .ts",
-    "start": "npm run clean && webpack --config webpack/webpack.config.dev.js --watch",
-    "build": "npm run clean && webpack --config webpack/webpack.config.prod.js",
-    "clean": "rimraf dist/*bundle*"
-  },
   "keywords": [],
   "author": "Gary Archer",
   "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "lint": "npx eslint . --ext .ts",
+    "start": "npm run clean && webpack --config webpack/webpack.config.dev.mjs --watch",
+    "build": "npm run clean && webpack --config webpack/webpack.config.prod.mjs",
+    "clean": "rimraf dist/*bundle*"
+  },
   "dependencies": {
     "axios": "^1.2.1",
     "moment": "^2.29.4",

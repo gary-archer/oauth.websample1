@@ -1,17 +1,17 @@
 import {NextFunction, Request, Response} from 'express';
 import onHeaders from 'on-headers';
-import {ClientError} from '../../logic/errors/clientError';
-import {ErrorCodes} from '../../logic/errors/errorCodes';
-import {CompanyRepository} from '../../logic/repositories/companyRepository';
-import {CompanyService} from '../../logic/services/companyService';
-import {JsonFileReader} from '../../logic/utilities/jsonFileReader';
-import {Configuration} from '../configuration/configuration';
-import {ErrorFactory} from '../errors/errorFactory';
-import {ExceptionHandler} from '../errors/exceptionHandler';
-import {Authenticator} from '../oauth/authenticator';
-import {JwksRetriever} from '../oauth/jwksRetriever';
-import {HttpProxy} from '../utilities/httpProxy';
-import {ResponseWriter} from '../utilities/responseWriter';
+import {ClientError} from '../../logic/errors/clientError.js';
+import {ErrorCodes} from '../../logic/errors/errorCodes.js';
+import {CompanyRepository} from '../../logic/repositories/companyRepository.js';
+import {CompanyService} from '../../logic/services/companyService.js';
+import {JsonFileReader} from '../../logic/utilities/jsonFileReader.js';
+import {Configuration} from '../configuration/configuration.js';
+import {ErrorFactory} from '../errors/errorFactory.js';
+import {ExceptionHandler} from '../errors/exceptionHandler.js';
+import {Authenticator} from '../oauth/authenticator.js';
+import {JwksRetriever} from '../oauth/jwksRetriever.js';
+import {HttpProxy} from '../utilities/httpProxy.js';
+import {ResponseWriter} from '../utilities/responseWriter.js';
 
 /*
  * Entry point handling for API requests
