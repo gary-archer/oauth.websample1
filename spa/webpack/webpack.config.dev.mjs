@@ -10,6 +10,11 @@ export default merge(baseConfig, {
   // Output source maps to enable debugging of browser code
   devtool: 'source-map',
 
+  // This setting enables us to step through our TypeScript in Visual Studio Code
+  output: Object.assign({}, baseConfig.output, {
+    devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]'
+  }),
+
   // Pass a variable through to our Web UI to tell it to display stack traces
   plugins:[
     new webpack.DefinePlugin({
