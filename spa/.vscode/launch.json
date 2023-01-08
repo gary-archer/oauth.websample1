@@ -6,7 +6,7 @@
             "request": "launch",
             "name": "Launch SPA",
             "url": "http://web.mycompany.com/spa/",
-            "webRoot": "${workspaceRoot}/webpack/src/*",
+            "webRoot": "${workspaceRoot}/src/*",
             "sourceMaps": true,
             "sourceMapPathOverrides":{
                 "webpack:///./*": "${workspaceRoot}/dist/*"
