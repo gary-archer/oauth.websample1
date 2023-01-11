@@ -52,7 +52,7 @@ export class ApiClient {
 
         try {
 
-            // Call the API
+            // Call the API with the access token
             return await this._callApiWithToken(url, method, dataToSend, token);
 
         } catch (error1) {

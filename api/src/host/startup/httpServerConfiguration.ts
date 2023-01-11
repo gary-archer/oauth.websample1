@@ -1,27 +1,26 @@
 import cors from 'cors';
+import express from 'express';
 import {Application, NextFunction, Request, Response} from 'express';
 import {Configuration} from '../configuration/configuration.js';
 import {ApiController} from '../controller/apiController.js';
 import {ApiLogger} from '../logging/apiLogger.js';
-import {WebStaticContent} from './webStaticContent.js';
 
 /*
  * Configure behaviour of the HTTP server during application startup
  */
 export class HttpServerConfiguration {
 
-    private readonly _expressApp: Application;
+    private readonly _express: Application;
     private readonly _configuration: Configuration;
     private readonly _apiLogger: ApiLogger;
     private readonly _apiController: ApiController;
-    private readonly _webStaticContent: WebStaticContent;
 
     public constructor(expressApp: Application, configuration: Configuration, logger: ApiLogger) {
-        this._expressApp = expressApp;
+
+        this._express = expressApp;
         this._configuration = configuration;
         this._apiLogger = logger;
         this._apiController = new ApiController(this._configuration);
-        this._webStaticContent = new WebStaticContent();
     }
 
     /*
@@ -34,32 +33,31 @@ export class HttpServerConfiguration {
             origin: this._configuration.api.trustedOrigins,
             maxAge: 86400,
         };
-        this._expressApp.use('/api/*', cors(corsOptions) as any);
-        this._expressApp.use('/api/*', this._apiController.onWriteHeaders);
+        this._express.use('/api/*', cors(corsOptions) as any);
+        this._express.use('/api/*', this._apiController.onWriteHeaders);
 
         // All API requests undergo logging and authorization
-        this._expressApp.use('/api/*', this._catch(this._apiLogger.logRequest));
-        this._expressApp.use('/api/*', this._catch(this._apiController.authorizationHandler));
+        this._express.use('/api/*', this._catch(this._apiLogger.logRequest));
+        this._express.use('/api/*', this._catch(this._apiController.authorizationHandler));
 
         // API routes containing business logic
-        this._expressApp.get('/api/companies', this._catch(this._apiController.getCompanyList));
-        this._expressApp.get(
+        this._express.get('/api/companies', this._catch(this._apiController.getCompanyList));
+        this._express.get(
             '/api/companies/:id/transactions',
             this._catch(this._apiController.getCompanyTransactions));
 
         // Handle failure scenarios
-        this._expressApp.use('/api/*', this._apiController.onRequestNotFound);
-        this._expressApp.use('/api/*', this._apiController.onException);
+        this._express.use('/api/*', this._apiController.onRequestNotFound);
+        this._express.use('/api/*', this._apiController.onException);
     }
 
     /*
-     * Set up listening for web content
+     * For code sample simplicity, the API serves web content, though a real API would not do this
      */
     public initializeWebStaticContentHosting(): void {
 
-        this._expressApp.get('/spa/*', this._webStaticContent.getWebResource);
-        this._expressApp.get('/spa', this._webStaticContent.getWebDefaultResource);
-        this._expressApp.get('/favicon.ico', this._webStaticContent.getFavicon);
+        this._express.use('/spa', express.static('../spa'));
+        this._express.use('/favicon.ico', express.static('../spa/favicon.ico'));
     }
 
     /*
@@ -67,7 +65,7 @@ export class HttpServerConfiguration {
      */
     public startListening(): void {
 
-        this._expressApp.listen(this._configuration.api.port, () => {
+        this._express.listen(this._configuration.api.port, () => {
             console.log(`API is listening on HTTP port ${this._configuration.api.port}`);
         });
     }
