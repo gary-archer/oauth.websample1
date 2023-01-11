@@ -7,9 +7,6 @@ export default merge(baseConfig, {
   // Let webpack know this is a development build
   mode: 'development',
 
-  // Output source maps to enable debugging of browser code
-  devtool: 'source-map',
-
   // This setting enables us to step through our TypeScript in Visual Studio Code
   output: Object.assign({}, baseConfig.output, {
     devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]'
