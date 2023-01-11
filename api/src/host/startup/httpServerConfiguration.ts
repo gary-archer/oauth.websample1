@@ -56,17 +56,8 @@ export class HttpServerConfiguration {
      */
     public initializeWebStaticContentHosting(): void {
 
-        // Physical files
-        const root = '../spa';
-        this._express.use('/spa', express.static(root));
-
-        // Serve a favicon
-        this._express.use('/favicon.ico', express.static(`${root}/favicon.ico`));
-
-        // Default to index.html for other routes
-        this._express.get('*', (request, response) => {
-            response.sendFile('index.html', {root});
-        });
+        this._express.use('/spa', express.static('../spa'));
+        this._express.use('/favicon.ico', express.static('../spa/favicon.ico'));
     }
 
     /*
