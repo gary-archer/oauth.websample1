@@ -1,0 +1,12 @@
+{
+    "app": {
+        "webOrigin":        "http://web.mycompany.com",
+        "apiBaseUrl":       "http://api.mycompany.com/api"
+    },
+    "oauth": {
+        "authority":        "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
+        "clientId":         "6tg0qglddpvqh74k3jbf1mmj64",
+        "redirectUri":      "http://localhost/spa",
+        "scope":            "openid profile"
+    }
+}
