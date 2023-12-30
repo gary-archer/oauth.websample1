@@ -12,9 +12,8 @@
   },
   "scripts": {
     "lint": "npx eslint . --ext .ts",
-    "build": "node --loader ts-node/esm --no-warnings src/host/startup/app.ts",
-    "buildRelease": "tsc --sourceMap false",
-    "start": "nodemon -e ts --exec \"npm run build\""
+    "start": "tsx watch src/host/startup/app.ts",
+    "buildRelease": "tsc --sourceMap false"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -33,8 +32,7 @@
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
     "eslint": "^8.52.0",
-    "nodemon": "^3.0.1",
-    "ts-node": "^10.9.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.2.0"
   }
 }
