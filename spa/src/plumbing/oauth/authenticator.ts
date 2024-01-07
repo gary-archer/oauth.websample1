@@ -58,7 +58,7 @@ export class Authenticator {
     /*
      * Do the interactive login redirect on the main window
      */
-    public async startLogin(apiError: UIError | null): Promise<void> {
+    public async startLogin(api401Error: UIError | null): Promise<void> {
 
         try {
 
@@ -68,13 +68,13 @@ export class Authenticator {
             };
 
             // This code is specific to the first code sample, which does not yet implement token refresh
-            // Therefore, to get a new access token a login redirect is triggered
-            // This code prevents a redirect loop in the event of the API being configured incorrectly
-            if (this._loginTime) {
+            // It prevents a redirect loop where a new login being triggered very soon after a previous one
+            // The result is to display the details of the API 401 error rather than trying a new login
+            if (api401Error && this._loginTime) {
                 const currentTime = new Date().getTime();
                 const millisecondsSinceLogin = currentTime - this._loginTime;
                 if (millisecondsSinceLogin < 250) {
-                    throw apiError;
+                    throw api401Error;
                 }
             }
 
