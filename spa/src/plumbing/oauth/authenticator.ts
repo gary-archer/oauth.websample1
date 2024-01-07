@@ -4,6 +4,7 @@ import {UserInfo} from '../../api/entities/userInfo';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorHandler} from '../errors/errorHandler';
+import {UIError} from '../errors/uiError';
 
 /*
  * The entry point for initiating login and token requests
@@ -11,6 +12,7 @@ import {ErrorHandler} from '../errors/errorHandler';
 export class Authenticator {
 
     private readonly _userManager: UserManager;
+    private _loginTime: number | null;
 
     public constructor(config: OAuthConfiguration) {
 
@@ -37,6 +39,7 @@ export class Authenticator {
 
         // Create the user manager
         this._userManager = new UserManager(settings);
+        this._loginTime = null;
     }
 
     /*
@@ -56,10 +59,12 @@ export class Authenticator {
     }
 
     /*
-     * Token refresh is not implemented in the initial code sample, so trigger a login redirect as above
+     * Token refresh is not implemented in the initial SPA
+     * It therefore does a new login redirect to get a new access token
      */
-    public async refreshAccessToken(): Promise<string> {
+    public async refreshAccessToken(error: UIError): Promise<string> {
 
+        this._preventRedirectLoop(error);
         await this._startLogin();
         throw ErrorHandler.getFromLoginRequired();
     }
@@ -147,6 +152,9 @@ export class Authenticator {
                     // We will return to the app location before the login redirect
                     redirectLocation = user.state.hash;
 
+                    // The login time enables a check that avoids redirect loops when configuration is invalid
+                    this._loginTime = new Date().getTime();
+
                 } catch (e: any) {
 
                     // Handle and rethrow OAuth response errors
@@ -157,6 +165,23 @@ export class Authenticator {
                     // Always replace the browser location, to remove OAuth details from back navigation
                     history.replaceState({}, document.title, redirectLocation);
                 }
+            }
+        }
+    }
+
+    /*
+     * If an API returns a 401 immediately after login, then the API configuration is wrong and will fail permanently
+     * In such cases, avoid a redirect loop for the user of the frontend app
+     * My app uses a small tolerance so that expiry testing also works
+     */
+    private _preventRedirectLoop(error: UIError): void {
+
+        if (this._loginTime! != null) {
+
+            const currentTime = new Date().getTime();
+            const millisecondsSinceLogin = currentTime - this._loginTime;
+            if (millisecondsSinceLogin < 250) {
+                throw error;
             }
         }
     }

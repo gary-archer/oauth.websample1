@@ -1,5 +1,6 @@
 import axios, {Method} from 'axios';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {UIError} from '../../plumbing/errors/uiError';
 import {Authenticator} from '../../plumbing/oauth/authenticator';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {Company} from '../entities/company';
@@ -58,11 +59,12 @@ export class ApiClient {
         } catch (e: any) {
 
             // Report Ajax errors if this is not a 401
-            if (e.statusCode !== 401)
+            const error = e as UIError;
+            if (error.statusCode !== 401)
                 throw e;
 
             // Try to refresh the access token
-            token = await this._authenticator.refreshAccessToken();
+            token = await this._authenticator.refreshAccessToken(error);
 
             // Call the API again
             return await this._callApiWithToken(url, method, dataToSend, token);
