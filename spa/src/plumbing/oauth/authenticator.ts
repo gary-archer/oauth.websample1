@@ -67,8 +67,9 @@ export class Authenticator {
                 hash: location.hash.length > 0 ? location.hash : '#',
             };
 
-            // Handle configuration errors if an API returns a 401 immediately after login
-            // In such cases, avoid a redirect loop for the user of the frontend app
+            // This code is specific to the first code sample, which does not yet implement token refresh
+            // Therefore, to get a new access token a login redirect is triggered
+            // This code prevents a redirect loop in the event of the API being configured incorrectly
             if (this._loginTime) {
                 const currentTime = new Date().getTime();
                 const millisecondsSinceLogin = currentTime - this._loginTime;
