@@ -43,83 +43,40 @@ export class Authenticator {
     }
 
     /*
-     * Get an access token, or trigger a login
+     * Get the current access token
      */
-    public async getAccessToken(): Promise<string> {
+    public async getAccessToken(): Promise<string | null> {
 
-        // On most calls we just return the existing token from HTML5 storage
         const user = await this._userManager.getUser();
         if (user && user.access_token) {
             return user.access_token;
-        }
-
-        // Trigger a login redirect if there is no access token, and terminate the API call gracefully
-        await this._startLogin();
-        throw ErrorHandler.getFromLoginRequired();
-    }
-
-    /*
-     * Token refresh is not implemented in the initial SPA
-     * It therefore does a new login redirect to get a new access token
-     */
-    public async refreshAccessToken(error: UIError): Promise<string> {
-
-        this._preventRedirectLoop(error);
-        await this._startLogin();
-        throw ErrorHandler.getFromLoginRequired();
-    }
-
-    /*
-     * Handle the response from the authorization server
-     */
-    public async handleLoginResponse(): Promise<void> {
-        return this._handleLoginResponse();
-    }
-
-    /*
-     * Get user info, which is available once authentication has completed
-     */
-    public async getUserInfo(): Promise<UserInfo | null> {
-
-        const user = await this._userManager.getUser();
-        if (user && user.profile) {
-            if (user.profile.given_name && user.profile.family_name) {
-
-                return {
-                    givenName: user.profile.given_name,
-                    familyName: user.profile.family_name,
-                };
-            }
         }
 
         return null;
     }
 
     /*
-     * This method is for testing only, to make the access token in storage act like it has expired
-     */
-    public async expireAccessToken(): Promise<void> {
-
-        const user = await this._userManager.getUser();
-        if (user) {
-
-            // Add a character to the signature to make it fail validation
-            user.access_token = `${user.access_token}x`;
-            this._userManager.storeUser(user);
-        }
-    }
-
-    /*
      * Do the interactive login redirect on the main window
      */
-    private async _startLogin(): Promise<void> {
-
-        // First store the SPA's client side location
-        const data = {
-            hash: location.hash.length > 0 ? location.hash : '#',
-        };
+    public async startLogin(apiError: UIError | null): Promise<void> {
 
         try {
+
+            // First store the SPA's client side location
+            const data = {
+                hash: location.hash.length > 0 ? location.hash : '#',
+            };
+
+            // Handle configuration errors if an API returns a 401 immediately after login
+            // In such cases, avoid a redirect loop for the user of the frontend app
+            if (this._loginTime) {
+                const currentTime = new Date().getTime();
+                const millisecondsSinceLogin = currentTime - this._loginTime;
+                if (millisecondsSinceLogin < 250) {
+                    throw apiError;
+                }
+            }
+
             // Start a login redirect
             await this._userManager.signinRedirect({state: data});
 
@@ -133,7 +90,7 @@ export class Authenticator {
     /*
      * Handle the response from the authorization server
      */
-    private async _handleLoginResponse(): Promise<void> {
+    public async handleLoginResponse(): Promise<void> {
 
         // If the page loads with a state query parameter we classify it as an OAuth response
         const urlData = urlparse(location.href, true);
@@ -170,19 +127,35 @@ export class Authenticator {
     }
 
     /*
-     * If an API returns a 401 immediately after login, then the API configuration is wrong and will fail permanently
-     * In such cases, avoid a redirect loop for the user of the frontend app
-     * My app uses a small tolerance so that expiry testing also works
+     * Get user info, which is available once authentication has completed
      */
-    private _preventRedirectLoop(error: UIError): void {
+    public async getUserInfo(): Promise<UserInfo | null> {
 
-        if (this._loginTime! != null) {
+        const user = await this._userManager.getUser();
+        if (user && user.profile) {
+            if (user.profile.given_name && user.profile.family_name) {
 
-            const currentTime = new Date().getTime();
-            const millisecondsSinceLogin = currentTime - this._loginTime;
-            if (millisecondsSinceLogin < 250) {
-                throw error;
+                return {
+                    givenName: user.profile.given_name,
+                    familyName: user.profile.family_name,
+                };
             }
+        }
+
+        return null;
+    }
+
+    /*
+     * This method is for testing only, to make the access token in storage act like it has expired
+     */
+    public async expireAccessToken(): Promise<void> {
+
+        const user = await this._userManager.getUser();
+        if (user) {
+
+            // Add a character to the signature to make it fail validation
+            user.access_token = `${user.access_token}x`;
+            this._userManager.storeUser(user);
         }
     }
 }

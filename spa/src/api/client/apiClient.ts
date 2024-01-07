@@ -48,8 +48,16 @@ export class ApiClient {
         // Get the full path
         const url = `${this._apiBaseUrl}${path}`;
 
-        // Get the access token, and if it does not exist a login redirect will be triggered
-        let token = await this._authenticator.getAccessToken();
+        // Get the access token
+        const token = await this._authenticator.getAccessToken();
+        if (!token) {
+
+            // Trigger a login redirect if there is no access token yet
+            await this._authenticator.startLogin(null);
+
+            // This completes the API request with an error that the UI does not render
+            throw ErrorHandler.getFromLoginRequired();
+        }
 
         try {
 
@@ -63,11 +71,10 @@ export class ApiClient {
             if (error.statusCode !== 401)
                 throw e;
 
-            // Try to refresh the access token
-            token = await this._authenticator.refreshAccessToken(error);
-
-            // Call the API again
-            return await this._callApiWithToken(url, method, dataToSend, token);
+            // When the access token expires, trigger a login redirect
+            // Token refresh is not implemented until the second code sample
+            await this._authenticator.startLogin(error);
+            throw ErrorHandler.getFromLoginRequired();
         }
     }
 

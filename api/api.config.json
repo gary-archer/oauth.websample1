@@ -10,8 +10,8 @@
     },
     "oauth": {
         "jwksEndpoint": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn/.well-known/jwks.json",
-        "algorithm": "RS256",
-        "issuer": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
-        "audience": ""
+        "algorithm":    "RS256",
+        "issuer":       "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_qqJgVeuTn",
+        "audience":     ""
     }
 }
