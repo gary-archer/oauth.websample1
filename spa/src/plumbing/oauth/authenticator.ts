@@ -69,7 +69,8 @@ export class Authenticator {
 
             // This code is specific to the first code sample, which does not yet implement token refresh
             // It prevents a redirect loop, where a new login is triggered very soon after a previous one
-            // The result is to display the details of the API 401 error rather than trying a new login
+            // This can potentially happen if there is a configuration problem in SPA or API
+            // In such an event, this code displays the details of the API 401 error rather than trying a new login
             if (api401Error && this._loginTime) {
                 const currentTime = new Date().getTime();
                 const millisecondsSinceLogin = currentTime - this._loginTime;
