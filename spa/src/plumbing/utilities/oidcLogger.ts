@@ -74,6 +74,8 @@ export class OidcLogger {
             debug: Log.DEBUG,
         };
 
+        console.log(`*** Using: ${level}`);
+
         const levelToSet = level || 'none';
         const numericLevel = data[levelToSet];
         if (numericLevel !== undefined) {
