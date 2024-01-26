@@ -1,5 +1,4 @@
 import {UserManager} from 'oidc-client';
-import urlparse from 'url-parse';
 import {UserInfo} from '../../api/entities/userInfo';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
@@ -72,6 +71,7 @@ export class Authenticator {
             // This can potentially happen if there is a configuration problem in SPA or API
             // In such an event, this code displays the details of the API 401 error rather than trying a new login
             if (api401Error && this._loginTime) {
+
                 const currentTime = new Date().getTime();
                 const millisecondsSinceLogin = currentTime - this._loginTime;
                 if (millisecondsSinceLogin < 250) {
@@ -95,34 +95,38 @@ export class Authenticator {
     public async handleLoginResponse(): Promise<void> {
 
         // If the page loads with a state query parameter we classify it as an OAuth response
-        const urlData = urlparse(location.href, true);
-        if (urlData.query && urlData.query.state) {
+        if (location.search) {
 
-            // Only try to process a login response if the state exists
-            const storedState = await this._userManager.settings.stateStore?.get(urlData.query.state);
-            if (storedState) {
+            const args = new URLSearchParams(location.search);
+            const state = args.get('state');
+            if (state) {
 
-                let redirectLocation = '#';
-                try {
+                // Only try to process a login response if the state exists
+                const storedState = await this._userManager.settings.stateStore?.get(state);
+                if (storedState) {
 
-                    // Handle the login response
-                    const user = await this._userManager.signinRedirectCallback();
+                    let redirectLocation = '#';
+                    try {
 
-                    // We will return to the app location before the login redirect
-                    redirectLocation = user.state.hash;
+                        // Handle the login response
+                        const user = await this._userManager.signinRedirectCallback();
 
-                    // The login time enables a check that avoids redirect loops when configuration is invalid
-                    this._loginTime = new Date().getTime();
+                        // We will return to the app location before the login redirect
+                        redirectLocation = user.state.hash;
 
-                } catch (e: any) {
+                        // The login time enables a check that avoids redirect loops when configuration is invalid
+                        this._loginTime = new Date().getTime();
 
-                    // Handle and rethrow OAuth response errors
-                    throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
+                    } catch (e: any) {
 
-                } finally {
+                        // Handle and rethrow OAuth response errors
+                        throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
 
-                    // Always replace the browser location, to remove OAuth details from back navigation
-                    history.replaceState({}, document.title, redirectLocation);
+                    } finally {
+
+                        // Always replace the browser location, to remove OAuth details from back navigation
+                        history.replaceState({}, document.title, redirectLocation);
+                    }
                 }
             }
         }

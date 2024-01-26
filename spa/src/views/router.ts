@@ -1,4 +1,3 @@
-import urlparse from 'url-parse';
 import {ApiClient} from '../api/client/apiClient';
 import {CompaniesView} from './companiesView';
 import {DomUtils} from './domUtils';
@@ -56,22 +55,11 @@ export class Router {
      */
     public getTransactionsViewId(): string {
 
-        const hashData = this._getLocationHashData();
-        return hashData.company;
-    }
-
-    /*
-     * Get hash fragments into a dictionary
-     */
-    private _getLocationHashData(): any {
-
-        if (location.hash.startsWith('#')) {
-            const data = urlparse('?' + location.hash.substring(1), true);
-            if (data && data.query)  {
-                return data.query;
-            }
+        if (location.hash) {
+            const args = new URLSearchParams('?' + location.hash.substring(1));
+            return args.get('company') || '';
         }
 
-        return {};
+        return '';
     }
 }
