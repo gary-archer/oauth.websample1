@@ -57,5 +57,5 @@ The browser is invoked and you can sign in with my AWS test credentials:
 
 * Express is used to host both the API and the SPA content
 * AWS Cognito is used as the default Authorization Server
-* The [oidc-client](https://github.com/authts/oidc-client-ts) library is used by the SPA to implement OpenID Connect
+* The [oidc-client-ts](https://github.com/authts/oidc-client-ts) library is used by the SPA to implement OpenID Connect
 * The [jose](https://github.com/panva/jose) library is used by the API to validate JWT access tokens
