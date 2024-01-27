@@ -19,7 +19,7 @@
   "dependencies": {
     "axios": "^1.6.7",
     "mustache": "^4.2.0",
-    "oidc-client": "^1.11.5"
+    "oidc-client-ts": "^2.4.0"
   },
   "devDependencies": {
     "@types/mustache": "^4.2.2",

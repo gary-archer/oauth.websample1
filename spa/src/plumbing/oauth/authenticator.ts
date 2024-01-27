@@ -1,4 +1,4 @@
-import {UserManager} from 'oidc-client';
+import {UserManager} from 'oidc-client-ts';
 import {UserInfo} from '../../api/entities/userInfo';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
@@ -112,7 +112,7 @@ export class Authenticator {
                         const user = await this._userManager.signinRedirectCallback();
 
                         // We will return to the app location before the login redirect
-                        redirectLocation = user.state.hash;
+                        redirectLocation = (user.state as any).hash;
 
                         // The login time enables a check that avoids redirect loops when configuration is invalid
                         this._loginTime = new Date().getTime();
