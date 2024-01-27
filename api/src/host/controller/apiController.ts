@@ -8,7 +8,7 @@ import {JsonFileReader} from '../../logic/utilities/jsonFileReader.js';
 import {Configuration} from '../configuration/configuration.js';
 import {ErrorFactory} from '../errors/errorFactory.js';
 import {ExceptionHandler} from '../errors/exceptionHandler.js';
-import {Authenticator} from '../oauth/authenticator.js';
+import {AccessTokenValidator} from '../oauth/accessTokenValidator.js';
 import {JwksRetriever} from '../oauth/jwksRetriever.js';
 import {HttpProxy} from '../utilities/httpProxy.js';
 import {ResponseWriter} from '../utilities/responseWriter.js';
@@ -18,13 +18,13 @@ import {ResponseWriter} from '../utilities/responseWriter.js';
  */
 export class ApiController {
 
-    private readonly _authenticator: Authenticator;
+    private readonly _accessTokenValidator: AccessTokenValidator;
 
     public constructor(configuration: Configuration) {
 
         const httpProxy = new HttpProxy(configuration);
         const jwksRetriever = new JwksRetriever(configuration.oauth, httpProxy);
-        this._authenticator = new Authenticator(configuration.oauth, jwksRetriever);
+        this._accessTokenValidator = new AccessTokenValidator(configuration.oauth, jwksRetriever);
         this._setupCallbacks();
     }
 
@@ -36,7 +36,7 @@ export class ApiController {
         response: Response,
         next: NextFunction): Promise<void> {
 
-        const claims = await this._authenticator.validateToken(request);
+        const claims = await this._accessTokenValidator.execute(request);
         response.locals.claims = claims;
         next();
     }

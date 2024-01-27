@@ -8,7 +8,7 @@ import {JwksRetriever} from './jwksRetriever.js';
 /*
  * The entry point for OAuth related operations
  */
-export class Authenticator {
+export class AccessTokenValidator {
 
     private readonly _configuration: OAuthConfiguration;
     private readonly _jwksRetriever: JwksRetriever;
@@ -21,7 +21,7 @@ export class Authenticator {
     /*
      * Perform standard JWT validation
      */
-    public async validateToken(request: Request): Promise<ClaimsPrincipal> {
+    public async execute(request: Request): Promise<ClaimsPrincipal> {
 
         try {
 
