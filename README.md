@@ -21,6 +21,7 @@ The data is returned from an API that will, in later samples, authorize using cl
 
 ## Local Development Quick Start
 
+First ensure that Node.js 20+ is installed.\
 Custom development domains are used so you must first add these DNS entries to your hosts file:
 
 ```bash
