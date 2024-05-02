@@ -48,7 +48,7 @@ fi
 #
 # Set URLs to wait for
 #
-SPA_URL='http://web.mycompany.com/spa'
+SPA_URL='http://localhost/spa'
 API_URL='http://api.mycompany.com/api'
 
 #

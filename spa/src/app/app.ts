@@ -101,11 +101,7 @@ class App {
         // Do the OAuth work
         await this._authenticator!.handleLoginResponse();
 
-        // Cognito requires a localhost return URL when using HTTP, so redirect back to the proper domain when needed
-        if (location.host === 'localhost') {
-            location.href = location.href.replace('http://localhost', this._configuration!.app.webOrigin);
-        }
-
+        // Then update displayed user info
         this._titleView.loadUserInfo(this._authenticator!);
     }
 

@@ -22,10 +22,10 @@ The data is returned from an API that will, in later samples, authorize using cl
 ## Local Development Quick Start
 
 First ensure that Node.js 20+ is installed.\
-Custom development domains are used so you must first add these DNS entries to your hosts file:
+A custom development domain is used for the API so add the DNS entry to your hosts file:
 
 ```bash
-127.0.0.1 localhost web.mycompany.com api.mycompany.com
+127.0.0.1 localhost api.mycompany.com
 ```
 
 Ensure that Node.js is installed, then run the start script:
