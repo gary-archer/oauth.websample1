@@ -2,7 +2,6 @@
     "api": {
         "port": 80,
         "trustedOrigins": [
-            "http://web.mycompany.com",
             "http://localhost"
         ],
         "useProxy": false,
