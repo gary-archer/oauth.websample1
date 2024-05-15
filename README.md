@@ -41,8 +41,8 @@ The browser is invoked and you can sign in with my AWS test credentials:
 
 ## Further Information
 
-* See the [Sample 1 Overview](https://authguidance.com/2017/09/24/basicspa-overview/) for a summary of behaviour
-* See the [Sample 1 Details](https://authguidance.com/2017/09/25/basicspa-execution/) for further details on running the code
+* See the [Sample 1 Overview](https://apisandclients.com/posts/basicspa-overview) for a summary of behaviour
+* See the [Sample 1 Details](https://apisandclients.com/posts/basicspa-execution) for further details on running the code
 
 ## ![Red icon](https://via.placeholder.com/15/f03c15/f03c15.png) 2021 Security Update
 
