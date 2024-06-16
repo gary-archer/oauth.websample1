@@ -25,7 +25,7 @@ First ensure that Node.js 20+ is installed.\
 A custom development domain is used for the API so add the DNS entry to your hosts file:
 
 ```bash
-127.0.0.1 localhost api.mycompany.com
+127.0.0.1 localhost api.authsamples-dev.com
 ```
 
 Ensure that Node.js is installed, then run the start script:

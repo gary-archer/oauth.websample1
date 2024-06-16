@@ -49,7 +49,7 @@ fi
 # Set URLs to wait for
 #
 SPA_URL='http://localhost/spa'
-API_URL='http://api.mycompany.com/api'
+API_URL='http://api.authsamples-dev.com/api'
 
 #
 # Wait for the API to come up
