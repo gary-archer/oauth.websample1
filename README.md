@@ -36,7 +36,7 @@ Ensure that Node.js is installed, then run the start script:
 
 The browser is invoked and you can sign in with my AWS test credentials:
 
-- User: `guestuser@mycompany.com`
+- User: `guestuser@example.com`
 - Password: `GuestPassword1`
 
 ## Further Information
