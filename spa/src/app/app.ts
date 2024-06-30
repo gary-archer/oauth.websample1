@@ -13,14 +13,14 @@ import {TitleView} from '../views/titleView';
  */
 class App {
 
-    private _configuration?: Configuration;
-    private _authenticator?: Authenticator;
-    private _apiClient?: ApiClient;
+    private _configuration!: Configuration;
+    private _authenticator!: Authenticator;
+    private _apiClient!: ApiClient;
     private _oidcLogger: OidcLogger;
-    private _router?: Router;
+    private _router!: Router;
     private _titleView!: TitleView;
-    private _headerButtonsView?: HeaderButtonsView;
-    private _errorView?: ErrorView;
+    private _headerButtonsView!: HeaderButtonsView;
+    private _errorView!: ErrorView;
     private _isInitialised: boolean;
 
     public constructor() {
@@ -87,7 +87,7 @@ class App {
         this._apiClient = new ApiClient(this._configuration.app.apiBaseUrl, this._authenticator);
 
         // Our simple router passes the API Client instance between views
-        this._router = new Router(this._apiClient, this._errorView!);
+        this._router = new Router(this._apiClient, this._errorView);
 
         // Update state to indicate that global objects are loaded
         this._isInitialised = true;
@@ -99,10 +99,10 @@ class App {
     private async _handleLoginResponse(): Promise<void> {
 
         // Do the OAuth work
-        await this._authenticator!.handleLoginResponse();
+        await this._authenticator.handleLoginResponse();
 
         // Then update displayed user info
-        this._titleView.loadUserInfo(this._authenticator!);
+        this._titleView.loadUserInfo(this._authenticator);
     }
 
     /*
@@ -110,9 +110,9 @@ class App {
      */
     private async _loadMainView(): Promise<void> {
 
-        this._headerButtonsView!.disableSessionButtons();
-        await this._router!.loadView();
-        this._headerButtonsView!.enableSessionButtons();
+        this._headerButtonsView.disableSessionButtons();
+        await this._router.loadView();
+        this._headerButtonsView.enableSessionButtons();
     }
 
     /*
@@ -133,7 +133,7 @@ class App {
         } catch (e: any) {
 
             // Report failures
-            this._errorView!.report(e);
+            this._errorView.report(e);
         }
     }
 
@@ -151,10 +151,10 @@ class App {
 
             if (this._isInitialised) {
 
-                if (this._router!.isInHomeView()) {
+                if (this._router.isInHomeView()) {
 
                     // Force a reload if we are already in the home view
-                    await this._router!.loadView();
+                    await this._router.loadView();
 
                 } else {
 
@@ -164,7 +164,7 @@ class App {
             }
 
         } catch (e: any) {
-            this._errorView!.report(e);
+            this._errorView.report(e);
         }
     }
 
@@ -180,7 +180,7 @@ class App {
         } catch (e: any) {
 
             // Report failures
-            this._errorView!.report(e);
+            this._errorView.report(e);
         }
     }
 
@@ -188,7 +188,7 @@ class App {
      * Force a new access token to be retrieved
      */
     private async _onExpireToken(): Promise<void> {
-        await this._authenticator!.expireAccessToken();
+        await this._authenticator.expireAccessToken();
     }
 
     /*
