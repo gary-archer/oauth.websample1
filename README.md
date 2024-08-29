@@ -45,12 +45,8 @@ The browser is invoked and you can sign in with my AWS test credentials:
 
 ## 2021 Security Update
 
-$${\color{red}Welcome \space \color{lightblue}To \space \color{orange}Stackoverflow}$$
-
-```text
 $${\color{red}In 2021 it is instead recommended to keep tokens out of the browser to limit the impact of XSS exploits.
-See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for a more secure implementation.
-```
+See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for a more secure implementation.$$
 
 ## Programming Languages
 
