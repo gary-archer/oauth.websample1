@@ -57,6 +57,6 @@ See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.f
 ## Infrastructure
 
 * Express is used as the HTTP server for both the API and the SPA's web static content.
-* AWS Cognito is used as the default authorization server.
 * The SPA uses the [oidc-client-ts](https://github.com/authts/oidc-client-ts) library to implement OpenID Connect.
 * The API uses the [jose](https://github.com/panva/jose) library to validate JWT access tokens.
+* AWS Cognito is the default authorization server for the SPA and API.
