@@ -7,22 +7,21 @@
 
 ## Overview
 
-An introductory standards based SPA and API code sample, useful when first learning about OAuth endpoints:
+An introductory standards-based SPA and API code sample, to get integrated with OAuth endpoints:
 
-- The SPA uses the traditional OpenID connect flow, with Authorization Code Flow + PKCE
-- The SPA interacts with an API that validates JWTs and uses claims for authorization
+- The SPA uses the traditional OpenID code flow with PKCE.
+- The SPA interacts with an API that validates JWTs and uses claims-based authorization.
 
 ## Views
 
-The SPA is a simple UI with some basic navigation between views, to render fictional resources.\
-The data is returned from an API that will, in later samples, authorize using claims from multiple sources.
+The SPA is a simple UI with some basic navigation between views, to render fictional investment resources.
 
 ![SPA Views](./images/views.png)
 
 ## Local Development Quick Start
 
 First ensure that Node.js 20+ is installed.\
-A custom development domain is used for the API so add the DNS entry to your hosts file:
+You must use custom development domains and add this DNS entry to your hosts file:
 
 ```bash
 127.0.0.1 localhost api.authsamples-dev.com
@@ -41,13 +40,15 @@ The browser is invoked and you can sign in with my AWS test credentials:
 
 ## Further Information
 
-* See the [Sample 1 Overview](https://apisandclients.com/posts/basicspa-overview) for a summary of behaviour
-* See the [Sample 1 Details](https://apisandclients.com/posts/basicspa-execution) for further details on running the code
+* See the [Sample 1 Overview](https://apisandclients.com/posts/basicspa-overview) for a summary of behaviour.
+* See the [Sample 1 Details](https://apisandclients.com/posts/basicspa-execution) for further details on running the code.
 
 ## 2021 Security Update
 
-- In 2021 it is instead recommended to keep tokens out of the browser, using a Backend for Frontend
-- See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for an API driven implementation
+```Deprecated
+In 2021 it is instead recommended to keep tokens out of the browser to limit the impact of XSS exploits.
+See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for a more secure implementation.
+```
 
 ## Programming Languages
 
