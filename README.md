@@ -46,9 +46,7 @@ The browser is invoked and you can sign in with my AWS test credentials:
 ## 2021 Security Update
 
 $\color{red}{\textsf{In 2021 it is instead recommended to keep tokens out of the browser to limit the impact of XSS exploits.}}$
-$\color{red}{\textsf{In 2021 it is instead recommended to keep tokens out of the browser to limit the impact of XSS exploits.}}$
-$\color{red}{\textsf{In 2021 it is instead recommended to keep tokens out of the browser to limit the impact of XSS exploits.}}$
-$\color{red}{\textsf{See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for a more secure implementation.}}$
+See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for a more secure implementation.
 
 ## Programming Languages
 
