@@ -51,12 +51,12 @@ See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.f
 
 ## Programming Languages
 
-* Plain TypeScript is used for the SPA, to explain OAuth behaviour in the simplest way
-* Node.js and TypeScript are used to implement the API
+* The SPA and its views use plain TypeScript code.
+* The API uses Node.js and TypeScript.
 
 ## Infrastructure
 
-* Express is used to host both the API and the SPA content
-* AWS Cognito is used as the default Authorization Server
-* The [oidc-client-ts](https://github.com/authts/oidc-client-ts) library is used by the SPA to implement OpenID Connect
-* The [jose](https://github.com/panva/jose) library is used by the API to validate JWT access tokens
+* Express is used as the HTTP server for both the API and the SPA's web static content.
+* AWS Cognito is used as the default authorization server.
+* The SPA uses the [oidc-client-ts](https://github.com/authts/oidc-client-ts) library to implement OpenID Connect.
+* The API uses the [jose](https://github.com/panva/jose) library to validate JWT access tokens.
