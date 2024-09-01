@@ -66,10 +66,10 @@ export class Authenticator {
                 hash: location.hash.length > 0 ? location.hash : '#',
             };
 
-            // This code is specific to the first code sample, which does not yet implement token refresh
-            // It prevents a redirect loop, where a new login is triggered very soon after a previous one
-            // This can potentially happen if there is a configuration problem in SPA or API
-            // In such an event, this code displays the details of the API 401 error rather than trying a new login
+            // The first code sample does not yet implement token refresh
+            // This prevents a redirect loop, where a new login is triggered very soon after a previous one
+            // This can potentially happen if the API access token validation fails with a 401
+            // You can simulate the condition if you configure an incorrect issuer in the API configuration
             if (api401Error && this._loginTime) {
 
                 const currentTime = new Date().getTime();
