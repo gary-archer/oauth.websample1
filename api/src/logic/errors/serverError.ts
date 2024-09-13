@@ -22,7 +22,7 @@ export class ServerError extends Error {
 
         // Give fields their default values
         this._statusCode = 500;
-        this._apiName = 'SampleApi';
+        this._apiName = 'BasicApi';
         this._errorCode = errorCode;
         this._instanceId = Math.floor(Math.random() * (MAX_ERROR_ID - MIN_ERROR_ID + 1) + MIN_ERROR_ID);
         this._utcTime = new Date().toISOString();
