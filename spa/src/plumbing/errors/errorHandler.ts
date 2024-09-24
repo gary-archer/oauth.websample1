@@ -141,7 +141,7 @@ export class ErrorHandler {
             // Set the code and message, returned for both 4xx and 5xx errors
             if (apiError.code && apiError.message) {
                 error.errorCode = apiError.code;
-                error.message = apiError.message;
+                error.details = apiError.message;
             }
 
             // Set extra details returned for 5xx errors
