@@ -37,14 +37,14 @@ export class HttpServerConfiguration {
         this._express.use('/api/*', this._apiController.onWriteHeaders);
 
         // All API requests undergo logging and authorization
-        this._express.use('/api/*', this._catch(this._apiLogger.logRequest));
-        this._express.use('/api/*', this._catch(this._apiController.authorizationHandler));
+        this._express.use('/api/*', this._apiLogger.logRequest);
+        this._express.use('/api/*', this._apiController.authorizationHandler);
 
         // API routes containing business logic
-        this._express.get('/api/companies', this._catch(this._apiController.getCompanyList));
+        this._express.get('/api/companies', this._apiController.getCompanyList);
         this._express.get(
             '/api/companies/:id/transactions',
-            this._catch(this._apiController.getCompanyTransactions));
+            this._apiController.getCompanyTransactions);
 
         // Handle failure scenarios
         this._express.use('/api/*', this._apiController.onRequestNotFound);
@@ -68,21 +68,5 @@ export class HttpServerConfiguration {
         this._express.listen(this._configuration.api.port, () => {
             console.log(`API is listening on HTTP port ${this._configuration.api.port}`);
         });
-    }
-
-    /*
-     * Deal with Express unhandled promise exceptions during async API requests
-     * https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016
-     */
-    private _catch(fn: any): any {
-
-        return (request: Request, response: Response, next: NextFunction) => {
-
-            Promise
-                .resolve(fn(request, response, next))
-                .catch((e) => {
-                    this._apiController.onException(e, request, response);
-                });
-        };
     }
 }
