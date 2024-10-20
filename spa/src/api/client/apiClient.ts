@@ -11,17 +11,17 @@ import {CompanyTransactions} from '../entities/companyTransactions';
  */
 export class ApiClient {
 
-    private readonly _apiBaseUrl: string;
-    private readonly _authenticator: Authenticator;
+    private readonly apiBaseUrl: string;
+    private readonly authenticator: Authenticator;
 
     public constructor(apiBaseUrl: string, authenticator: Authenticator) {
 
-        this._apiBaseUrl = apiBaseUrl;
-        if (!this._apiBaseUrl.endsWith('/')) {
-            this._apiBaseUrl += '/';
+        this.apiBaseUrl = apiBaseUrl;
+        if (!this.apiBaseUrl.endsWith('/')) {
+            this.apiBaseUrl += '/';
         }
 
-        this._authenticator = authenticator;
+        this.authenticator = authenticator;
     }
 
     /*
@@ -29,7 +29,7 @@ export class ApiClient {
      */
     public async getCompanyList(): Promise<Company[]> {
 
-        return await this._callApi('companies', 'GET') as Company[];
+        return await this.callApi('companies', 'GET') as Company[];
     }
 
     /*
@@ -37,23 +37,23 @@ export class ApiClient {
      */
     public async getCompanyTransactions(id: string): Promise<CompanyTransactions> {
 
-        return await this._callApi(`companies/${id}/transactions`, 'GET') as CompanyTransactions;
+        return await this.callApi(`companies/${id}/transactions`, 'GET') as CompanyTransactions;
     }
 
     /*
      * A common method to get data from an API and handle 401 retries
      */
-    private async _callApi(path: string, method: Method, dataToSend?: any): Promise<any> {
+    private async callApi(path: string, method: Method, dataToSend?: any): Promise<any> {
 
         // Get the full path
-        const url = `${this._apiBaseUrl}${path}`;
+        const url = `${this.apiBaseUrl}${path}`;
 
         // Get the access token
-        const token = await this._authenticator.getAccessToken();
+        const token = await this.authenticator.getAccessToken();
         if (!token) {
 
             // Trigger a login redirect if there is no access token yet
-            await this._authenticator.startLogin(null);
+            await this.authenticator.startLogin(null);
 
             // This completes the API request with an error that the UI does not render
             throw ErrorHandler.getFromLoginRequired();
@@ -62,18 +62,18 @@ export class ApiClient {
         try {
 
             // Call the API with the access token
-            return await this._callApiWithToken(url, method, dataToSend, token);
+            return await this.callApiWithToken(url, method, dataToSend, token);
 
         } catch (e: any) {
 
             // Report Ajax errors if this is not a 401
             const error = e as UIError;
-            if (error.statusCode !== 401)
+            if (error.getStatusCode() !== 401)
                 throw e;
 
             // When the access token expires, trigger a login redirect
             // Token refresh is not implemented until the second code sample
-            await this._authenticator.startLogin(error);
+            await this.authenticator.startLogin(error);
             throw ErrorHandler.getFromLoginRequired();
         }
     }
@@ -81,7 +81,7 @@ export class ApiClient {
     /*
      * Do the work of calling the API
      */
-    private async _callApiWithToken(
+    private async callApiWithToken(
         url: string,
         method: Method,
         dataToSend: any,

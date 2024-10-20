@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import {Application, NextFunction, Request, Response} from 'express';
+import {Application} from 'express';
 import {Configuration} from '../configuration/configuration.js';
 import {ApiController} from '../controller/apiController.js';
 import {ApiLogger} from '../logging/apiLogger.js';
@@ -10,17 +10,17 @@ import {ApiLogger} from '../logging/apiLogger.js';
  */
 export class HttpServerConfiguration {
 
-    private readonly _express: Application;
-    private readonly _configuration: Configuration;
-    private readonly _apiLogger: ApiLogger;
-    private readonly _apiController: ApiController;
+    private readonly express: Application;
+    private readonly configuration: Configuration;
+    private readonly apiLogger: ApiLogger;
+    private readonly apiController: ApiController;
 
     public constructor(expressApp: Application, configuration: Configuration, logger: ApiLogger) {
 
-        this._express = expressApp;
-        this._configuration = configuration;
-        this._apiLogger = logger;
-        this._apiController = new ApiController(this._configuration);
+        this.express = expressApp;
+        this.configuration = configuration;
+        this.apiLogger = logger;
+        this.apiController = new ApiController(this.configuration);
     }
 
     /*
@@ -30,25 +30,25 @@ export class HttpServerConfiguration {
 
         // Grant API access to the web origin
         const corsOptions = {
-            origin: this._configuration.api.trustedOrigins,
+            origin: this.configuration.api.trustedOrigins,
             maxAge: 86400,
         };
-        this._express.use('/api/*', cors(corsOptions) as any);
-        this._express.use('/api/*', this._apiController.onWriteHeaders);
+        this.express.use('/api/*_', cors(corsOptions) as any);
+        this.express.use('/api/*_', this.apiController.onWriteHeaders);
 
-        // All API requests undergo logging and authorization
-        this._express.use('/api/*', this._catch(this._apiLogger.logRequest));
-        this._express.use('/api/*', this._catch(this._apiController.authorizationHandler));
+        // Add cross cutting concerns for logging, error handling and security
+        this.express.use('/api/*_', this.apiLogger.logRequest);
+        this.express.use('/api/*_', this.apiController.authorizationHandler);
 
         // API routes containing business logic
-        this._express.get('/api/companies', this._catch(this._apiController.getCompanyList));
-        this._express.get(
+        this.express.get('/api/companies', this.apiController.getCompanyList);
+        this.express.get(
             '/api/companies/:id/transactions',
-            this._catch(this._apiController.getCompanyTransactions));
+            this.apiController.getCompanyTransactions);
 
-        // Handle failure scenarios
-        this._express.use('/api/*', this._apiController.onRequestNotFound);
-        this._express.use('/api/*', this._apiController.onException);
+        // Handle errors after routes are defined
+        this.express.use('/api/*_', this.apiController.onException);
+        this.express.use('/api/*_', this.apiController.onRequestNotFound);
     }
 
     /*
@@ -56,8 +56,8 @@ export class HttpServerConfiguration {
      */
     public initializeWebStaticContentHosting(): void {
 
-        this._express.use('/spa', express.static('../spa'));
-        this._express.use('/favicon.ico', express.static('../spa/favicon.ico'));
+        this.express.use('/spa', express.static('../spa'));
+        this.express.use('/favicon.ico', express.static('../spa/favicon.ico'));
     }
 
     /*
@@ -65,24 +65,8 @@ export class HttpServerConfiguration {
      */
     public startListening(): void {
 
-        this._express.listen(this._configuration.api.port, () => {
-            console.log(`API is listening on HTTP port ${this._configuration.api.port}`);
+        this.express.listen(this.configuration.api.port, () => {
+            console.log(`API is listening on HTTP port ${this.configuration.api.port}`);
         });
-    }
-
-    /*
-     * Deal with Express unhandled promise exceptions during async API requests
-     * https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016
-     */
-    private _catch(fn: any): any {
-
-        return (request: Request, response: Response, next: NextFunction) => {
-
-            Promise
-                .resolve(fn(request, response, next))
-                .catch((e) => {
-                    this._apiController.onException(e, request, response);
-                });
-        };
     }
 }

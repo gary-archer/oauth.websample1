@@ -9,12 +9,12 @@ import {DomUtils} from './domUtils';
  */
 export class TransactionsView {
 
-    private readonly _apiClient: ApiClient;
-    private readonly _companyId: string;
+    private readonly apiClient: ApiClient;
+    private readonly companyId: string;
 
     public constructor(apiClient: ApiClient, companyId: string) {
-        this._apiClient = apiClient;
-        this._companyId = companyId;
+        this.apiClient = apiClient;
+        this.companyId = companyId;
     }
 
     /*
@@ -25,10 +25,10 @@ export class TransactionsView {
         try {
 
             // Try to get data
-            const data = await this._apiClient.getCompanyTransactions(this._companyId);
+            const data = await this.apiClient.getCompanyTransactions(this.companyId);
 
             // Render new content
-            this._renderData(data);
+            this.renderData(data);
 
         } catch (uiError: any) {
 
@@ -55,7 +55,7 @@ export class TransactionsView {
     /*
      * Render data after receiving it from the API
      */
-    private _renderData(data: CompanyTransactions): void {
+    private renderData(data: CompanyTransactions): void {
 
         const viewModel = {
             title: `Today's Transactions for ${data.company.name}`,

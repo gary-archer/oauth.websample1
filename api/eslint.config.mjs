@@ -3,11 +3,11 @@ import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config({
-    files: ['**/*.ts', '**/*.mjs'],
     extends: [
-        eslint.configs.strict,
+        eslint.configs.recommended,
         ...tseslint.configs.strict,
     ],
+    files: ['**/*.ts', '**/*.mjs'],
     rules: {
         '@typescript-eslint/explicit-module-boundary-types': ['error', {
             'allowArgumentsExplicitlyTypedAsAny': true,
@@ -17,6 +17,7 @@ export default tseslint.config({
         'brace-style': ['error', '1tbs'],
         'indent': 'error',
         'max-len': ['error', { 'code': 120 }],
+        'name': 'off',
         'no-multiple-empty-lines': ['error', {'max': 1}],
         'no-trailing-spaces': 'error',
         'quotes': ['error', 'single'],

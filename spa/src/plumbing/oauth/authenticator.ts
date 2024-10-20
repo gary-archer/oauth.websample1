@@ -10,8 +10,8 @@ import {UIError} from '../errors/uiError';
  */
 export class Authenticator {
 
-    private readonly _userManager: UserManager;
-    private _loginTime: number | null;
+    private readonly userManager: UserManager;
+    private loginTime: number | null;
 
     public constructor(config: OAuthConfiguration) {
 
@@ -37,8 +37,8 @@ export class Authenticator {
         };
 
         // Create the user manager
-        this._userManager = new UserManager(settings);
-        this._loginTime = null;
+        this.userManager = new UserManager(settings);
+        this.loginTime = null;
     }
 
     /*
@@ -46,7 +46,7 @@ export class Authenticator {
      */
     public async getAccessToken(): Promise<string | null> {
 
-        const user = await this._userManager.getUser();
+        const user = await this.userManager.getUser();
         if (user && user.access_token) {
             return user.access_token;
         }
@@ -70,17 +70,17 @@ export class Authenticator {
             // This prevents a redirect loop, where a new login is triggered very soon after a previous one
             // This can potentially happen if the API access token validation fails with a 401
             // You can simulate the condition if you configure an incorrect issuer in the API configuration
-            if (api401Error && this._loginTime) {
+            if (api401Error && this.loginTime) {
 
                 const currentTime = new Date().getTime();
-                const millisecondsSinceLogin = currentTime - this._loginTime;
+                const millisecondsSinceLogin = currentTime - this.loginTime;
                 if (millisecondsSinceLogin < 250) {
                     throw api401Error;
                 }
             }
 
             // Start a login redirect
-            await this._userManager.signinRedirect({state: data});
+            await this.userManager.signinRedirect({state: data});
 
         } catch (e: any) {
 
@@ -102,20 +102,20 @@ export class Authenticator {
             if (state) {
 
                 // Only try to process a login response if the state exists
-                const storedState = await this._userManager.settings.stateStore?.get(state);
+                const storedState = await this.userManager.settings.stateStore?.get(state);
                 if (storedState) {
 
                     let redirectLocation = '#';
                     try {
 
                         // Handle the login response
-                        const user = await this._userManager.signinRedirectCallback();
+                        const user = await this.userManager.signinRedirectCallback();
 
                         // We will return to the app location before the login redirect
                         redirectLocation = (user.state as any).hash;
 
                         // The login time enables a check that avoids redirect loops when configuration is invalid
-                        this._loginTime = new Date().getTime();
+                        this.loginTime = new Date().getTime();
 
                     } catch (e: any) {
 
@@ -137,7 +137,7 @@ export class Authenticator {
      */
     public async getUserInfo(): Promise<UserInfo | null> {
 
-        const user = await this._userManager.getUser();
+        const user = await this.userManager.getUser();
         if (user && user.profile) {
             if (user.profile.given_name && user.profile.family_name) {
 
@@ -156,12 +156,12 @@ export class Authenticator {
      */
     public async expireAccessToken(): Promise<void> {
 
-        const user = await this._userManager.getUser();
+        const user = await this.userManager.getUser();
         if (user) {
 
             // Add a character to the signature to make it fail validation
             user.access_token = `${user.access_token}x`;
-            this._userManager.storeUser(user);
+            this.userManager.storeUser(user);
         }
     }
 }
