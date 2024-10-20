@@ -40,7 +40,7 @@ The browser is invoked and you can sign in with my AWS test credentials:
 
 ## Further Information
 
-* See the [Sample 1 Overview](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/posts/basicspa-overview.mdx) for a summary of behaviour.
+* See the [Sample 1 Overview](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/basicspa-overview.mdx) for a summary of behaviour.
 * See the [Sample 1 Details](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/basicspa-execution.mdx) for further details on running the code.
 
 ## 2021 Security Update
