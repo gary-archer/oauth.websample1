@@ -52,8 +52,6 @@ export class ApiLogger {
         const logEntry = new LogEntry();
         logEntry.start(request);
         response.locals.logEntry = logEntry;
-        console.log('*** created response.locals');
-        console.log(response.locals);
 
         response.on('finish', () => {
 
