@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import {Application, NextFunction, Request, Response} from 'express';
+import {Application} from 'express';
 import {Configuration} from '../configuration/configuration.js';
 import {ApiController} from '../controller/apiController.js';
 import {ApiLogger} from '../logging/apiLogger.js';
@@ -33,12 +33,12 @@ export class HttpServerConfiguration {
             origin: this._configuration.api.trustedOrigins,
             maxAge: 86400,
         };
-        this._express.use('/api/*', cors(corsOptions) as any);
-        this._express.use('/api/*', this._apiController.onWriteHeaders);
+        this._express.use('/api/*_', cors(corsOptions) as any);
+        this._express.use('/api/*_', this._apiController.onWriteHeaders);
 
-        // All API requests undergo logging and authorization
-        this._express.use('/api/*', this._apiLogger.logRequest);
-        this._express.use('/api/*', this._apiController.authorizationHandler);
+        // Add cross cutting concerns for logging, error handling and security
+        this._express.use('/api/*_', this._apiLogger.logRequest);
+        this._express.use('/api/*_', this._apiController.authorizationHandler);
 
         // API routes containing business logic
         this._express.get('/api/companies', this._apiController.getCompanyList);
@@ -46,9 +46,9 @@ export class HttpServerConfiguration {
             '/api/companies/:id/transactions',
             this._apiController.getCompanyTransactions);
 
-        // Handle failure scenarios
-        this._express.use('/api/*', this._apiController.onRequestNotFound);
-        this._express.use('/api/*', this._apiController.onException);
+        // Handle errors after routes are defined
+        this._express.use('/api/*_', this._apiController.onException);
+        this._express.use('/api/*_', this._apiController.onRequestNotFound);
     }
 
     /*
