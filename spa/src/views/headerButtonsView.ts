@@ -5,18 +5,18 @@ import {DomUtils} from './domUtils';
  */
 export class HeaderButtonsView {
 
-    private readonly _onHome: () => void;
-    private readonly _onExpireToken: () => void;
-    private readonly _onReloadData: () => void;
+    private readonly onHome: () => void;
+    private readonly onExpireToken: () => void;
+    private readonly onReloadData: () => void;
 
     public constructor(
         onHome: ()  => void,
         onReloadData: () => void,
         onExpireToken: () => void) {
 
-        this._onHome = onHome;
-        this._onReloadData = onReloadData;
-        this._onExpireToken = onExpireToken;
+        this.onHome = onHome;
+        this.onReloadData = onReloadData;
+        this.onExpireToken = onExpireToken;
     }
 
     /*
@@ -42,9 +42,9 @@ export class HeaderButtonsView {
         DomUtils.html('#headerbuttons', html);
 
         // Button clicks are handled by the parent class
-        DomUtils.onClick('#btnHome', this._onHome);
-        DomUtils.onClick('#btnExpireAccessToken', this._onExpireToken);
-        DomUtils.onClick('#btnReloadData', this._onReloadData);
+        DomUtils.onClick('#btnHome', this.onHome);
+        DomUtils.onClick('#btnExpireAccessToken', this.onExpireToken);
+        DomUtils.onClick('#btnReloadData', this.onReloadData);
     }
 
     /*

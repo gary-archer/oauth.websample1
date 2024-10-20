@@ -4,21 +4,21 @@
 export class ClaimsPrincipal {
 
     // The subject claim can be used to authorize access to only owned resources
-    private _subject: string;
+    private subject: string;
 
     // OAuth scopes can represent high level privileges
-    private _scopes: string[];
+    private scopes: string[];
 
     public constructor(subject: string, scopes: string[]) {
-        this._subject = subject;
-        this._scopes = scopes;
+        this.subject = subject;
+        this.scopes = scopes;
     }
 
-    public get subject(): string {
-        return this._subject;
+    public getSubject(): string {
+        return this.subject;
     }
 
-    public get scopes(): string[] {
-        return this._scopes;
+    public getScopes(): string[] {
+        return this.scopes;
     }
 }

@@ -10,12 +10,12 @@ import {JwksRetriever} from './jwksRetriever.js';
  */
 export class AccessTokenValidator {
 
-    private readonly _configuration: OAuthConfiguration;
-    private readonly _jwksRetriever: JwksRetriever;
+    private readonly configuration: OAuthConfiguration;
+    private readonly jwksRetriever: JwksRetriever;
 
     public constructor(configuration: OAuthConfiguration, jwksRetriever: JwksRetriever) {
-        this._configuration = configuration;
-        this._jwksRetriever = jwksRetriever;
+        this.configuration = configuration;
+        this.jwksRetriever = jwksRetriever;
     }
 
     /*
@@ -26,26 +26,26 @@ export class AccessTokenValidator {
         try {
 
             // Read the JWT from the HTTP header
-            const accessToken = this._readAccessToken(request);
+            const accessToken = this.readAccessToken(request);
             if (!accessToken) {
                 throw ErrorFactory.fromMissingTokenError();
             }
 
             // Perform the JWT validation according to best practices
             const options = {
-                algorithms: [this._configuration.algorithm],
-                issuer: this._configuration.issuer,
+                algorithms: [this.configuration.algorithm],
+                issuer: this.configuration.issuer,
             } as JWTVerifyOptions;
 
-            if (this._configuration.audience) {
-                options.audience = this._configuration.audience;
+            if (this.configuration.audience) {
+                options.audience = this.configuration.audience;
             }
 
-            const result = await jwtVerify(accessToken, this._jwksRetriever.remoteJWKSet, options);
+            const result = await jwtVerify(accessToken, this.jwksRetriever.getRemoteJWKSet(), options);
 
             // Read claims into a claims principal object
-            const userId = this._getClaim(result.payload.sub, 'sub');
-            const scope = this._getClaim(result.payload['scope'], 'scope');
+            const userId = this.getClaim(result.payload.sub, 'sub');
+            const scope = this.getClaim(result.payload['scope'], 'scope');
             return new ClaimsPrincipal(userId, scope.split(' '));
 
         } catch (e: any) {
@@ -63,7 +63,7 @@ export class AccessTokenValidator {
     /*
      * Try to read the token from the authorization header
      */
-    private _readAccessToken(request: Request): string | null {
+    private readAccessToken(request: Request): string | null {
 
         const authorizationHeader = request.header('authorization');
         if (authorizationHeader) {
@@ -79,7 +79,7 @@ export class AccessTokenValidator {
     /*
      * Sanity checks when receiving claims to avoid failing later with a cryptic error
      */
-    private _getClaim(claim: any, name: string): string {
+    private getClaim(claim: any, name: string): string {
 
         if (!claim) {
             throw ErrorFactory.fromMissingClaim(name);

@@ -10,19 +10,19 @@ import {CompanyRepository} from '../repositories/companyRepository.js';
  */
 export class CompanyService {
 
-    private readonly _repository: CompanyRepository;
-    private readonly _claims: ClaimsPrincipal;
+    private readonly repository: CompanyRepository;
+    private readonly claims: ClaimsPrincipal;
 
     public constructor(repository: CompanyRepository, claims: ClaimsPrincipal) {
-        this._repository = repository;
-        this._claims = claims;
+        this.repository = repository;
+        this.claims = claims;
     }
 
     /*
      * Return the list of companies
      */
     public async getCompanyList(): Promise<Company[]> {
-        return this._repository.getCompanyList();
+        return await this.repository.getCompanyList();
     }
 
     /*
@@ -31,11 +31,11 @@ export class CompanyService {
     public async getCompanyTransactions(id: number): Promise<CompanyTransactions> {
 
         // Forward to the repository class
-        const data = await this._repository.getCompanyTransactions(id);
+        const data = await this.repository.getCompanyTransactions(id);
 
         // If the data is not found we return an unauthorized response
         if (!data) {
-            throw this._unauthorizedError(id);
+            throw this.unauthorizedError(id);
         }
 
         return data;
@@ -44,7 +44,8 @@ export class CompanyService {
     /*
      * Return a 404 error if a company is requested that is not valid for the user
      */
-    private _unauthorizedError(companyId: number): ClientError {
+    private unauthorizedError(companyId: number): ClientError {
+
         return new ClientError(
             404,
             ErrorCodes.companyNotFound,

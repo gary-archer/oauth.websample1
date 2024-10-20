@@ -3,14 +3,14 @@
  */
 export class HtmlStorageHelper {
 
-    private static _prefix = 'basicspa.';
-    private static _oidcLogLevelKeyName = 'oidc-log-level';
+    private static prefix = 'basicspa.';
+    private static oidcLogLevelKeyName = 'oidc-log-level';
 
     public static get oidcLogLevel(): string {
-        return sessionStorage.getItem(`${HtmlStorageHelper._prefix}${HtmlStorageHelper._oidcLogLevelKeyName}`) ?? '';
+        return sessionStorage.getItem(`${HtmlStorageHelper.prefix}${HtmlStorageHelper.oidcLogLevelKeyName}`) ?? '';
     }
 
     public static set oidcLogLevel(value: string) {
-        sessionStorage.setItem(`${HtmlStorageHelper._prefix}${HtmlStorageHelper._oidcLogLevelKeyName}`, value);
+        sessionStorage.setItem(`${HtmlStorageHelper.prefix}${HtmlStorageHelper.oidcLogLevelKeyName}`, value);
     }
 }

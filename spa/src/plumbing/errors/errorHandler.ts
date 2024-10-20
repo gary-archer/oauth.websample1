@@ -24,7 +24,7 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getExceptionMessage(exception);
+        error.setDetails(ErrorHandler.getExceptionMessage(exception));
         return error;
     }
 
@@ -57,7 +57,7 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.details = ErrorHandler._getOAuthExceptionMessage(exception);
+        error.setDetails(ErrorHandler.getOAuthExceptionMessage(exception));
         return error;
     }
 
@@ -97,7 +97,7 @@ export class ErrorHandler {
                 ErrorCodes.networkError,
                 `A network problem occurred when the UI called the ${source}`,
                 exception.stack);
-            error.details = this._getExceptionMessage(exception);
+            error.setDetails(this.getExceptionMessage(exception));
 
         } else if (statusCode >= 200 && statusCode <= 299) {
 
@@ -107,7 +107,7 @@ export class ErrorHandler {
                 ErrorCodes.jsonDataError,
                 `'A technical problem occurred parsing data from the ${source}`,
                 exception.stack);
-            error.details = this._getExceptionMessage(exception);
+            error.setDetails(this.getExceptionMessage(exception));
 
         } else {
 
@@ -117,31 +117,31 @@ export class ErrorHandler {
                 ErrorCodes.responseError,
                 `An error response was returned from the ${source}`,
                 exception.stack);
-            error.details = this._getExceptionMessage(exception);
+            error.setDetails(this.getExceptionMessage(exception));
 
             // Override the default with a server response when received and CORS allows us to read it
             if (exception.response && exception.response.data && typeof exception.response.data === 'object') {
-                ErrorHandler._updateFromApiErrorResponse(error, exception.response.data);
+                ErrorHandler.updateFromApiErrorResponse(error, exception.response.data);
             }
         }
 
-        error.statusCode = statusCode;
-        error.url = url;
+        error.setStatusCode(statusCode);
+        error.setUrl(url);
         return error;
     }
 
     /*
      * Try to update the default API error with response details
      */
-    private static _updateFromApiErrorResponse(error: UIError, apiError: any): void {
+    private static updateFromApiErrorResponse(error: UIError, apiError: any): void {
 
         // Attempt to read the API error response
         if (apiError) {
 
             // Set the code and message, returned for both 4xx and 5xx errors
             if (apiError.code && apiError.message) {
-                error.errorCode = apiError.code;
-                error.details = apiError.message;
+                error.setErrorCode(apiError.code);
+                error.setDetails(apiError.message);
             }
 
             // Set extra details returned for 5xx errors
@@ -154,7 +154,7 @@ export class ErrorHandler {
     /*
      * Get the message from an OAuth exception
      */
-    private static _getOAuthExceptionMessage(exception: any): string {
+    private static getOAuthExceptionMessage(exception: any): string {
 
         let oauthError = '';
         if (exception.error) {
@@ -167,14 +167,14 @@ export class ErrorHandler {
         if (oauthError) {
             return oauthError;
         } else {
-            return ErrorHandler._getExceptionMessage(exception);
+            return ErrorHandler.getExceptionMessage(exception);
         }
     }
 
     /*
      * Get the message from an exception and avoid returning [object Object]
      */
-    private static _getExceptionMessage(exception: any): string {
+    private static getExceptionMessage(exception: any): string {
 
         if (exception.message) {
             return exception.message;

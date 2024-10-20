@@ -18,14 +18,14 @@ import {ResponseWriter} from '../utilities/responseWriter.js';
  */
 export class ApiController {
 
-    private readonly _accessTokenValidator: AccessTokenValidator;
+    private readonly accessTokenValidator: AccessTokenValidator;
 
     public constructor(configuration: Configuration) {
 
         const httpProxy = new HttpProxy(configuration);
         const jwksRetriever = new JwksRetriever(configuration.oauth, httpProxy);
-        this._accessTokenValidator = new AccessTokenValidator(configuration.oauth, jwksRetriever);
-        this._setupCallbacks();
+        this.accessTokenValidator = new AccessTokenValidator(configuration.oauth, jwksRetriever);
+        this.setupCallbacks();
     }
 
     /*
@@ -36,7 +36,7 @@ export class ApiController {
         response: Response,
         next: NextFunction): Promise<void> {
 
-        const claims = await this._accessTokenValidator.execute(request);
+        const claims = await this.accessTokenValidator.execute(request);
         response.locals.claims = claims;
         next();
     }
@@ -121,7 +121,7 @@ export class ApiController {
     /*
      * Set up async callbacks
      */
-    private _setupCallbacks(): void {
+    private setupCallbacks(): void {
         this.authorizationHandler = this.authorizationHandler.bind(this);
         this.getCompanyList = this.getCompanyList.bind(this);
         this.getCompanyTransactions = this.getCompanyTransactions.bind(this);

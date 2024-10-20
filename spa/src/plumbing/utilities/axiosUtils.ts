@@ -6,7 +6,7 @@ import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 export class AxiosUtils {
 
     /*
-     * Axios has a known issue where it swallows parse errors, so we throw an error in the way Axios should
+     * Axios has a known issue where it swallows parse errors, so we throw an error
      * https://github.com/axios/axios/issues/61
      */
     public static checkJson(data: any): void {

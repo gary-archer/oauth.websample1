@@ -7,10 +7,10 @@ import {UserInfoView} from './userInfoView';
  */
 export class TitleView {
 
-    private readonly _userInfoView: UserInfoView;
+    private readonly userInfoView: UserInfoView;
 
     public constructor() {
-        this._userInfoView = new UserInfoView();
+        this.userInfoView = new UserInfoView();
     }
 
     /*
@@ -37,6 +37,6 @@ export class TitleView {
      * Load the child user info view when requested
      */
     public async loadUserInfo(authenticator: Authenticator): Promise<void> {
-        await this._userInfoView.load(authenticator);
+        await this.userInfoView.load(authenticator);
     }
 }

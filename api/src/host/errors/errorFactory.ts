@@ -35,7 +35,7 @@ export class ErrorFactory {
             ErrorCodes.serverError,
             'An unexpected exception occurred in the API',
             exception.stack);
-        serverError.details = this._getExceptionDetails(exception);
+        serverError.setDetails(this._getExceptionDetails(exception));
         return serverError;
     }
 
@@ -65,7 +65,7 @@ export class ErrorFactory {
             ErrorCodes.jwksDownloadError,
             'Problem downloading token signing keys',
             exception.stack);
-        serverError.details = details;
+        serverError.setDetails(details);
         return serverError;
     }
 
@@ -79,9 +79,9 @@ export class ErrorFactory {
             ErrorCodes.invalidToken,
             'Missing, invalid or expired access token');
 
-        clientError.logContext = {
+        clientError.setLogContext({
             description: 'No bearer token was supplied in the Authorization header'
-        };
+        });
 
         return clientError;
     }
@@ -109,7 +109,7 @@ export class ErrorFactory {
             401,
             ErrorCodes.invalidToken,
             'Missing, invalid or expired access token');
-        clientError.logContext = details;
+        clientError.setLogContext(details);
         return clientError;
     }
 
@@ -119,7 +119,7 @@ export class ErrorFactory {
     public static fromMissingClaim(claimName: string): ServerError {
 
         const serverError = new ServerError(ErrorCodes.claimsFailure, 'Authorization Data Not Found');
-        serverError.details = `An empty value was found for the expected claim ${claimName}`;
+        serverError.setDetails(`An empty value was found for the expected claim ${claimName}`);
         return serverError;
     }
 
