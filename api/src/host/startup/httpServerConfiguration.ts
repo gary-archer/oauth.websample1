@@ -33,22 +33,20 @@ export class HttpServerConfiguration {
             origin: this.configuration.api.trustedOrigins,
             maxAge: 86400,
         };
-        this.express.use('/api/*_', cors(corsOptions) as any);
+        this.express.use('/api/*_', cors(corsOptions));
         this.express.use('/api/*_', this.apiController.onWriteHeaders);
 
-        // Add cross cutting concerns for logging, error handling and security
+        // Add cross cutting concerns
         this.express.use('/api/*_', this.apiLogger.logRequest);
         this.express.use('/api/*_', this.apiController.authorizationHandler);
 
         // API routes containing business logic
         this.express.get('/api/companies', this.apiController.getCompanyList);
-        this.express.get(
-            '/api/companies/:id/transactions',
-            this.apiController.getCompanyTransactions);
+        this.express.get('/api/companies/:id/transactions', this.apiController.getCompanyTransactions);
 
         // Handle errors after routes are defined
-        this.express.use('/api/*_', this.apiController.onException);
         this.express.use('/api/*_', this.apiController.onRequestNotFound);
+        this.express.use('/api/*_', this.apiController.onException);
     }
 
     /*

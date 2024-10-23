@@ -35,7 +35,7 @@ export class ErrorFactory {
             ErrorCodes.serverError,
             'An unexpected exception occurred in the API',
             exception.stack);
-        serverError.setDetails(this._getExceptionDetails(exception));
+        serverError.setDetails(this.getExceptionDetails(exception));
         return serverError;
     }
 
@@ -58,7 +58,7 @@ export class ErrorFactory {
         const details = {} as any;
         if (exception.code) {
             details.code = exception.code;
-            details.description = this._getExceptionDetails(exception);
+            details.description = this.getExceptionDetails(exception);
         }
 
         const serverError = new ServerError(
@@ -102,7 +102,7 @@ export class ErrorFactory {
         const details = {} as any;
         if (exception.code) {
             details.code = exception.code;
-            details.description = this._getExceptionDetails(exception);
+            details.description = this.getExceptionDetails(exception);
         }
 
         const clientError = new ClientError(
@@ -126,7 +126,7 @@ export class ErrorFactory {
     /*
      * Get the message from an exception and avoid returning [object Object]
      */
-    private static _getExceptionDetails(e: any): string {
+    private static getExceptionDetails(e: any): string {
 
         if (e.message) {
             return e.message;
