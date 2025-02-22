@@ -8,7 +8,7 @@ import {UIError} from '../errors/uiError';
 /*
  * The entry point for initiating login and token requests
  */
-export class Authenticator {
+export class OAuthClient {
 
     private readonly userManager: UserManager;
     private loginTime: number | null;

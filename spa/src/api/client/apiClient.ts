@@ -1,7 +1,7 @@
 import axios, {Method} from 'axios';
 import {ErrorHandler} from '../../plumbing/errors/errorHandler';
 import {UIError} from '../../plumbing/errors/uiError';
-import {Authenticator} from '../../plumbing/oauth/authenticator';
+import {OAuthClient} from '../../plumbing/oauth/oauthClient';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
 import {Company} from '../entities/company';
 import {CompanyTransactions} from '../entities/companyTransactions';
@@ -12,16 +12,16 @@ import {CompanyTransactions} from '../entities/companyTransactions';
 export class ApiClient {
 
     private readonly apiBaseUrl: string;
-    private readonly authenticator: Authenticator;
+    private readonly oauthClient: OAuthClient;
 
-    public constructor(apiBaseUrl: string, authenticator: Authenticator) {
+    public constructor(apiBaseUrl: string, oauthClient: OAuthClient) {
 
         this.apiBaseUrl = apiBaseUrl;
         if (!this.apiBaseUrl.endsWith('/')) {
             this.apiBaseUrl += '/';
         }
 
-        this.authenticator = authenticator;
+        this.oauthClient = oauthClient;
     }
 
     /*
@@ -49,11 +49,11 @@ export class ApiClient {
         const url = `${this.apiBaseUrl}${path}`;
 
         // Get the access token
-        const token = await this.authenticator.getAccessToken();
+        const token = await this.oauthClient.getAccessToken();
         if (!token) {
 
             // Trigger a login redirect if there is no access token yet
-            await this.authenticator.startLogin(null);
+            await this.oauthClient.startLogin(null);
 
             // This completes the API request with an error that the UI does not render
             throw ErrorHandler.getFromLoginRequired();
@@ -73,7 +73,7 @@ export class ApiClient {
 
             // When the access token expires, trigger a login redirect
             // Token refresh is not implemented until the second code sample
-            await this.authenticator.startLogin(error);
+            await this.oauthClient.startLogin(error);
             throw ErrorHandler.getFromLoginRequired();
         }
     }

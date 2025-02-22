@@ -1,7 +1,7 @@
 import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
-import {Authenticator} from '../plumbing/oauth/authenticator';
+import {OAuthClient} from '../plumbing/oauth/oauthClient';
 import {OidcLogger} from '../plumbing/utilities/oidcLogger';
 import {ErrorView} from '../views/errorView';
 import {HeaderButtonsView} from '../views/headerButtonsView';
@@ -14,7 +14,7 @@ import {TitleView} from '../views/titleView';
 class App {
 
     private configuration!: Configuration;
-    private authenticator!: Authenticator;
+    private oauthClient!: OAuthClient;
     private apiClient!: ApiClient;
     private oidcLogger: OidcLogger;
     private router!: Router;
@@ -81,10 +81,10 @@ class App {
         this.configuration = await ConfigurationLoader.download('spa.config.json');
 
         // Initialise our wrapper class around oidc-client
-        this.authenticator = new Authenticator(this.configuration.oauth);
+        this.oauthClient = new OAuthClient(this.configuration.oauth);
 
         // Create a client to reliably call the API
-        this.apiClient = new ApiClient(this.configuration.app.apiBaseUrl, this.authenticator);
+        this.apiClient = new ApiClient(this.configuration.app.apiBaseUrl, this.oauthClient);
 
         // Our simple router passes the API Client instance between views
         this.router = new Router(this.apiClient, this.errorView);
@@ -99,10 +99,10 @@ class App {
     private async handleLoginResponse(): Promise<void> {
 
         // Do the OAuth work
-        await this.authenticator.handleLoginResponse();
+        await this.oauthClient.handleLoginResponse();
 
         // Then update displayed user info
-        this.titleView.loadUserInfo(this.authenticator);
+        this.titleView.loadUserInfo(this.oauthClient);
     }
 
     /*
@@ -188,7 +188,7 @@ class App {
      * Force a new access token to be retrieved
      */
     private async onExpireToken(): Promise<void> {
-        await this.authenticator.expireAccessToken();
+        await this.oauthClient.expireAccessToken();
     }
 
     /*

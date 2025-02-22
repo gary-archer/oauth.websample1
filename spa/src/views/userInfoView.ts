@@ -1,5 +1,5 @@
 import mustache from 'mustache';
-import {Authenticator} from '../plumbing/oauth/authenticator';
+import {OAuthClient} from '../plumbing/oauth/oauthClient';
 import {DomUtils} from './domUtils';
 
 /*
@@ -8,11 +8,11 @@ import {DomUtils} from './domUtils';
 export class UserInfoView {
 
     /*
-     * Run the view, which will get user info from the authenticator's session storage
+     * Run the view, which will get user info from session storage
      */
-    public async load(authenticator: Authenticator): Promise<void> {
+    public async load(oauthClient: OAuthClient): Promise<void> {
 
-        const claims = await authenticator.getUserInfo();
+        const claims = await oauthClient.getUserInfo();
         if (claims && claims.givenName && claims.familyName) {
 
             // Set claims if found
