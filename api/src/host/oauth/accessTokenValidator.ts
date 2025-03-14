@@ -1,3 +1,4 @@
+import {AxiosError} from 'axios';
 import {Request} from 'express';
 import {JWTVerifyOptions, jwtVerify} from 'jose';
 import {ClaimsPrincipal} from '../../logic/entities/claimsPrincipal.js';
@@ -50,8 +51,8 @@ export class AccessTokenValidator {
 
         } catch (e: any) {
 
-            // JWKS URI connection failures return a 500
-            if (e.code === 'ERR_JOSE_GENERIC' || e.code === 'UNABLE_TO_VERIFY_LEAF_SIGNATURE') {
+            // JWKS URI failures return a 500
+            if (e instanceof AxiosError || e.code === 'ERR_JOSE_GENERIC') {
                 throw ErrorFactory.fromJwksDownloadError(e);
             }
 
