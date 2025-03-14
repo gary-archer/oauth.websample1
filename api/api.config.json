@@ -4,7 +4,7 @@
         "trustedOrigins": [
             "http://localhost"
         ],
-        "useProxy": false,
+        "useProxy": true,
         "proxyUrl": "http://127.0.0.1:8888"
     },
     "oauth": {
