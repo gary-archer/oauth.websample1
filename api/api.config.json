@@ -1,0 +1,16 @@
+{
+    "api": {
+        "port": 80,
+        "trustedOrigins": [
+            "http://localhost"
+        ],
+        "useProxy": false,
+        "proxyUrl": "http://127.0.0.1:8888"
+    },
+    "oauth": {
+        "jwksEndpoint": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9/.well-known/jwks.json",
+        "issuer":       "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_CuhLeqiE9",
+        "audience":     "",
+        "algorithm":    "RS256"
+    }
+}
