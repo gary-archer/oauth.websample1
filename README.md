@@ -20,7 +20,7 @@ The SPA is a simple UI with some basic navigation between views, to render ficti
 
 ## Local Development Quick Start
 
-First ensure that Node.js 22+ is installed.\
+First ensure that Node.js 24+ is installed.\
 You must use custom development domains and add this DNS entry to your hosts file:
 
 ```bash
