@@ -4,7 +4,7 @@ import {UIError} from './uiError';
 /*
  * A class to handle error processing
  */
-export class ErrorHandler {
+export class ErrorFactory {
 
     /*
      * Return an error based on the exception type or properties
@@ -24,7 +24,7 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.setDetails(ErrorHandler.getExceptionMessage(exception));
+        error.setDetails(ErrorFactory.getExceptionMessage(exception));
         return error;
     }
 
@@ -57,12 +57,12 @@ export class ErrorHandler {
             exception.stack);
 
         // Set technical details from the received exception
-        error.setDetails(ErrorHandler.getOAuthExceptionMessage(exception));
+        error.setDetails(ErrorFactory.getOAuthExceptionMessage(exception));
         return error;
     }
 
     /*
-     * Return an object for Ajax errors
+     * Return an object for JSON parse errors
      */
     public static getFromJsonParseError(): UIError {
 
@@ -73,7 +73,7 @@ export class ErrorHandler {
     }
 
     /*
-     * Return an object for Ajax errors
+     * Return an object for HTTP errors
      */
     public static getFromHttpError(exception: any, url: string, source: string): UIError {
 
@@ -121,7 +121,7 @@ export class ErrorHandler {
 
             // Override the default with a server response when received and CORS allows us to read it
             if (exception.response && exception.response.data && typeof exception.response.data === 'object') {
-                ErrorHandler.updateFromApiErrorResponse(error, exception.response.data);
+                ErrorFactory.updateFromApiErrorResponse(error, exception.response.data);
             }
         }
 
@@ -167,7 +167,7 @@ export class ErrorHandler {
         if (oauthError) {
             return oauthError;
         } else {
-            return ErrorHandler.getExceptionMessage(exception);
+            return ErrorFactory.getExceptionMessage(exception);
         }
     }
 

@@ -1,5 +1,5 @@
 import axios, {Method} from 'axios';
-import {ErrorHandler} from '../../plumbing/errors/errorHandler';
+import {ErrorFactory} from '../../plumbing/errors/errorFactory';
 import {UIError} from '../../plumbing/errors/uiError';
 import {OAuthClient} from '../../plumbing/oauth/oauthClient';
 import {AxiosUtils} from '../../plumbing/utilities/axiosUtils';
@@ -52,11 +52,8 @@ export class ApiClient {
         const token = await this.oauthClient.getAccessToken();
         if (!token) {
 
-            // Trigger a login redirect if there is no access token yet
-            await this.oauthClient.startLogin(null);
-
-            // This completes the API request with an error that the UI does not render
-            throw ErrorHandler.getFromLoginRequired();
+            // Throw an error to inform the UI to move the user to the login required view
+            throw ErrorFactory.getFromLoginRequired();
         }
 
         try {
@@ -66,15 +63,15 @@ export class ApiClient {
 
         } catch (e: any) {
 
-            // Report Ajax errors if this is not a 401
+            // Report errors if this is not a 401
             const error = e as UIError;
-            if (error.getStatusCode() !== 401)
+            if (error.getStatusCode() !== 401) {
                 throw e;
+            }
 
-            // When the access token expires, trigger a login redirect
             // Token refresh is not implemented until the second code sample
-            await this.oauthClient.startLogin(error);
-            throw ErrorHandler.getFromLoginRequired();
+            await this.oauthClient.clearLoginState();
+            throw ErrorFactory.getFromLoginRequired();
         }
     }
 
@@ -102,7 +99,7 @@ export class ApiClient {
             return response.data;
 
         } catch (e: any) {
-            throw ErrorHandler.getFromHttpError(e, url, 'web API');
+            throw ErrorFactory.getFromHttpError(e, url, 'web API');
         }
     }
 }

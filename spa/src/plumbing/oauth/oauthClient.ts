@@ -1,9 +1,8 @@
-import {UserManager} from 'oidc-client-ts';
+import {UserManager, WebStorageStateStore} from 'oidc-client-ts';
 import {UserInfo} from '../../api/entities/userInfo';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
-import {ErrorHandler} from '../errors/errorHandler';
-import {UIError} from '../errors/uiError';
+import {ErrorFactory} from '../errors/errorFactory';
 
 /*
  * The entry point for initiating login and token requests
@@ -11,7 +10,6 @@ import {UIError} from '../errors/uiError';
 export class OAuthClient {
 
     private readonly userManager: UserManager;
-    private loginTime: number | null;
 
     public constructor(config: OAuthConfiguration) {
 
@@ -27,6 +25,12 @@ export class OAuthClient {
             // Use the Authorization Code Flow (PKCE)
             response_type: 'code',
 
+            // The first code example uses session storage of tokens
+            userStore: new WebStorageStateStore({ store: sessionStorage }),
+
+            // Store redirect state such as PKCE verifiers in session storage, for reliable cleanup
+            stateStore: new WebStorageStateStore({ store: sessionStorage }),
+
             // The UI loads user info from the OpenID Connect user info endpoint
             loadUserInfo: true,
 
@@ -38,7 +42,15 @@ export class OAuthClient {
 
         // Create the user manager
         this.userManager = new UserManager(settings);
-        this.loginTime = null;
+    }
+
+    /*
+     * Indicate whether the user has a valid session
+     */
+    public async getIsLoggedIn(): Promise<boolean> {
+
+        const user = await this.userManager.getUser();
+        return !!user;
     }
 
     /*
@@ -57,27 +69,14 @@ export class OAuthClient {
     /*
      * Do the interactive login redirect on the main window
      */
-    public async startLogin(api401Error: UIError | null): Promise<void> {
+    public async startLogin(currentLocation: string): Promise<void> {
 
         try {
 
             // First store the SPA's client side location
             const data = {
-                hash: location.hash.length > 0 ? location.hash : '#',
+                hash: currentLocation || '#',
             };
-
-            // The first code sample does not yet implement token refresh
-            // This prevents a redirect loop, where a new login is triggered very soon after a previous one
-            // This can potentially happen if the API access token validation fails with a 401
-            // You can simulate the condition if you configure an incorrect issuer in the API configuration
-            if (api401Error && this.loginTime) {
-
-                const currentTime = new Date().getTime();
-                const millisecondsSinceLogin = currentTime - this.loginTime;
-                if (millisecondsSinceLogin < 250) {
-                    throw api401Error;
-                }
-            }
 
             // Start a login redirect
             await this.userManager.signinRedirect({state: data});
@@ -85,7 +84,7 @@ export class OAuthClient {
         } catch (e: any) {
 
             // Handle OAuth specific errors, such as CORS errors calling the metadata endpoint
-            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
+            throw ErrorFactory.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
         }
     }
 
@@ -114,13 +113,10 @@ export class OAuthClient {
                         // We will return to the app location before the login redirect
                         redirectLocation = (user.state as any).hash;
 
-                        // The login time enables a check that avoids redirect loops when configuration is invalid
-                        this.loginTime = new Date().getTime();
-
                     } catch (e: any) {
 
                         // Handle and rethrow OAuth response errors
-                        throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
+                        throw ErrorFactory.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
 
                     } finally {
 
@@ -163,5 +159,12 @@ export class OAuthClient {
             user.access_token = `${user.access_token}x`;
             this.userManager.storeUser(user);
         }
+    }
+
+    /*
+     * For the first code sample, the session expires when APIs return a 401 response
+     */
+    public async clearLoginState(): Promise<void> {
+        await this.userManager.removeUser();
     }
 }

@@ -8,7 +8,7 @@ import {DomUtils} from './domUtils';
 export class UserInfoView {
 
     /*
-     * Run the view, which will get user info from session storage
+     * Run the view, which gets user info that oidc-client-ts saves to session storage
      */
     public async load(oauthClient: OAuthClient): Promise<void> {
 
@@ -24,5 +24,12 @@ export class UserInfoView {
             // Blank out otherwise
             DomUtils.text('#username', '');
         }
+    }
+
+    /*
+     * Clear the view when we are not logged in
+     */
+    public clear(): void {
+        DomUtils.text('#username', '');
     }
 }

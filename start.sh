@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#########################################################################################################
+###############################################################################################
 # A script to spin up the code sample, to be run from a terminal
-# Open source libraries are useed by the SPA and API, with AWS Cognito as the default Authorization Server
-#########################################################################################################
+# The SPA and API use open source libraries and AWS Cognito as the default authorization server
+###############################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 

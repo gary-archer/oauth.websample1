@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {Configuration} from '../configuration/configuration';
 import {AxiosUtils} from '../plumbing/utilities/axiosUtils';
-import {ErrorHandler} from '../plumbing/errors/errorHandler';
+import {ErrorFactory} from '../plumbing/errors/errorFactory';
 
 /*
  * Logic related to making HTTP calls
@@ -23,7 +23,7 @@ export class ConfigurationLoader {
 
         } catch (xhr) {
 
-            throw ErrorHandler.getFromHttpError(xhr, fileName, 'Web Server');
+            throw ErrorFactory.getFromHttpError(xhr, fileName, 'Web Server');
         }
     }
 }

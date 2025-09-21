@@ -2,6 +2,7 @@ import mustache from 'mustache';
 import {ApiClient} from '../api/client/apiClient';
 import {CompanyTransactions} from '../api/entities/companyTransactions';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
+import {CurrentLocation} from '../plumbing/utilities/currentLocation';
 import {DomUtils} from './domUtils';
 
 /*
@@ -23,6 +24,9 @@ export class TransactionsView {
     public async load(): Promise<void> {
 
         try {
+
+            // Record the current location, to support deep linking after login
+            CurrentLocation.path = location.hash;
 
             // Try to get data
             const data = await this.apiClient.getCompanyTransactions(this.companyId);

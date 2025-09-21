@@ -2,6 +2,7 @@ import {ApiClient} from '../api/client/apiClient';
 import {CompaniesView} from './companiesView';
 import {DomUtils} from './domUtils';
 import {ErrorView} from './errorView';
+import {LoginRequiredView} from './loginRequiredView';
 import {TransactionsView} from './transactionsView';
 
 /*
@@ -27,19 +28,28 @@ export class Router {
         DomUtils.createDiv('#root', 'main');
         this.errorView.clear();
 
-        // The transactions view has a URL such as #company=2
-        const transactionsCompany = this.getTransactionsViewId();
-        if (transactionsCompany) {
+        if (this.isInLoggedOutView()) {
 
-            // If there is an id we move to the transactions view
-            const view = new TransactionsView(this.apiClient, transactionsCompany);
+            // If the user needs to sign in, show the login required view
+            const view = new LoginRequiredView();
             await view.load();
 
         } else {
 
-            // Otherwise we show the companies list view
-            const view = new CompaniesView(this.apiClient);
-            await view.load();
+            // The transactions view has a URL such as #company=2
+            const transactionsCompany = this.getTransactionsViewId();
+            if (transactionsCompany) {
+
+                // If there is an id we move to the transactions view
+                const view = new TransactionsView(this.apiClient, transactionsCompany);
+                await view.load();
+
+            } else {
+
+                // Otherwise we show the companies list view
+                const view = new CompaniesView(this.apiClient);
+                await view.load();
+            }
         }
     }
 
@@ -47,7 +57,7 @@ export class Router {
      * Return true if we are in the home view
      */
     public isInHomeView(): boolean {
-        return !this.getTransactionsViewId();
+        return !this.getTransactionsViewId() && !this.isInLoggedOutView();
     }
 
     /*
@@ -61,5 +71,12 @@ export class Router {
         }
 
         return '';
+    }
+
+    /*
+     * The logged out view has some special logic related to not showing user info
+     */
+    public isInLoggedOutView(): boolean {
+        return location.hash.indexOf('loggedout') !== -1;
     }
 }
