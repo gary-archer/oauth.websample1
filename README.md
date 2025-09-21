@@ -43,11 +43,10 @@ The browser is invoked and you can sign in with my AWS test credentials:
 * See the [Sample 1 Overview](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/basicspa-overview.mdx) for a summary of behaviour.
 * See the [Sample 1 Details](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/basicspa-execution.mdx) for further details on running the code.
 
-## 2021 Security Update
+## Problem Areas
 
-The initial SPA uses OAuth tokens in JavaScript code, to demonstrate a productive SPA architecture.\
-In 2021 the best practice is instead to keep tokens out of the browser, to limit the impact of XSS exploits.\
-See the [Final SPA Code Sample](https://github.com/gary-archer/oauth.websample.final) for a more secure implementation.
+- The initial SPA does not handle tokens in line with 2021 security recommendations and does not implement token refresh.
+- The [Updated SPA Code Sample](https://github.com/gary-archer/oauth.websample2) aims to improve upon these behaviors.
 
 ## Programming Languages
 
