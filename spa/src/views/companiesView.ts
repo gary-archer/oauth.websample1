@@ -21,8 +21,9 @@ export class CompaniesView {
     public async load(): Promise<void> {
 
         try {
+
             // Record the current location, to support deep linking after login
-            CurrentLocation.path = location.hash || '#';
+            CurrentLocation.path = location.hash;
 
             // Try to get data
             const data = await this.apiClient.getCompanyList();

@@ -15,7 +15,7 @@ export class ErrorCodes {
     // A general exception in the UI
     public static readonly generalUIError = 'ui_error';
 
-    // An error making an Ajax call
+    // An error making a fetch request
     public static readonly networkError = 'network_error';
 
     // An error receiving data as JSON

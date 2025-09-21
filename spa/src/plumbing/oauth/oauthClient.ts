@@ -2,7 +2,7 @@ import {UserManager, WebStorageStateStore} from 'oidc-client-ts';
 import {UserInfo} from '../../api/entities/userInfo';
 import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
-import {ErrorHandler} from '../errors/errorHandler';
+import {ErrorFactory} from '../errors/errorFactory';
 
 /*
  * The entry point for initiating login and token requests
@@ -25,11 +25,11 @@ export class OAuthClient {
             // Use the Authorization Code Flow (PKCE)
             response_type: 'code',
 
-            // Store redirect state such as PKCE verifiers in session storage
-            stateStore: new WebStorageStateStore({ store: sessionStorage }),
-
             // The first code example uses session storage of tokens
             userStore: new WebStorageStateStore({ store: sessionStorage }),
+
+            // Store redirect state such as PKCE verifiers in session storage, for reliable cleanup
+            stateStore: new WebStorageStateStore({ store: sessionStorage }),
 
             // The UI loads user info from the OpenID Connect user info endpoint
             loadUserInfo: true,
@@ -75,7 +75,7 @@ export class OAuthClient {
 
             // First store the SPA's client side location
             const data = {
-                hash: currentLocation,
+                hash: currentLocation || '#',
             };
 
             // Start a login redirect
@@ -84,7 +84,7 @@ export class OAuthClient {
         } catch (e: any) {
 
             // Handle OAuth specific errors, such as CORS errors calling the metadata endpoint
-            throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
+            throw ErrorFactory.getFromLoginOperation(e, ErrorCodes.loginRequestFailed);
         }
     }
 
@@ -116,7 +116,7 @@ export class OAuthClient {
                     } catch (e: any) {
 
                         // Handle and rethrow OAuth response errors
-                        throw ErrorHandler.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
+                        throw ErrorFactory.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
 
                     } finally {
 
@@ -164,7 +164,7 @@ export class OAuthClient {
     /*
      * For the first code sample, the session expires when APIs return a 401 response
      */
-    public async setSessionExpired(): Promise<void> {
+    public async clearLoginState(): Promise<void> {
         await this.userManager.removeUser();
     }
 }

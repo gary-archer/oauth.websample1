@@ -1,6 +1,6 @@
 import mustache from 'mustache';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
-import {ErrorHandler} from '../plumbing/errors/errorHandler';
+import {ErrorFactory} from '../plumbing/errors/errorFactory';
 import {ErrorFormatter} from '../plumbing/errors/errorFormatter';
 import {ErrorLine} from '../plumbing/errors/errorLine';
 import {UIError} from '../plumbing/errors/uiError';
@@ -47,7 +47,7 @@ export class ErrorView {
     public report(exception: any): void {
 
         // Get the error into an object
-        const error = ErrorHandler.getFromException(exception);
+        const error = ErrorFactory.getFromException(exception);
         if (error.getErrorCode() == ErrorCodes.loginRequired) {
 
             // Do not render this error and instead move to the login required view
