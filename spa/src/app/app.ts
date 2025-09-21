@@ -2,6 +2,7 @@ import {ApiClient} from '../api/client/apiClient';
 import {Configuration} from '../configuration/configuration';
 import {ConfigurationLoader} from '../configuration/configurationLoader';
 import {OAuthClient} from '../plumbing/oauth/oauthClient';
+import {CurrentLocation} from '../plumbing/utilities/currentLocation';
 import {OidcLogger} from '../plumbing/utilities/oidcLogger';
 import {ErrorView} from '../views/errorView';
 import {HeaderButtonsView} from '../views/headerButtonsView';
@@ -9,7 +10,7 @@ import {Router} from '../views/router';
 import {TitleView} from '../views/titleView';
 
 /*
- * The application class
+ * The application shell
  */
 class App {
 
@@ -110,9 +111,24 @@ class App {
      */
     private async loadMainView(): Promise<void> {
 
+        // Indicate busy
         this.headerButtonsView.disableSessionButtons();
+
+        // Load the view
         await this.router.loadView();
-        this.headerButtonsView.enableSessionButtons();
+
+        if (this.router.isInLoggedOutView()) {
+
+            // If we are logged out then clear user info
+            this.headerButtonsView.setIsAuthenticated(false);
+            this.titleView.clearUserInfo();
+
+        } else {
+
+            // Otherwise re-enable buttons
+            this.headerButtonsView.setIsAuthenticated(true);
+            this.headerButtonsView.enableSessionButtons();
+        }
     }
 
     /*
@@ -151,15 +167,23 @@ class App {
 
             if (this.isInitialised) {
 
-                if (this.router.isInHomeView()) {
+                if (!await this.oauthClient.getIsLoggedIn()) {
 
-                    // Force a reload if we are already in the home view
-                    await this.router.loadView();
+                    // Start a login if required
+                    await this.oauthClient.startLogin(CurrentLocation.path);
 
                 } else {
 
-                    // Otherwise move to the home view
-                    location.hash = '#';
+                    if (this.router.isInHomeView()) {
+
+                        // Force a reload if we are already in the home view
+                        await this.router.loadView();
+
+                    } else {
+
+                        // Otherwise move to the home view
+                        location.hash = '#';
+                    }
                 }
             }
 

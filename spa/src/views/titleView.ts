@@ -39,4 +39,11 @@ export class TitleView {
     public async loadUserInfo(oauthClient: OAuthClient): Promise<void> {
         await this.userInfoView.load(oauthClient);
     }
+
+    /*
+     * Clear the child user info view when requested
+     */
+    public clearUserInfo(): void {
+        this.userInfoView.clear();
+    }
 }

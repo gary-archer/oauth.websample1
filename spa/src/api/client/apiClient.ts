@@ -52,9 +52,6 @@ export class ApiClient {
         const token = await this.oauthClient.getAccessToken();
         if (!token) {
 
-            // Trigger a login redirect if there is no access token yet
-            await this.oauthClient.startLogin(null);
-
             // This completes the API request with an error that the UI does not render
             throw ErrorHandler.getFromLoginRequired();
         }
@@ -71,9 +68,8 @@ export class ApiClient {
             if (error.getStatusCode() !== 401)
                 throw e;
 
-            // When the access token expires, trigger a login redirect
             // Token refresh is not implemented until the second code sample
-            await this.oauthClient.startLogin(error);
+            await this.oauthClient.setSessionExpired();
             throw ErrorHandler.getFromLoginRequired();
         }
     }
