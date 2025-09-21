@@ -27,7 +27,7 @@ You must use custom development domains and add this DNS entry to your hosts fil
 127.0.0.1 localhost api.authsamples-dev.com
 ```
 
-Ensure that Node.js is installed, then run the start script:
+Then run the start script to run the SPA and API in separate terminal windows:
 
 ```bash
 ./start.sh
