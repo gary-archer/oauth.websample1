@@ -17,10 +17,15 @@ export class ResponseWriter {
 
     /*
      * This blog's examples use a JSON response to provide client friendly OAuth errors
-     * When required, such as to inform clients how to integrate, a www-authenticate header can be added here
-     * - https://datatracker.ietf.org/doc/html/rfc6750#section-3
      */
     public static writeErrorResponse(response: Response, error: ClientError): void {
+
+        // Add the standard header for interoperability
+        if (error.getStatusCode() === 401) {
+            response.setHeader(
+                'www-authenticate',
+                `Bearer error="${error.getStatusCode()}", error_description="${error.message}"`);
+        }
 
         response.setHeader('content-type', 'application/json');
         response.status(error.getStatusCode()).send(JSON.stringify(error.toResponseFormat()));
