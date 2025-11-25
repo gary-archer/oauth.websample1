@@ -24,7 +24,7 @@ export class ResponseWriter {
         if (error.getStatusCode() === 401) {
             response.setHeader(
                 'www-authenticate',
-                `Bearer error="${error.getStatusCode()}", error_description="${error.message}"`);
+                `Bearer error="${error.getErrorCode()}", error_description="${error.message}"`);
         }
 
         response.setHeader('content-type', 'application/json');
