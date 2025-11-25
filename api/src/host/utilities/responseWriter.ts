@@ -16,11 +16,11 @@ export class ResponseWriter {
     }
 
     /*
-     * This blog's examples use a JSON response to provide client friendly OAuth errors
+     * This blog's clients read a JSON response, to handle OAuth errors in the same way as other errors
+     * Also add the standard www-authenticate header for interoperability
      */
     public static writeErrorResponse(response: Response, error: ClientError): void {
 
-        // Add the standard header for interoperability
         if (error.getStatusCode() === 401) {
             response.setHeader(
                 'www-authenticate',
