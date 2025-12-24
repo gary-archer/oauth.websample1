@@ -14,7 +14,7 @@ export default defineConfig((configEnv: ConfigEnv) => {
                 input: './src/app/app.ts',
                 output: {
 
-                    entryFileNames: '[name].bundle.js',
+                    entryFileNames: 'app.bundle.js',
                     chunkFileNames: '[name].bundle.js',
                     manualChunks: (id: string) => {
                         if (id.includes('node_modules')) {
