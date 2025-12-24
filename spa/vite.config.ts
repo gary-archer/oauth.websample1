@@ -25,14 +25,6 @@ export default defineConfig((configEnv: ConfigEnv) => {
                 },
             }
         },
-        /*resolve: {
-            alias: [
-                {
-                    find: '@',
-                    replacement: path.resolve(dirname, 'src'),
-                },
-            ],
-        },*/
         define: {
             IS_DEBUG: `${configEnv.mode === 'development'}`
         },

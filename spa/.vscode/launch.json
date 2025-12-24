@@ -5,8 +5,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch SPA",
-            "url": "http://localhost/spa",
-            "sourceMaps": true
+            "url": "http://localhost/spa"
         }
     ]
 }
