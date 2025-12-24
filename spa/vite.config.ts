@@ -1,29 +1,38 @@
+// import path from 'path';
 import {ConfigEnv, defineConfig, UserConfig} from 'vite';
 
+// const dirname = process.cwd();
 export default defineConfig((configEnv: ConfigEnv) => {
 
     const userConfig: UserConfig = {
 
+        base: '/spa',
         build: {
             minify: configEnv.mode === 'production',
             outDir: 'dist',
-            sourcemap: true,
-
             rollupOptions: {
                 input: './src/app/app.ts',
                 output: {
 
                     entryFileNames: '[name].bundle.js',
                     chunkFileNames: '[name].bundle.js',
-
                     manualChunks: (id: string) => {
                         if (id.includes('node_modules')) {
                             return 'vendor';
                         }
                     },
+                    sourcemap: true,
                 },
             }
         },
+        /*resolve: {
+            alias: [
+                {
+                    find: '@',
+                    replacement: path.resolve(dirname, 'src'),
+                },
+            ],
+        },*/
         define: {
             IS_DEBUG: `${configEnv.mode === 'development'}`
         },

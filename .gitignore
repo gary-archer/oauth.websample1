@@ -1,7 +1,6 @@
 .DS_Store
-.gitignore
 node_modules
 dist
-/spa/spa.config.json
-/api/api.config.json
-license.json
+certs/*.p12
+certs/*.crt
+certs/*.key
