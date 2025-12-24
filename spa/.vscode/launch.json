@@ -6,10 +6,7 @@
             "request": "launch",
             "name": "Launch SPA",
             "url": "http://localhost/spa",
-            "sourceMaps": true,
-            "sourceMapPathOverrides":{
-                "webpack:///./*": "${workspaceRoot}/spa/dist/*"
-            }
+            "sourceMaps": true
         }
     ]
 }
