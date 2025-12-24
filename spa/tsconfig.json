@@ -7,7 +7,6 @@
     "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
     "outDir": "dist"
   },
   "include": [

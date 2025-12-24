@@ -12,8 +12,8 @@
   },
   "scripts": {
     "lint": "npx eslint . --ignore-pattern dist",
-    "start": "npm run clean && vite build",
-    "build": "npm run clean && vite build",
+    "start": "npm run clean && vite build --mode development",
+    "build": "npm run clean && vite build --mode production",
     "clean": "rm -rf dist && mkdir dist"
   },
   "dependencies": {
