@@ -12,9 +12,9 @@
   },
   "scripts": {
     "lint": "npx eslint . --ignore-pattern dist",
-    "start": "npm run clean && vite build --mode development --watch",
-    "buildRelease": "npm run clean && vite build --mode production",
-    "clean": "rm -rf dist && mkdir dist"
+    "start": "vite",
+    "build": "vite build --mode development && vite",
+    "buildRelease": "vite build --mode production"
   },
   "dependencies": {
     "axios": "^1.13.2",

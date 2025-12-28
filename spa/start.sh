@@ -27,11 +27,11 @@ if [ $? -ne 0 ]; then
 fi
 
 #
-# Run the command to build and watch Javascript
+# Serve the SPA code with hot reloading
 #
-npm start
+npx vite
 if [ $? -ne 0 ]; then
-  echo 'Problem encountered running the SPA'
+  echo 'Problem encountered building SPA static content'
   read -n 1
   exit 1
 fi
