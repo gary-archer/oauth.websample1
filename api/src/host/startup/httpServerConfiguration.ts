@@ -1,6 +1,8 @@
 import cors from 'cors';
 import express from 'express';
 import {Application} from 'express';
+import fs from 'node:fs/promises';
+import https from 'https';
 import {Configuration} from '../configuration/configuration.js';
 import {ApiController} from '../controller/apiController.js';
 import {ApiLogger} from '../logging/apiLogger.js';
@@ -61,10 +63,30 @@ export class HttpServerConfiguration {
     /*
      * Start serving requests
      */
-    public startListening(): void {
+    public async startListening(): Promise<void> {
 
-        this.express.listen(this.configuration.api.port, () => {
-            console.log(`API is listening on HTTP port ${this.configuration.api.port}`);
-        });
+        const port = this.configuration.api.port;
+        if (this.configuration.api.sslCertificateFileName && this.configuration.api.sslCertificatePassword) {
+
+            // Load the certificate file from disk
+            const pfxFile = await fs.readFile(this.configuration.api.sslCertificateFileName);
+            const sslOptions = {
+                pfx: pfxFile,
+                passphrase: this.configuration.api.sslCertificatePassword,
+            };
+
+            // Start listening on HTTPS
+            const httpsServer = https.createServer(sslOptions, this.express);
+            httpsServer.listen(port, () => {
+                console.log(`API is listening on HTTPS port ${port}`);
+            });
+
+        } else {
+
+            // Otherwise listen over HTTP
+            this.express.listen(port, () => {
+                console.log(`API is listening on HTTP port ${port}`);
+            });
+        }
     }
 }

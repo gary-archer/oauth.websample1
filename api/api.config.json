@@ -1,8 +1,10 @@
 {
     "api": {
-        "port": 80,
+        "port": 443,
+        "sslCertificateFileName": "../certs/authsamples-dev.ssl.p12",
+        "sslCertificatePassword": "Password1",
         "trustedOrigins": [
-            "http://localhost"
+            "https://www.authsamples-dev.com"
         ],
         "useProxy": false,
         "proxyUrl": "http://127.0.0.1:8888"

@@ -1,9 +1,8 @@
 #!/bin/bash
 
-###############################################################################################
-# A script to spin up the code sample, to be run from a terminal
-# The SPA and API use open source libraries and AWS Cognito as the default authorization server
-###############################################################################################
+###################################################################################
+# Run the OAuth-secured SPA and API, which use tokens from the authorization server
+###################################################################################
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
@@ -24,6 +23,14 @@ case "$(uname -s)" in
     PLATFORM="LINUX"
 	;;
 esac
+
+#
+# Create SSL development certificates if required
+#
+./certs/create.sh
+if [ $? -ne 0 ]; then
+  exit 1
+fi
 
 #
 # Run the SPA and API
@@ -48,8 +55,8 @@ fi
 #
 # Set URLs to wait for
 #
-SPA_URL='http://localhost/spa'
-API_URL='http://api.authsamples-dev.com/api'
+SPA_URL='https://www.authsamples-dev.com/spa'
+API_URL='https://api.authsamples-dev.com/api'
 
 #
 # Wait for the API to come up

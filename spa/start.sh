@@ -35,8 +35,3 @@ if [ $? -ne 0 ]; then
   read -n 1
   exit 1
 fi
-
-#
-# Prevent automatic terminal closure
-#
-read -n 1

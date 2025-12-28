@@ -20,20 +20,39 @@ The SPA is a simple UI with some basic navigation between views, to render ficti
 
 ## Local Development Quick Start
 
-First ensure that Node.js 24+ is installed.\
-You must use custom development domains and add this DNS entry to your hosts file:
+To run the code sample locally you must configure some infrastructure before you run the code.
+
+### Configure DNS and SSL
+
+Configure custom development domains by adding these DNS entries to your hosts file:
 
 ```bash
-127.0.0.1 localhost api.authsamples-dev.com
+127.0.0.1 localhost www.authsamples-dev.com api.authsamples-dev.com
 ```
 
-Then run the start script to run the SPA and API in separate terminal windows:
+Install OpenSSL 3+ if required, create a secrets folder, then create development certificates:
+
+```bash
+export SECRETS_FOLDER="$HOME/secrets"
+mkdir -p "$SECRETS_FOLDER"
+./certs/create.sh
+```
+
+Finally, configure [Browser SSL Trust](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/developer-ssl-setup.mdx#trust-a-root-certificate-in-browsers) for the SSL root certificate at this location:
+
+```text
+./certs/authsamples-dev.ca.crt
+```
+
+### Run the Code
+
+Ensure that Node.js 24+ is installed, then build and run the SPA and API:
 
 ```bash
 ./start.sh
 ```
 
-The browser is invoked and you can sign in with my AWS test credentials:
+The system browser runs and you can sign in with my AWS test credentials:
 
 - User: `guestuser@example.com`
 - Password: `GuestPassword1`
@@ -42,11 +61,6 @@ The browser is invoked and you can sign in with my AWS test credentials:
 
 * See the [Sample 1 Overview](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/basicspa-overview.mdx) for a summary of behaviour.
 * See the [Sample 1 Details](https://github.com/gary-archer/oauth.blog/tree/master/public/posts/basicspa-execution.mdx) for further details on running the code.
-
-## Problem Areas
-
-- The initial SPA does not handle tokens in line with 2021 security recommendations and does not implement token refresh.
-- The [Updated SPA Code Sample](https://github.com/gary-archer/oauth.websample2) aims to improve upon these behaviors.
 
 ## Programming Languages
 
@@ -59,3 +73,9 @@ The browser is invoked and you can sign in with my AWS test credentials:
 * The SPA uses the [oidc-client-ts](https://github.com/authts/oidc-client-ts) library to implement OpenID Connect.
 * The API uses the [jose](https://github.com/panva/jose) library to validate JWT access tokens.
 * AWS Cognito is the default authorization server for the SPA and API.
+
+## Limitations
+
+- The SPA uses tokens in the browser, which is against 2021 security best practices.
+- The SPA uses the original iframe-based silent token renewal which has some usability problems.
+- The [Updated SPA Code Sample](https://github.com/gary-archer/oauth.websample2) progresses the SPA further.

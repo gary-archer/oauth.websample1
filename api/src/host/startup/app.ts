@@ -21,7 +21,7 @@ try {
     httpServer.initializeWebStaticContentHosting();
 
     // Start receiving requests
-    httpServer.startListening();
+    await httpServer.startListening();
 
 } catch (e: any) {
 
