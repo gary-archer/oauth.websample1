@@ -17,9 +17,6 @@ try {
     const httpServer = new HttpServerConfiguration(expressApp, configuration, logger);
     await httpServer.initializeApi();
 
-    // For demo purposes the API also hosts static web content
-    httpServer.initializeWebStaticContentHosting();
-
     // Start receiving requests
     await httpServer.startListening();
 
