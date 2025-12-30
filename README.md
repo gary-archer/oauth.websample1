@@ -79,4 +79,4 @@ The system browser runs and you can sign in with my AWS test credentials:
 
 - The SPA uses tokens in the browser, which is against 2021 security best practices.
 - The SPA uses the original iframe-based silent token renewal which has some usability problems.
-- The [Updated SPA Code Sample](https://github.com/gary-archer/oauth.websample2) progresses the SPA further.
+- The [Updated SPA Code Sample](https://github.com/gary-archer/oauth.websample2) progresses the SPA.
