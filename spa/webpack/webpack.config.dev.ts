@@ -45,9 +45,9 @@ const devConfig: webpack.Configuration = {
     devServer,
 
     // Enable stepping through the SPA's TypeScript code in the Visual Studio Code debugger
-    output: {
+    output: Object.assign({}, baseConfig.output, {
         devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]',
-    },
+    }),
 
     plugins:[
 
