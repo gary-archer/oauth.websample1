@@ -10,28 +10,30 @@ import {DomUtils} from './domUtils';
 export class CompaniesView {
 
     private readonly apiClient: ApiClient;
-    private data: Company[];
+    private data: Company[] | null;
 
     public constructor(apiClient: ApiClient) {
         this.apiClient = apiClient;
-        this.data = [];
+        this.data = null;
     }
 
     /*
      * Wait for data then render it
      */
-    public async load(): Promise<void> {
+    public async run(forceReload: boolean): Promise<void> {
 
         try {
 
             // Record the current location, to support deep linking after login
             CurrentLocation.path = location.hash;
 
-            // Try to get data
-            this.data = await this.apiClient.getCompanyList();
+            // Try to get data if required
+            if (!this.data || forceReload) {
+                this.data = await this.apiClient.getCompanyList();
+            }
 
-            // Render new content
-            this.renderData();
+            // Render the latest data
+            this.renderData(this.data);
 
         } catch (e: any) {
 
@@ -44,10 +46,10 @@ export class CompaniesView {
     /*
      * Create a view model and render HTML from the API response
      */
-    public renderData(): void {
+    private renderData(data: Company[]): void {
 
         const viewModel = {} as any;
-        viewModel.companies = this.data.map((company: Company) => {
+        viewModel.companies = data.map((company: Company) => {
             return {
                 id: company.id,
                 name: company.name,
@@ -58,7 +60,11 @@ export class CompaniesView {
             };
         });
 
-        this.renderMobileView(viewModel);
+        if (window.innerWidth >= 768) {
+            this.renderDesktopView(viewModel);
+        } else {
+            this.renderMobileView(viewModel);
+        }
     }
 
     /*

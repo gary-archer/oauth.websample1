@@ -12,17 +12,21 @@ export class Router {
 
     private apiClient: ApiClient;
     private errorView: ErrorView;
+    private companiesView: CompaniesView | null;
+    private transactionsView: TransactionsView | null;
 
     public constructor(apiClient: ApiClient, errorView: ErrorView) {
 
         this.apiClient = apiClient;
         this.errorView = errorView;
+        this.companiesView = null;
+        this.transactionsView = null;
     }
 
     /*
-     * Execute a view based on the hash URL data
+     * Run the view based on the hash URL data
      */
-    public async loadView(): Promise<void> {
+    public async runView(forceReload: boolean = false): Promise<void> {
 
         // Initialise
         DomUtils.createDiv('#root', 'main');
@@ -37,18 +41,18 @@ export class Router {
         } else {
 
             // The transactions view has a URL such as #company=2
-            const transactionsCompany = this.getTransactionsViewId();
-            if (transactionsCompany) {
+            const companyId = this.getTransactionsViewId();
+            if (companyId) {
 
                 // If there is an id we move to the transactions view
-                const view = new TransactionsView(this.apiClient, transactionsCompany);
-                await view.load();
+                const view = this.createTransactionsView(companyId);
+                await view.run(forceReload);
 
             } else {
 
                 // Otherwise we show the companies list view
-                const view = new CompaniesView(this.apiClient);
-                await view.load();
+                const view = this.createCompaniesView();
+                await view.run(forceReload);
             }
         }
     }
@@ -78,5 +82,29 @@ export class Router {
      */
     public isInLoggedOutView(): boolean {
         return location.hash.indexOf('loggedout') !== -1;
+    }
+
+    /*
+     * Create the companies view the first time
+     */
+    private createCompaniesView(): CompaniesView {
+
+        if (!this.companiesView) {
+            this.companiesView = new CompaniesView(this.apiClient);
+        }
+
+        return this.companiesView;
+    }
+
+    /*
+     * Create the transactions view the first time or if the company ID changes
+     */
+    private createTransactionsView(companyId: string): TransactionsView {
+
+        if (!this.transactionsView || this.transactionsView.getCompanyId() !== companyId) {
+            this.transactionsView = new TransactionsView(this.apiClient, companyId);
+        }
+
+        return this.transactionsView;
     }
 }

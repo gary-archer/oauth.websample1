@@ -12,27 +12,35 @@ export class TransactionsView {
 
     private readonly apiClient: ApiClient;
     private readonly companyId: string;
+    private data: CompanyTransactions | null;
 
     public constructor(apiClient: ApiClient, companyId: string) {
         this.apiClient = apiClient;
         this.companyId = companyId;
+        this.data = null;
+    }
+
+    public getCompanyId(): string {
+        return this.companyId;
     }
 
     /*
     * Wait for data then render it
     */
-    public async load(): Promise<void> {
+    public async run(forceReload: boolean): Promise<void> {
 
         try {
 
             // Record the current location, to support deep linking after login
             CurrentLocation.path = location.hash;
 
-            // Try to get data
-            const data = await this.apiClient.getCompanyTransactions(this.companyId);
+            // Try to get data if required
+            if (!this.data || forceReload) {
+                this.data = await this.apiClient.getCompanyTransactions(this.companyId);
+            }
 
-            // Render new content
-            this.renderData(data);
+            // Render the latest data
+            this.renderData(this.data);
 
         } catch (uiError: any) {
 

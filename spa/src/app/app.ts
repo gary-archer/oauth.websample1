@@ -38,6 +38,7 @@ class App {
         try {
             // Start listening for hash changes
             window.onhashchange = this.onHashChange;
+            window.onresize = this.onResize;
 
             // Do the initial render
             this.initialRender();
@@ -49,7 +50,7 @@ class App {
             await this.handleLoginResponse();
 
             // Attempt to load data from the API, which may trigger a login redirect
-            await this.loadMainView();
+            await this.runMainView();
 
         } catch (e: any) {
 
@@ -109,13 +110,14 @@ class App {
     /*
      * Load API data for the main view and update UI controls
      */
-    private async loadMainView(): Promise<void> {
+    private async runMainView(forceReload: boolean = false): Promise<void> {
 
         // Indicate busy
+        console.log('*** run main view');
         this.headerButtonsView.disableSessionButtons();
 
         // Load the view
-        await this.router.loadView();
+        await this.router.runView(forceReload);
 
         if (this.router.isInLoggedOutView()) {
 
@@ -143,13 +145,23 @@ class App {
 
             // Update the main view when the hash location changes
             if (this.isInitialised) {
-                await this.loadMainView();
+                await this.runMainView();
             }
 
         } catch (e: any) {
 
             // Report failures
             this.errorView.report(e);
+        }
+    }
+
+    /*
+     * The companies view renders differently in a smaller mobile layout, so handle resize events
+     */
+    private async onResize(): Promise<void> {
+
+        if (this.isInitialised) {
+            setTimeout(async () => await this.runMainView(), 250);
         }
     }
 
@@ -177,7 +189,7 @@ class App {
                     if (this.router.isInHomeView()) {
 
                         // Force a reload if we are already in the home view
-                        await this.router.loadView();
+                        await this.router.runView();
 
                     } else {
 
@@ -198,8 +210,8 @@ class App {
     private async onReloadData(): Promise<void> {
 
         try {
-            // Try to reload data
-            await this.loadMainView();
+            // Force a reload of data
+            await this.runMainView(true);
 
         } catch (e: any) {
 
@@ -221,8 +233,9 @@ class App {
     private setupCallbacks(): void {
         this.initialiseApp = this.initialiseApp.bind(this);
         this.handleLoginResponse = this.handleLoginResponse.bind(this);
-        this.loadMainView = this.loadMainView.bind(this);
+        this.runMainView = this.runMainView.bind(this);
         this.onHashChange = this.onHashChange.bind(this);
+        this.onResize = this.onResize.bind(this);
         this.onHome = this.onHome.bind(this);
         this.onReloadData = this.onReloadData.bind(this);
         this.onExpireToken = this.onExpireToken.bind(this);
