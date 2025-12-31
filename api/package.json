@@ -2,8 +2,6 @@
   "name": "basicapi",
   "version": "1.0.0",
   "description": "A Basic OAuth secured API that validates JWTs",
-  "main": "app.ts",
-  "keywords": [],
   "author": "Gary Archer",
   "license": "MIT",
   "type": "module",

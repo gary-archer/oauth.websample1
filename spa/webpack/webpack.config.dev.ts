@@ -32,7 +32,7 @@ const devServer: webpackDevServer.Configuration = {
     historyApiFallback: {
         index: '/spa/',
     },
-    hot: true,
+    hot: false,
     allowedHosts: [
         'www.authsamples-dev.com',
     ],
@@ -49,8 +49,9 @@ const devConfig: webpack.Configuration = {
         devtoolModuleFilenameTemplate: 'file:///[absolute-resource-path]',
     }),
 
-    // Pass a variable through to the frontend to tell it to display stack traces
     plugins:[
+
+        // Pass a variable through to the frontend to tell it to display stack traces
         new webpack.DefinePlugin({
             IS_DEBUG: 'true',
         }),
