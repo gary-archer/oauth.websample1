@@ -110,7 +110,7 @@ class App {
     /*
      * Load API data for the main view and update UI controls
      */
-    private async runMainView(forceReload: boolean = false): Promise<void> {
+    private async runMainView(forceReload = false): Promise<void> {
 
         // Indicate busy
         this.headerButtonsView.disableSessionButtons();
@@ -155,12 +155,21 @@ class App {
     }
 
     /*
-     * The companies view renders differently in a smaller mobile layout, so handle resize events
+     * After a resize, re-run the main view in case it needs to render a mobile or desktop layout
      */
     private async onResize(): Promise<void> {
 
         if (this.isInitialised) {
-            setTimeout(async () => await this.runMainView(), 250);
+
+            const viewRunner = async () => {
+                try {
+                    await this.runMainView();
+                } catch (e: any) {
+                    this.errorView.report(e);
+                }
+            };
+
+            setTimeout(async () => viewRunner(), 250);
         }
     }
 
@@ -188,7 +197,7 @@ class App {
                     if (this.router.isInHomeView()) {
 
                         // Force a reload if we are already in the home view
-                        await this.router.runView();
+                        await this.runMainView();
 
                     } else {
 

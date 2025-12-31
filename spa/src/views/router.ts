@@ -26,7 +26,7 @@ export class Router {
     /*
      * Run the view based on the hash URL data
      */
-    public async runView(forceReload: boolean = false): Promise<void> {
+    public async runView(forceReload: boolean): Promise<void> {
 
         // Initialise
         DomUtils.createDiv('#root', 'main');
