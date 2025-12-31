@@ -10,9 +10,11 @@ import {DomUtils} from './domUtils';
 export class CompaniesView {
 
     private readonly apiClient: ApiClient;
+    private data: Company[];
 
     public constructor(apiClient: ApiClient) {
         this.apiClient = apiClient;
+        this.data = [];
     }
 
     /*
@@ -26,10 +28,10 @@ export class CompaniesView {
             CurrentLocation.path = location.hash;
 
             // Try to get data
-            const data = await this.apiClient.getCompanyList();
+            this.data = await this.apiClient.getCompanyList();
 
             // Render new content
-            this.renderData(data);
+            this.renderData();
 
         } catch (e: any) {
 
@@ -40,13 +42,12 @@ export class CompaniesView {
     }
 
     /*
-     * Render HTML based on the API response
+     * Create a view model and render HTML from the API response
      */
-    private renderData(data: Company[]): void {
+    public renderData(): void {
 
-        // Build a view model from the API data
         const viewModel = {} as any;
-        viewModel.companies = data.map((company: Company) => {
+        viewModel.companies = this.data.map((company: Company) => {
             return {
                 id: company.id,
                 name: company.name,
@@ -57,7 +58,14 @@ export class CompaniesView {
             };
         });
 
-        // Construct a template
+        this.renderMobileView(viewModel);
+    }
+
+    /*
+     * Render a list view on large screens
+     */
+    private renderDesktopView(viewModel: any): void {
+
         const htmlTemplate =
             `<div class='card border-0'>
                 <div class='card-header row'>
@@ -81,7 +89,7 @@ export class CompaniesView {
                                 <a href='#company={{id}}'>View Transactions</a>
                             </div>
                             <div class='col-2 my-auto moneycolor fw-bold text-end'>
-                                {{formattedTargetUsd}}<br/>
+                                {{formattedTargetUsd}}
                             </div>
                             <div class='col-2 my-auto moneycolor fw-bold text-end'>
                                 {{formattedInvestmentUsd}}
@@ -94,7 +102,60 @@ export class CompaniesView {
                 </div>
             </div>`;
 
-        // Update the main element's content in a manner that handles dangerous characters correctly
+        const html = mustache.render(htmlTemplate, viewModel);
+        DomUtils.html('#main', html);
+    }
+
+    /*
+     * Render a card view on small screens
+     */
+    private renderMobileView(viewModel: any): void {
+
+        const htmlTemplate =
+            `<div class='card border-0'>
+                <div class='card-header row'>
+                    <div class='col-12 text-center mx-auto fw-bold'>
+                        Company List
+                    </div>
+                </div>
+                <div class='card-body'>
+                    {{#companies}}
+                        <div class='row mobileHeaderRow'>
+                            <div class='col-6 h4'>
+                                <a href='#company={{id}}'>{{name}}</a>
+                            </div>
+                            <div class='col-6 h4 fw-bold'>
+                                {{region}}
+                            </div>
+                        </div>
+                        <div class='row mobileRow'>
+                            <div class='col-6'>
+                                Target USD
+                            </div>
+                            <div class='col-6 moneycolor fw-bold'>
+                                {{formattedTargetUsd}}
+                            </div>
+                        </div>
+                        <div class='row mobileRow'>
+                            <div class='col-6'>
+                                Investment USD
+                            </div>
+                            <div class='col-6 moneycolor fw-bold'>
+                                {{formattedInvestmentUsd}}
+                            </div>
+                        </div>
+                        <div class='row mobileRow'>
+                            <div class='col-6'>
+                                # Investors
+                            </div>
+                            <div class='col-6 moneycolor fw-bold'>
+                                {{noInvestors}}
+                            </div>
+                        </div>
+                    {{/companies}}
+                </div>
+            </div>`;
+
         const html = mustache.render(htmlTemplate, viewModel);
         DomUtils.html('#main', html);
     }
