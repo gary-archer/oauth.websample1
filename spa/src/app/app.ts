@@ -113,7 +113,6 @@ class App {
     private async runMainView(forceReload: boolean = false): Promise<void> {
 
         // Indicate busy
-        console.log('*** run main view');
         this.headerButtonsView.disableSessionButtons();
 
         // Load the view
