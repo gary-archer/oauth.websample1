@@ -37,7 +37,7 @@ const options: RollupOptions = {
             return 'vendor';
         },
 
-        // Enable source maps and set paths to support debugging
+        // Enable source maps and update paths to support SPA debugging
         sourcemap: true,
         sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
             return path.resolve(path.dirname(sourcemapPath), relativeSourcePath);
