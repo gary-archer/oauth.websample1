@@ -1,1 +1,1 @@
-declare const IS_DEBUG: boolean;
+declare module 'rollup-plugin-serve';

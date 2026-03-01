@@ -26,6 +26,10 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+rm -rf dist 2>/dev/null
+mkdir dist
+mkdir dist/spa
+
 #
 # Start the SPA
 # On Linux ensure that you have first granted Node.js permissions to listen on port 443:

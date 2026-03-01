@@ -10,8 +10,8 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "start": "NODE_OPTIONS='--import tsx' npx webpack serve --config webpack/webpack.config.dev.ts",
-    "build": "NODE_OPTIONS='--import tsx' npx webpack --config webpack/webpack.config.prod.ts"
+    "start": "rollup --config ./rollup.config.ts --configPlugin @rollup/plugin-typescript --watch",
+    "build": "rollup --config ./rollup.config.ts --configPlugin @rollup/plugin-typescript"
   },
   "dependencies": {
     "axios": "^1.13.6",
@@ -20,17 +20,21 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-replace": "^6.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@types/mustache": "^4.2.5",
     "@types/node": "^24.10.3",
-    "copy-webpack-plugin": "^13.0.1",
     "eslint": "^9.39.2",
-    "ts-loader": "^9.5.4",
+    "rollup": "^4.59.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-livereload": "^2.0.5",
+    "rollup-plugin-serve": "^3.0.0",
+    "tslib": "^2.8.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.49.0",
-    "webpack": "^5.105.3",
-    "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.2",
-    "webpack-merge": "^6.0.1"
+    "typescript-eslint": "^8.49.0"
   }
 }

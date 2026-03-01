@@ -6,11 +6,12 @@
     "module":"ES2020",
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
-    "outDir": "dist",
+    "outDir": "dist/spa",
     "sourceMap": true
   },
   "include": [
-    "./src"
+    "./src",
+    "./rollup.config.ts"
   ],
   "exclude": [
     "node_modules"

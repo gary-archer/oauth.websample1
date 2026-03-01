@@ -22,7 +22,7 @@ export class TitleView {
         const html =
             `<div class='row'>
                 <div class='col-8 my-auto'>
-                    <h2>OAuth Demo App</h2>
+                    <h2>OAuth Demo App33</h2>
                 </div>
                 <div class='col-4 my-auto'>
                     <div class='text-end mx-auto'>
