@@ -2,13 +2,13 @@ import commonjs from '@rollup/plugin-commonjs';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
-import typescript from '@rollup/plugin-typescript';
 import fs from 'fs';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
 import livereload from 'rollup-plugin-livereload';
 import serve from 'rollup-plugin-serve';
+import typescript from 'rollup-plugin-typescript2';
 
 const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
 const dirname = process.cwd();
@@ -40,20 +40,7 @@ const options: RollupOptions = {
         // Enable source maps and update paths to support debugging
         sourcemap: true,
         sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
-
-            if (env === 'development') {
-
-                let subPath = relativeSourcePath;
-                if (relativeSourcePath.includes('../../../../')) {
-                    subPath = relativeSourcePath.replace('../../', '');
-                }
-
-                const fullPath = path.resolve(path.dirname(sourcemapPath), subPath);
-                //console.log(relativeSourcePath);
-                return fullPath;
-            }
-
-            return sourcemapPath;
+            return path.resolve(path.dirname(sourcemapPath), relativeSourcePath);
         },
     },
 
