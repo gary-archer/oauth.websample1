@@ -20,7 +20,6 @@ const options: RollupOptions = {
         // Build ECMAScript modules to the dist folder
         dir: './dist/spa',
         format: 'esm',
-        sourcemap: true,
 
         // Indicate the initial chunk that contains application source code
         entryFileNames: 'app.bundle.js',
@@ -37,6 +36,25 @@ const options: RollupOptions = {
 
             return 'vendor';
         },
+
+        // Enable source maps and update paths to support debugging
+        sourcemap: true,
+        sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
+
+            if (env === 'development') {
+
+                let subPath = relativeSourcePath;
+                if (relativeSourcePath.includes('../../../../')) {
+                    subPath = relativeSourcePath.replace('../../', '');
+                }
+
+                const fullPath = path.resolve(path.dirname(sourcemapPath), subPath);
+                //console.log(relativeSourcePath);
+                return fullPath;
+            }
+
+            return sourcemapPath;
+        },
     },
 
     plugins: [
@@ -46,10 +64,10 @@ const options: RollupOptions = {
             browser: true,
         }),
 
-        // Handle any commonjs libraries in the mode_modules folder
+        // Convert any commonjs libraries from the node_modules folder that the SPA's code depends upon
         commonjs(),
 
-        // Use tslib and the typescript plugin with the settings from the configuration file
+        // Use tslib and the typescript plugin with the settings from the tsconfig.json file
         typescript(),
 
         // Define 'environment variables' that will be present in the browser
@@ -61,17 +79,13 @@ const options: RollupOptions = {
         // During a TypeScript build, copy static files to the output folder
         copy({
             targets: [
-                { src: '../favicon.ico', dest: './dist' },
+                { src: './favicon.ico', dest: './dist' },
                 { src: ['index.html', 'css/*'], dest: './dist/spa' },
                 { src: './spa.config.json', dest: './dist/spa' },
             ],
         }),
 
-        env === 'production' ? [
-
-            // Minify production bundles
-            terser(),
-        ] : [
+        env === 'development' ? [
 
             // During development, if these files are directly edited, copy them to the output folder
             {
@@ -82,7 +96,7 @@ const options: RollupOptions = {
                 },
             },
 
-            // Run a development static content server
+            // Run a development static content server at an HTTPS URL
             serve({
                 port: 443,
                 host: 'www.authsamples-dev.com',
@@ -96,7 +110,7 @@ const options: RollupOptions = {
                 contentBase: './dist',
             }),
 
-            // Listen on another HTTPS port to detect code changes
+            // Live reload must listen on another HTTPS port to detect code changes
             livereload({
                 watch: ['./dist/spa'],
                 https: {
@@ -104,6 +118,11 @@ const options: RollupOptions = {
                     passphrase: 'Password1',
                 },
             }),
+
+        ] : [
+
+            // Minify production bundles
+            terser(),
         ],
     ],
 };
