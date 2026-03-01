@@ -4,12 +4,14 @@ import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 import typescript from '@rollup/plugin-typescript';
 import fs from 'fs';
+import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
 import livereload from 'rollup-plugin-livereload';
 import serve from 'rollup-plugin-serve';
 
 const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
+const dirname = process.cwd();
 const options: RollupOptions = {
 
     input: './src/app/app.ts',
@@ -26,7 +28,7 @@ const options: RollupOptions = {
         // Indicate chunks to output, which can include chunks created from dynamic imports
         chunkFileNames: '[name].bundle.js',
 
-        // Indicate fixed vendor chunks referenced in index.html
+        // Define content for the fixed vendor chunk referenced in index.html
         manualChunks: (id: string) => {
 
             if (!id.includes('node_modules')) {
@@ -56,7 +58,7 @@ const options: RollupOptions = {
             preventAssignment: true,
         }),
 
-        // Copy other static files to the output folder
+        // During a TypeScript build, copy static files to the output folder
         copy({
             targets: [
                 { src: '../favicon.ico', dest: './dist' },
@@ -70,6 +72,15 @@ const options: RollupOptions = {
             // Minify production bundles
             terser(),
         ] : [
+
+            // During development, if these files are directly edited, copy them to the output folder
+            {
+                name: 'watch-external',
+                buildStart() {
+                    this.addWatchFile(path.resolve(dirname, 'index.html'));
+                    this.addWatchFile(path.resolve(dirname, 'css'));
+                },
+            },
 
             // Run a development static content server
             serve({
