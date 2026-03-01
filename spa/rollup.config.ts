@@ -2,13 +2,13 @@ import commonjs from '@rollup/plugin-commonjs';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 import fs from 'fs';
 import path from 'path';
 import {defineConfig, RollupOptions} from 'rollup';
 import copy from 'rollup-plugin-copy';
 import livereload from 'rollup-plugin-livereload';
 import serve from 'rollup-plugin-serve';
-import typescript from 'rollup-plugin-typescript2';
 
 const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
 const dirname = process.cwd();
@@ -37,7 +37,7 @@ const options: RollupOptions = {
             return 'vendor';
         },
 
-        // Enable source maps and update paths to support debugging
+        // Enable source maps and set paths to support debugging
         sourcemap: true,
         sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
             return path.resolve(path.dirname(sourcemapPath), relativeSourcePath);
@@ -55,7 +55,11 @@ const options: RollupOptions = {
         commonjs(),
 
         // Use tslib and the typescript plugin with the settings from the tsconfig.json file
-        typescript(),
+        // Also set the source root from the dist folder, to fix the relative paths supplied to sourcemapPathTransform
+        typescript({
+            sourceMap: true,
+            sourceRoot: '../../',
+        }),
 
         // Define 'environment variables' that will be present in the browser
         replace({
