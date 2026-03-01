@@ -48,7 +48,9 @@ const options: RollupOptions = {
         commonjs(),
 
         // Use tslib and the typescript plugin with the settings from the configuration file
-        typescript(),
+        typescript({
+            //sourcemap: env === 'production',
+        }),
 
         // Define 'environment variables' that will be present in the browser
         replace({
@@ -85,9 +87,13 @@ const options: RollupOptions = {
                 contentBase: './dist',
             }),
 
-            // Reload on code changes
+            // Listen on another HTTPS port to detect code changes
             livereload({
                 watch: ['./dist/spa'],
+                https: {
+                    pfx: fs.readFileSync('../certs/authsamples-dev.ssl.p12'),
+                    passphrase: 'Password1',
+                },
             }),
         ],
     ],

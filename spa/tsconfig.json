@@ -6,8 +6,7 @@
     "module":"ES2020",
     "moduleResolution": "Bundler",
     "allowSyntheticDefaultImports": true,
-    "outDir": "dist/spa",
-    "sourceMap": true
+    "outDir": "dist/spa"
   },
   "include": [
     "./src",
