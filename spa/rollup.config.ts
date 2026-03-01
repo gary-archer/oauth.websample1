@@ -48,9 +48,7 @@ const options: RollupOptions = {
         commonjs(),
 
         // Use tslib and the typescript plugin with the settings from the configuration file
-        typescript({
-            //sourcemap: env === 'production',
-        }),
+        typescript(),
 
         // Define 'environment variables' that will be present in the browser
         replace({
