@@ -96,14 +96,14 @@ const options: RollupOptions = {
                     passphrase: 'Password1',
                 },
                 open: true,
-                openPage: '/spa',
-                historyApiFallback: '/spa/',
+                openPage: '/spa/',
+                historyApiFallback: '/spa/index.html',
                 contentBase: 'dist',
             }),
 
             // Live reload must listen on another HTTPS port to detect code changes
             livereload({
-                watch: ['dist/spa'],
+                watch: ['dist'],
                 https: {
                     pfx: fs.readFileSync('../certs/authsamples-dev.ssl.p12'),
                     passphrase: 'Password1',
