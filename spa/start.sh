@@ -26,6 +26,9 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+#
+# Clear the build folder
+#
 rm -rf dist 2>/dev/null
 mkdir dist
 mkdir dist/spa

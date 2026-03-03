@@ -11,20 +11,19 @@ import livereload from 'rollup-plugin-livereload';
 import serve from 'rollup-plugin-serve';
 
 const env = process.env.ROLLUP_WATCH === 'true' ? 'development' : 'production';
-const dirname = process.cwd();
 const options: RollupOptions = {
 
-    input: './src/app/app.ts',
+    input: 'src/app/app.ts',
     output: {
 
         // Build ECMAScript modules to the dist folder
-        dir: './dist/spa',
+        dir: 'dist/spa',
         format: 'esm',
 
         // Indicate the initial chunk that contains application source code
         entryFileNames: 'app.bundle.js',
 
-        // Indicate chunks to output, which can include chunks created from dynamic imports
+        // Indicate the name format for other chunks, including those from dynamic imports
         chunkFileNames: '[name].bundle.js',
 
         // Define content for the fixed vendor chunk referenced in index.html
@@ -70,9 +69,9 @@ const options: RollupOptions = {
         // During a TypeScript build, copy static files to the output folder
         copy({
             targets: [
-                { src: './favicon.ico', dest: './dist' },
-                { src: ['index.html', 'css/*'], dest: './dist/spa' },
-                { src: './spa.config.json', dest: './dist/spa' },
+                { src: 'favicon.ico', dest: 'dist' },
+                { src: ['index.html', 'css/*'], dest: 'dist/spa' },
+                { src: 'spa.config.json', dest: 'dist/spa' },
             ],
         }),
 
@@ -82,8 +81,9 @@ const options: RollupOptions = {
             {
                 name: 'watch-external',
                 buildStart() {
-                    this.addWatchFile(path.resolve(dirname, 'index.html'));
-                    this.addWatchFile(path.resolve(dirname, 'css'));
+                    this.addWatchFile('index.html');
+                    this.addWatchFile('css');
+                    this.addWatchFile('spa.config.json');
                 },
             },
 
@@ -97,13 +97,13 @@ const options: RollupOptions = {
                 },
                 open: true,
                 openPage: '/spa',
-                historyApiFallback: '/spa/index.html',
-                contentBase: './dist',
+                historyApiFallback: '/spa/',
+                contentBase: 'dist',
             }),
 
             // Live reload must listen on another HTTPS port to detect code changes
             livereload({
-                watch: ['./dist/spa'],
+                watch: ['dist/spa'],
                 https: {
                     pfx: fs.readFileSync('../certs/authsamples-dev.ssl.p12'),
                     passphrase: 'Password1',

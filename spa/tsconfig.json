@@ -10,7 +10,7 @@
   },
   "include": [
     "./src",
-    "./rollup.config.ts"
+    "./build"
   ],
   "exclude": [
     "node_modules"
