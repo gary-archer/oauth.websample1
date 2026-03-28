@@ -1,4 +1,3 @@
-import {AxiosError} from 'axios';
 import {Request} from 'express';
 import {JWTVerifyOptions, jwtVerify} from 'jose';
 import {ClaimsPrincipal} from '../../logic/entities/claimsPrincipal.js';
@@ -51,9 +50,9 @@ export class AccessTokenValidator {
 
         } catch (e: any) {
 
-            // JWKS URI failures return a 500
-            if (e instanceof AxiosError || e.code === 'ERR_JOSE_GENERIC') {
-                throw ErrorFactory.fromJwksDownloadError(e);
+            // Backend errors return a 500 status
+            if (e?.cause?.code || e.code === 'ERR_JOSE_GENERIC') {
+                throw ErrorFactory.fromJwksDownloadError(e, this.configuration.jwksEndpoint);
             }
 
             // Otherwise return a 401 error, such as when a JWT with an invalid 'kid' value is supplied

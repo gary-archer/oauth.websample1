@@ -35,6 +35,7 @@ export class ErrorFactory {
             ErrorCodes.serverError,
             'An unexpected exception occurred in the API',
             exception.stack);
+
         serverError.setDetails(this.getExceptionDetails(exception));
         return serverError;
     }
@@ -53,20 +54,16 @@ export class ErrorFactory {
     /*
      * JWKS download errors result in a 500 error response
      */
-    public static fromJwksDownloadError(exception: any): ServerError | ClientError {
+    public static fromJwksDownloadError(exception: any, url: string): ServerError | ClientError {
 
-        const details = {} as any;
-        if (exception.code) {
-            details.code = exception.code;
-            details.description = this.getExceptionDetails(exception);
-        }
-
-        const serverError = new ServerError(
+        const error = new ServerError(
             ErrorCodes.jwksDownloadError,
             'Problem downloading token signing keys',
             exception.stack);
-        serverError.setDetails(details);
-        return serverError;
+
+        const details = this.getExceptionDetails(exception);
+        error.setDetails(`${details}, URL: ${url}`);
+        return error;
     }
 
     /*
@@ -124,15 +121,28 @@ export class ErrorFactory {
     }
 
     /*
-     * Get the message from an exception and avoid returning [object Object]
+     * Get the message from an exception
      */
-    private static getExceptionDetails(e: any): string {
+    private static getExceptionDetails(exception: any): string {
 
-        if (e.message) {
-            return e.message;
+        // Prefer to return a code and message
+        const code = exception?.code || exception?.cause?.code || '';
+        const message = exception.message || '';
+
+        const parts = [];
+        if (code) {
+            parts.push(code);
+        }
+        if (code) {
+            parts.push(message);
         }
 
-        const details = e.toString();
+        if (parts.length > 0) {
+            return parts.join(', ');
+        }
+
+        // Otherwise get raw details and avoid returning [object Object]
+        const details = exception.toString();
         if (details !== {}.toString()) {
             return details;
         }
