@@ -139,26 +139,6 @@ export class ErrorFactory {
     }
 
     /*
-     * Get the message from an OAuth exception
-     */
-    private static getOAuthExceptionMessage(exception: any): string {
-
-        let oauthError = '';
-        if (exception.error) {
-            oauthError = exception.error;
-            if (exception.error_description) {
-                oauthError += ` : ${exception.error_description.replace(/\+/g, ' ')}`;
-            }
-        }
-
-        if (oauthError) {
-            return oauthError;
-        } else {
-            return ErrorFactory.getExceptionMessage(exception);
-        }
-    }
-
-    /*
      * Get the message from an exception and avoid returning [object Object]
      */
     private static getExceptionMessage(exception: any): string {
