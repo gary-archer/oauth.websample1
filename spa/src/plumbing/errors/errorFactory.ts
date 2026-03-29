@@ -57,7 +57,7 @@ export class ErrorFactory {
             exception.stack);
 
         // Set technical details from the received exception
-        error.setDetails(ErrorFactory.getOAuthExceptionMessage(exception));
+        error.setDetails(ErrorFactory.getExceptionMessage(exception));
         return error;
     }
 
@@ -121,13 +121,13 @@ export class ErrorFactory {
             const apiError = await response.json();
             if (apiError) {
 
-                if (apiError?.code && apiError?.message) {
+                if (apiError.code && apiError.message) {
                     error.setErrorCode(apiError.code);
                     error.setDetails(apiError.message);
                 }
 
                 // Set extra details returned for 5xx errors
-                if (apiError?.area && apiError.id && apiError.utcTime) {
+                if (apiError.area && apiError.id && apiError.utcTime) {
                     error.setApiErrorDetails(apiError.area, apiError.id, apiError.utcTime);
                 }
             }
