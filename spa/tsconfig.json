@@ -7,11 +7,10 @@
     "moduleResolution": "Bundler",
     "outDir": "dist",
     "sourceMap": true,
-    "rootDir": "."
+    "rootDir": "src"
   },
   "include": [
-    "./src",
-    "./webpack"
+    "src"
   ],
   "exclude": [
     "node_modules"
