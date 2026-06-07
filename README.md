@@ -9,7 +9,7 @@
 
 An introductory standards-based SPA and API code sample, to get integrated with OAuth endpoints:
 
-- The SPA uses the traditional OpenID code flow with PKCE.
+- The SPA uses the code flow with PKCE.
 - The SPA interacts with an API that validates JWTs and uses claims-based authorization.
 
 ## Views
