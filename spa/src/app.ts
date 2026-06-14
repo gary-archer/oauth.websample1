@@ -1,13 +1,14 @@
-import {ApiClient} from '../api/client/apiClient';
-import {Configuration} from '../configuration/configuration';
-import {ConfigurationLoader} from '../configuration/configurationLoader';
-import {OAuthClient} from '../plumbing/oauth/oauthClient';
-import {CurrentLocation} from '../plumbing/utilities/currentLocation';
-import {OidcLogger} from '../plumbing/utilities/oidcLogger';
-import {ErrorView} from '../views/errorView';
-import {HeaderButtonsView} from '../views/headerButtonsView';
-import {Router} from '../views/router';
-import {TitleView} from '../views/titleView';
+import './app.css';
+import {ApiClient} from './api/client/apiClient';
+import {Configuration} from './configuration/configuration';
+import {ConfigurationLoader} from './configuration/configurationLoader';
+import {OAuthClient} from './plumbing/oauth/oauthClient';
+import {CurrentLocation} from './plumbing/utilities/currentLocation';
+import {OidcLogger} from './plumbing/utilities/oidcLogger';
+import {ErrorView} from './views/errorView';
+import {HeaderButtonsView} from './views/headerButtonsView';
+import {Router} from './views/router';
+import {TitleView} from './views/titleView';
 
 /*
  * The application shell
