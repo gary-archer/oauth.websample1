@@ -93,7 +93,7 @@ const options: RollupOptions = {
 
         ] : [
 
-            // Minify CSS and JavaScript for release builds 
+            // Minify CSS and JavaScript for release builds
             postcss({
                 extract: 'app..css',
                 plugins: [
