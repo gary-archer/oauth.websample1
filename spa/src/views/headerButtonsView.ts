@@ -28,15 +28,15 @@ export class HeaderButtonsView {
         // Render the buttons
         DomUtils.createDiv('#root', 'headerbuttons');
         const html =
-            `<div class='row'>
-                <div class='col-4 my-2 d-flex'>
-                    <button id='btnHome' type='button' class='btn btn-primary w-100 p-1'>Home</button>
+            `<div class='flex flex-wrap'>
+                <div class='w-1/3 p-1 my-2 flex justify-center'>
+                    <button id='btnHome' type='button' class='w-4/5 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg'>Home</button>
                 </div>
-                <div class='col-4 my-2 d-flex'>
-                    <button id='btnReloadData' type='button' disabled class='btn btn-primary w-100 p-1 sessionbutton'>Reload Data</button>
+                <div class='w-1/3 p-1 my-2 flex justify-center'>
+                    <button id='btnReloadData' type='button' disabled class='w-4/5 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'>Reload Data</button>
                 </div>
-                <div class='col-4 my-2 d-flex'>
-                    <button id='btnExpireAccessToken' type='button' disabled class='btn btn-primary w-100 p-1 sessionbutton'>Expire Token</button>
+                <div class='w-1/3 p-1 my-2 flex justify-center'>
+                    <button id='btnExpireAccessToken' type='button' disabled class='w-4/5 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'>Expire Token</button>
                 </div>
             </div>`;
         DomUtils.html('#headerbuttons', html);
@@ -58,13 +58,17 @@ export class HeaderButtonsView {
      * Buttons are disabled before data is loaded
      */
     public disableSessionButtons(): void {
-        document.querySelectorAll('.sessionbutton').forEach((b) => b.setAttribute('disabled', 'disabled'));
+        document.querySelector('#btnReloadData')?.setAttribute('disabled', 'disabled');
+        document.querySelector('#btnExpireAccessToken')?.setAttribute('disabled', 'disabled');
     }
 
     /*
      * Buttons are enabled when all data loads successfully
      */
     public enableSessionButtons(): void {
-        document.querySelectorAll('.sessionbutton').forEach((b) => b.removeAttribute('disabled'));
+        console.log('enabling');
+        document.querySelector('#btnReloadData')?.removeAttribute('disabled');
+        document.querySelector('#btnExpireAccessToken')?.removeAttribute('disabled');
+        console.log('enabled');
     }
 }

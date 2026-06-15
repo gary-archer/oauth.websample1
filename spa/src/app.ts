@@ -37,6 +37,12 @@ class App {
     public async execute(): Promise<void> {
 
         try {
+
+            // Support live reload during development
+            if (IS_DEBUG) {
+                await import('./livereload');
+            }
+
             // Start listening for hash changes
             window.onhashchange = this.onHashChange;
             window.onresize = this.onResize;

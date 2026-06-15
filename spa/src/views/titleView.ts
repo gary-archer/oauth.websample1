@@ -20,13 +20,13 @@ export class TitleView {
 
         DomUtils.createDiv('#root', 'title');
         const html =
-            `<div class='row'>
-                <div class='col-8 my-auto'>
-                    <h2>OAuth Demo App</h2>
+            `<div class='flex px-2 mt-2 items-center'>
+                <div class='w-2/3'>
+                    <h2 class='text-3xl font-medium'>OAuth Demo App</h2>
                 </div>
-                <div class='col-4 my-auto'>
-                    <div class='text-end mx-auto'>
-                        <p id='username' class='fw-bold'></p>
+                <div class='w-1/3'>
+                    <div class='text-right'>
+                        <p id='username' class='font-bold'></p>
                     </div>
                 </div>
             </div>`;
