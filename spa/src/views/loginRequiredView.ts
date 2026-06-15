@@ -11,7 +11,7 @@ export class LoginRequiredView {
     public async load(): Promise<void> {
 
         const html =
-            `<div class='text-center'>
+            `<div class='text-lg text-center'>
                 You are signed out - sign in to access the app ...
             </div>`;
         DomUtils.html('#main', html);
