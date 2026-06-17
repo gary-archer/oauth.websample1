@@ -66,9 +66,7 @@ export class HeaderButtonsView {
      * Buttons are enabled when all data loads successfully
      */
     public enableSessionButtons(): void {
-        console.log('enabling');
         document.querySelector('#btnReloadData')?.removeAttribute('disabled');
         document.querySelector('#btnExpireAccessToken')?.removeAttribute('disabled');
-        console.log('enabled');
     }
 }

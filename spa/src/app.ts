@@ -7,9 +7,9 @@ import {CurrentLocation} from './plumbing/utilities/currentLocation';
 import {OidcLogger} from './plumbing/utilities/oidcLogger';
 import {ErrorView} from './views/errorView';
 import {HeaderButtonsView} from './views/headerButtonsView';
+import {LayoutView} from './views/layoutView';
 import {Router} from './views/router';
 import {TitleView} from './views/titleView';
-import { LayoutView } from './views/layoutView';
 
 /*
  * The application shell
