@@ -14,11 +14,11 @@ export class TitleView {
     }
 
     /*
-     * Render the title HTML
+     * Create a container and render the title HTML inside it
      */
     public load(): void {
 
-        DomUtils.createDiv('#root', 'title');
+        DomUtils.createDiv('#container', 'title');
         const html =
             `<div class='flex px-2 mt-2 items-center'>
                 <div class='w-2/3'>

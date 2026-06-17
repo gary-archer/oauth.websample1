@@ -6,7 +6,7 @@ export class DomUtils {
     /*
      * Create a div element if required
      */
-    public static createDiv(parentSelector: string, elementName: string): void {
+    public static createDiv(parentSelector: string, elementName: string, cssClass?: string): void {
 
         const parent = document.querySelector(parentSelector);
         if (parent) {
@@ -14,7 +14,10 @@ export class DomUtils {
             const element = document.querySelector(`#${elementName}`);
             if (!element) {
 
-                const child = document.createElement('div');
+                const child = document.createElement('div', {});
+                if (cssClass) {
+                    child.className = cssClass;
+                }
                 child.id = elementName;
                 parent.appendChild(child);
             }

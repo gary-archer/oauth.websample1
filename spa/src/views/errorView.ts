@@ -20,7 +20,7 @@ export class ErrorView {
      */
     public load(): void {
 
-        DomUtils.createDiv('#root', 'errorcontainer');
+        DomUtils.createDiv('#container', 'errorcontainer');
         const html =
             `<div class='card border-0'>
                 <div class='row'>

@@ -119,44 +119,46 @@ export class CompaniesView {
 
         const htmlTemplate =
             `<div class='mt-3'>
-                <div class='bg-gray-100 p-3 font-bold'>
+                <div class='bg-gray-100 p-3 font-bold text-center'>
                     Company List
                 </div>
                 <div class='mt-3'>
                     {{#companies}}
-                        <div class='grid grid-cols-12'>
-                            <div class='col-span-6 text-2xl font-medium'>
-                                <a href='#company={{id}}'>{{name}}</a>
+                        <div class='p-3'>    
+                            <div class='grid grid-cols-12'>
+                                <div class='col-span-6 text-2xl font-medium'>
+                                    <a href='#company={{id}}' class='text-blue-600 underline'>{{name}}</a>
+                                </div>
+                                <div class='col-span-6 font-bold text-2xl font-medium'>
+                                    {{region}}
+                                </div>
                             </div>
-                            <div class='col-span-6 font-bold text-2xl font-medium'>
-                                {{region}}
+                            <div class='grid grid-cols-12 mt-10'>
+                                <div class='col-span-6'>
+                                    Target USD
+                                </div>
+                                <div class='col-span-6 text-green-700 font-bold'>
+                                    {{formattedTargetUsd}}
+                                </div>
                             </div>
+                            <div class='grid grid-cols-12 mt-5'>
+                                <div class='col-span-6'>
+                                    Investment USD
+                                </div>
+                                <div class='col-span-6 text-green-700 font-bold'>
+                                    {{formattedInvestmentUsd}}
+                                </div>
+                            </div>
+                            <div class='grid grid-cols-12 mt-5'>
+                                <div class='col-span-6'>
+                                    # Investors
+                                </div>
+                                <div class='col-span-6 font-bold'>
+                                    {{noInvestors}}
+                                </div>
+                            </div>
+                            <hr class='text-gray-300 mt-5' />
                         </div>
-                        <div class='grid grid-cols-12 mt-10'>
-                            <div class='col-span-6'>
-                                Target USD
-                            </div>
-                            <div class='col-span-6 text-green-700 font-bold'>
-                                {{formattedTargetUsd}}
-                            </div>
-                        </div>
-                        <div class='grid grid-cols-12 mt-5'>
-                            <div class='col-span-6'>
-                                Investment USD
-                            </div>
-                            <div class='col-span-6 text-green-700 font-bold'>
-                                {{formattedInvestmentUsd}}
-                            </div>
-                        </div>
-                        <div class='grid grid-cols-12 mt-5'>
-                            <div class='col-span-6'>
-                                # Investors
-                            </div>
-                            <div class='col-span-6 font-bold'>
-                                {{noInvestors}}
-                            </div>
-                        </div>
-                        <hr className='text-gray-300 mt-5' />
                     {{/companies}}
                 </div>
             </div>`;

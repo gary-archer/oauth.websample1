@@ -26,7 +26,7 @@ export class HeaderButtonsView {
     public load(): void {
 
         // Render the buttons
-        DomUtils.createDiv('#root', 'headerbuttons');
+        DomUtils.createDiv('#container', 'headerbuttons');
         const html =
             `<div class='flex flex-wrap'>
                 <div class='w-1/3 p-1 my-2 flex justify-center'>
