@@ -69,8 +69,7 @@ The system browser runs and you can sign in with my AWS test credentials:
 
 ## Infrastructure
 
-* Express is used as the HTTP server for the secured API.
-* The Webpack development server is used to serve the SPA's static content.
+* Express is used as the HTTP server for the secured API and to serve the SPA's static content.
 * The SPA uses the [oidc-client-ts](https://github.com/authts/oidc-client-ts) library to implement OAuth and OpenID Connect.
 * The API uses the [jose](https://github.com/panva/jose) library to validate JWT access tokens.
 * AWS Cognito is the default authorization server for the SPA and API.

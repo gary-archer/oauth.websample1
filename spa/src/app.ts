@@ -1,27 +1,33 @@
-import {ApiClient} from '../api/client/apiClient';
-import {Configuration} from '../configuration/configuration';
-import {ConfigurationLoader} from '../configuration/configurationLoader';
-import {OAuthClient} from '../plumbing/oauth/oauthClient';
-import {CurrentLocation} from '../plumbing/utilities/currentLocation';
-import {OidcLogger} from '../plumbing/utilities/oidcLogger';
-import {ErrorView} from '../views/errorView';
-import {HeaderButtonsView} from '../views/headerButtonsView';
-import {Router} from '../views/router';
-import {TitleView} from '../views/titleView';
+import './app.css';
+import {ApiClient} from './api/client/apiClient';
+import {Configuration} from './configuration/configuration';
+import {ConfigurationLoader} from './configuration/configurationLoader';
+import {OAuthClient} from './plumbing/oauth/oauthClient';
+import {CurrentLocation} from './plumbing/utilities/currentLocation';
+import {OidcLogger} from './plumbing/utilities/oidcLogger';
+import {ErrorView} from './views/errorView';
+import {HeaderButtonsView} from './views/headerButtonsView';
+import {LayoutView} from './views/layoutView';
+import {Router} from './views/router';
+import {TitleView} from './views/titleView';
 
 /*
  * The application shell
  */
 class App {
 
+    // Views
+    private router!: Router;
+    private layoutView! : LayoutView;
+    private titleView!: TitleView;
+    private headerButtonsView!: HeaderButtonsView;
+    private errorView!: ErrorView;
+
+    // Object state
     private configuration!: Configuration;
     private oauthClient!: OAuthClient;
     private apiClient!: ApiClient;
     private oidcLogger: OidcLogger;
-    private router!: Router;
-    private titleView!: TitleView;
-    private headerButtonsView!: HeaderButtonsView;
-    private errorView!: ErrorView;
     private isInitialised: boolean;
 
     public constructor() {
@@ -36,6 +42,12 @@ class App {
     public async execute(): Promise<void> {
 
         try {
+
+            // Support live reload during development
+            if (IS_DEBUG) {
+                await import('./livereload');
+            }
+
             // Start listening for hash changes
             window.onhashchange = this.onHashChange;
             window.onresize = this.onResize;
@@ -63,6 +75,9 @@ class App {
      * Render views in their initial state
      */
     private initialRender() {
+
+        this.layoutView = new LayoutView();
+        this.layoutView.load();
 
         this.titleView = new TitleView();
         this.titleView.load();
