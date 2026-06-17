@@ -15,19 +15,19 @@ export class ErrorFormatter {
 
         // Display technical details that are OK to show to users
         if (error.message.length > 0) {
-            lines.push(ErrorFormatter.createErrorLine('User Message', error.message));
+            lines.push(ErrorFormatter.createUserActionLine('User Message', error.message));
         }
 
         if (error.getArea().length > 0) {
-            lines.push(ErrorFormatter.createErrorLine('Area', error.getArea()));
+            lines.push(ErrorFormatter.createValueLine('Area', error.getArea()));
         }
 
         if (error.getErrorCode().length > 0) {
-            lines.push(ErrorFormatter.createErrorLine('Error Code', error.getErrorCode()));
+            lines.push(ErrorFormatter.createValueLine('Error Code', error.getErrorCode()));
         }
 
         if (error.getStatusCode() > 0) {
-            lines.push(ErrorFormatter.createErrorLine('Status Code', error.getStatusCode().toString()));
+            lines.push(ErrorFormatter.createValueLine('Status Code', error.getStatusCode().toString()));
         }
 
         if (error.getInstanceId() > 0) {
@@ -47,15 +47,15 @@ export class ErrorFormatter {
                 second: '2-digit',
                 hour12: false,
             }).replace(/,/g, '');
-            lines.push(ErrorFormatter.createErrorLine('UTC Time', displayTime));
+            lines.push(ErrorFormatter.createValueLine('UTC Time', displayTime));
         }
 
         if (error.getDetails().length > 0) {
-            lines.push(ErrorFormatter.createErrorLine('Details', error.getDetails()));
+            lines.push(ErrorFormatter.createValueLine('Details', error.getDetails()));
         }
 
         if (error.getUrl().length > 0) {
-            lines.push(ErrorFormatter.createErrorLine('URL', error.getUrl()));
+            lines.push(ErrorFormatter.createValueLine('URL', error.getUrl()));
         }
 
         return lines;
@@ -70,7 +70,7 @@ export class ErrorFormatter {
         // We can then look up results at https://sourcemaps.info
         if (IS_DEBUG) {
             if (error.stack) {
-                return ErrorFormatter.createErrorLine('Stack', error.stack);
+                return ErrorFormatter.createValueLine('Stack', error.stack);
             }
         }
 
@@ -78,13 +78,44 @@ export class ErrorFormatter {
     }
 
     /*
-     * Return an error line as an object
+     * Create a line that will be styled green
+     */
+    private static createUserActionLine(label: string, value: string): ErrorLine {
+
+        return {
+            label,
+            value,
+            isUserAction: true,
+            isValue: false,
+            isError: false,
+        };
+    }
+
+    /*
+     * Create a line that will be styled blue
+     */
+    private static createValueLine(label: string, value: string): ErrorLine {
+
+        return {
+            label,
+            value,
+            isUserAction: false,
+            isValue: true,
+            isError: false,
+        };
+    }
+
+    /*
+     * Create a line that will be styled red
      */
     private static createErrorLine(label: string, value: string): ErrorLine {
 
         return {
             label,
             value,
+            isUserAction: false,
+            isValue: false,
+            isError: true,
         };
     }
 }

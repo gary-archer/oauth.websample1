@@ -4,4 +4,7 @@
 export interface ErrorLine {
     label: string;
     value: string;
+    isUserAction: boolean;
+    isValue: boolean;
+    isError: boolean;
 }

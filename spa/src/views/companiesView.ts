@@ -124,7 +124,7 @@ export class CompaniesView {
                 </div>
                 <div class='mt-3'>
                     {{#companies}}
-                        <div class='p-3'>    
+                        <div class='p-3'>
                             <div class='grid grid-cols-12'>
                                 <div class='col-span-6 text-2xl font-medium'>
                                     <a href='#company={{id}}' class='text-blue-600 underline'>{{name}}</a>

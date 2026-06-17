@@ -22,17 +22,17 @@ export class ErrorView {
 
         DomUtils.createDiv('#container', 'errorcontainer');
         const html =
-            `<div class='card border-0'>
-                <div class='row'>
-                    <div id='errortitle' class='col-10 errorcolor largetext fw-bold text-center'>
+            `<div class='bg-white rounded-lg'>
+                <div class='grid grid-cols-12'>
+                    <div class='col-span-2'>
+                    </div>    
+                    <div id='errortitle' class='col-span-8 text-red-600 text-2xl text-center'>
                     </div>
-                    <div class='col-2 text-end'>
+                    <div class='col-span-2 text-right'>
                         <button id='btnClearError' type='button'>x</button>
                     </div>
                 </div>
-                <div class='row card-body'>
-                    <div id='errorform' class='col-12'>
-                    </div>
+                <div id='errorform' class='items-center mt-5'>
                 </div>
             </div>`;
 
@@ -96,13 +96,25 @@ export class ErrorView {
 
         const htmlTemplate =
             `{{#lines}}
-                <div class='row'>
-                    <div class='col-4'>
+                <div class='grid grid-cols-12 mt-3'>
+                    <div class='col-span-4'>
                         {{label}}
                     </div>
-                    <div class='col-8 valuecolor fw-bold'>
-                        {{value}}
-                    </div>
+                    {{#isUserAction}}
+                        <div class='col-span-8 text-green-700 font-bold'>
+                            {{value}}
+                        </div>
+                    {{/isUserAction}}
+                    {{#isValue}}
+                        <div class='col-span-8 text-blue-700 font-bold'>
+                            {{value}}
+                        </div>
+                    {{/isValue}}
+                    {{#isError}}
+                        <div class='col-span-8 text-red-700 font-bold'>
+                            {{value}}
+                        </div>
+                    {{/isError}}
                 </div>
             {{/lines}}`;
 
@@ -119,20 +131,20 @@ export class ErrorView {
         }
 
         const htmlTemplate =
-            `<div class='row' />
-                <div class='col-4'>
+            `<div class='grid grid-cols-12' />
+                <div class='col-span-4'>
                     &nbsp;
                 </div>
-                <div class='col-8'>
+                <div class='col-span-8'>
                     &nbsp;
                 </div>
             </div>
-            <div class='row' />
-                 <div class='col-4'>
+            <div class='grid grid-cols-12' />
+                 <div class='col-span-4'>
                      {{label}}
                  </div>
-                 <div class='col-8 small'>
-                     {{value}}
+                 <div class='col-span-8'>
+                    <span class='text-sm'>{{value}}</span>
                  </div>
              </div>`;
 
