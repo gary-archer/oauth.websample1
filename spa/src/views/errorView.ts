@@ -1,8 +1,8 @@
 import mustache from 'mustache';
 import {ErrorCodes} from '../plumbing/errors/errorCodes';
 import {ErrorFactory} from '../plumbing/errors/errorFactory';
+import {ErrorField} from '../plumbing/errors/errorField';
 import {ErrorFormatter} from '../plumbing/errors/errorFormatter';
-import {ErrorLine} from '../plumbing/errors/errorLine';
 import {UIError} from '../plumbing/errors/uiError';
 import {DomUtils} from './domUtils';
 
@@ -84,18 +84,18 @@ export class ErrorView {
 
         // Render the error fields
         const errorHtml =
-            this.getLinesHtml(ErrorFormatter.getErrorLines(error)) +
+            this.getFieldsHtml(ErrorFormatter.getErrorFields(error)) +
             this.getStackHtml(ErrorFormatter.getErrorStack(error));
         DomUtils.html('#errorform', errorHtml);
     }
 
     /*
-     * Get the HTML for the error lines
+     * Get the HTML for the error fields
      */
-    private getLinesHtml(errorLines: ErrorLine[]): string {
+    private getFieldsHtml(fields: ErrorField[]): string {
 
         const htmlTemplate =
-            `{{#lines}}
+            `{{#fields}}
                 <div class='grid grid-cols-12 mt-3'>
                     <div class='col-span-4'>
                         {{label}}
@@ -110,23 +110,23 @@ export class ErrorView {
                             {{value}}
                         </div>
                     {{/isValue}}
-                    {{#isError}}
+                    {{#isIdentifier}}
                         <div class='col-span-8 text-red-700 font-bold'>
                             {{value}}
                         </div>
-                    {{/isError}}
+                    {{/isIdentifier}}
                 </div>
-            {{/lines}}`;
+            {{/fields}}`;
 
-        return mustache.render(htmlTemplate, {lines: errorLines});
+        return mustache.render(htmlTemplate, {fields: fields});
     }
 
     /*
      * Get the HTML for the error stack trace
      */
-    private getStackHtml(stackLine: ErrorLine | null): string {
+    private getStackHtml(field: ErrorField | null): string {
 
-        if (!stackLine) {
+        if (!field) {
             return '';
         }
 
@@ -148,7 +148,7 @@ export class ErrorView {
                  </div>
              </div>`;
 
-        return mustache.render(htmlTemplate, stackLine);
+        return mustache.render(htmlTemplate, field);
     }
 
     /*

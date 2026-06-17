@@ -1,10 +1,10 @@
 /*
- * A simple error line entity
+ * A simple error field
  */
-export interface ErrorLine {
+export interface ErrorField {
     label: string;
     value: string;
     isUserAction: boolean;
     isValue: boolean;
-    isError: boolean;
+    isIdentifier: boolean;
 }
