@@ -4,7 +4,7 @@ import https from 'https';
 import {WebSocketServer, WebSocket} from 'ws';
 
 /*
- * Create the Express host
+ * Create the Express host and set a strict content security policy
  */
 const app = express();
 app.use('/*_', setSecurityHeaders);
