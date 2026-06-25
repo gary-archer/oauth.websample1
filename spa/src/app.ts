@@ -59,7 +59,7 @@ class App {
             // Attempt to load data from the API, which may trigger a login redirect
             await this.runMainView();
 
-            // One the app is initialized, support live reload during development
+            // Once the app is initialized, support live reload during development
             if (IS_DEBUG) {
                 await import('./livereload');
             }
