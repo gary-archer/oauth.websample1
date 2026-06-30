@@ -93,7 +93,8 @@ export class OAuthClient {
      */
     public async handleLoginResponse(): Promise<void> {
 
-        if (!location.pathname.endsWith('callback') || !location.search) {
+        const pathname = location.pathname.toLowerCase();
+        if (!pathname.endsWith('callback') || !location.search) {
             return;
         }
 
