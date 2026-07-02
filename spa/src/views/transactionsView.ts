@@ -32,7 +32,7 @@ export class TransactionsView {
         try {
 
             // Record the current location, to support deep linking after login
-            CurrentLocation.path = location.hash;
+            CurrentLocation.path = location.pathname;
 
             // Try to get data if required
             if (!this.data || forceReload) {
@@ -48,12 +48,12 @@ export class TransactionsView {
             if (uiError.statusCode === 404 && uiError.errorCode === ErrorCodes.companyNotFound) {
 
                 // User typed an id value outside of valid company ids
-                location.hash = '#';
+                history.pushState({}, '', '/');
 
             } else if (uiError.statusCode === 400 && uiError.errorCode === ErrorCodes.invalidCompanyId) {
 
                 // User typed an invalid id such as 'abc'
-                location.hash = '#';
+                history.pushState({}, '', '/');
 
             } else {
 

@@ -51,7 +51,7 @@ export class ErrorView {
         if (error.getErrorCode() == ErrorCodes.loginRequired) {
 
             // Do not render this error and instead move to the login required view
-            location.hash = '#loggedout';
+            history.pushState({}, '', '/loggedout');
 
         } else {
 

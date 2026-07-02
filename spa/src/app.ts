@@ -43,9 +43,8 @@ class App {
 
         try {
 
-            // Start listening for hash changes
-            window.onhashchange = this.onHashChange;
-            window.onresize = this.onResize;
+            // Listen for events
+            //window.onresize = this.onResize;
 
             // Do the initial render
             this.initialRender();
@@ -130,8 +129,8 @@ class App {
         // Indicate busy
         this.headerButtonsView.disableSessionButtons();
 
-        // Load the view
-        await this.router.runView(forceReload);
+        // Render the view
+        await this.router.render(forceReload);
 
         if (this.router.isInLoggedOutView()) {
 
@@ -148,31 +147,9 @@ class App {
     }
 
     /*
-     * Change the view based on the hash URL and catch errors
-     */
-    private async onHashChange(): Promise<void> {
-
-        // Handle updates to log levels when the URL log setting is changed
-        this.oidcLogger.updateLogLevelIfRequired();
-
-        try {
-
-            // Update the main view when the hash location changes
-            if (this.isInitialised) {
-                await this.runMainView();
-            }
-
-        } catch (e: any) {
-
-            // Report failures
-            this.errorView.report(e);
-        }
-    }
-
-    /*
      * After a resize, re-run the main view in case it needs to render a mobile or desktop layout
      */
-    private async onResize(): Promise<void> {
+    /*private async onResize(): Promise<void> {
 
         if (this.isInitialised) {
 
@@ -186,7 +163,7 @@ class App {
 
             setTimeout(async () => viewRunner(), 250);
         }
-    }
+    }*/
 
     /*
      * The home button moves to the home view but also deals with error recovery
@@ -217,7 +194,7 @@ class App {
                     } else {
 
                         // Otherwise move to the home view
-                        location.hash = '#';
+                        history.pushState({}, '', '/');
                     }
                 }
             }
@@ -257,8 +234,7 @@ class App {
         this.initialiseApp = this.initialiseApp.bind(this);
         this.handleLoginResponse = this.handleLoginResponse.bind(this);
         this.runMainView = this.runMainView.bind(this);
-        this.onHashChange = this.onHashChange.bind(this);
-        this.onResize = this.onResize.bind(this);
+        //this.onResize = this.onResize.bind(this);
         this.onHome = this.onHome.bind(this);
         this.onReloadData = this.onReloadData.bind(this);
         this.onExpireToken = this.onExpireToken.bind(this);

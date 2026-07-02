@@ -75,7 +75,7 @@ export class OAuthClient {
 
             // First store the SPA's client side location
             const data = {
-                hash: currentLocation || '#',
+                path: location.pathname || '/',
             };
 
             // Start a login redirect
@@ -106,14 +106,14 @@ export class OAuthClient {
             const storedState = await this.userManager.settings.stateStore?.get(state);
             if (storedState) {
 
-                let redirectLocation = '#';
+                let redirectLocation = '/';
                 try {
 
                     // Handle the login response
                     const user = await this.userManager.signinRedirectCallback();
 
                     // We will return to the app location before the login redirect
-                    redirectLocation = (user.state as any).hash;
+                    redirectLocation = (user.state as any).path;
 
                 } catch (e: any) {
 

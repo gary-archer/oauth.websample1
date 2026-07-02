@@ -25,7 +25,7 @@ export class CompaniesView {
         try {
 
             // Record the current location, to support deep linking after login
-            CurrentLocation.path = location.hash;
+            CurrentLocation.path = location.pathname;
 
             // Try to get data if required
             if (!this.data || forceReload) {
@@ -92,7 +92,7 @@ export class CompaniesView {
                                 {{region}}
                             </div>
                             <div class='col-span-2 text-center'>
-                                <a href='#company={{id}}' class='text-blue-600 underline'>View Transactions</a>
+                                <a href='/companies/{{id}}' class='text-blue-600 underline'>View Transactions</a>
                             </div>
                             <div class='col-span-2 text-green-700 font-bold text-right'>
                                 {{formattedTargetUsd}}

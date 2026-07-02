@@ -34,16 +34,14 @@ export class OidcLogger {
     }
 
     /*
-     * Get the log level from a query parameter in the hash URL, such as #/companies=2&log=info
+     * Get the log level from a query parameter in the URL's query parameters, such as /companies=2?log=info
      */
     private getUrlLogLevel(): string {
 
-        if (location.hash) {
-            const args = new URLSearchParams('?' + location.hash.substring(1));
-            const logLevel = args.get('log');
-            if (logLevel) {
-                return logLevel.toLowerCase();
-            }
+        const params = new URLSearchParams(window.location.search);
+        const log = params.get('log');
+        if (log) {
+            return log.toLowerCase();
         }
 
         return '';
