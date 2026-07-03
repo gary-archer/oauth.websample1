@@ -94,36 +94,35 @@ export class OAuthClient {
     public async handleLoginResponse(): Promise<void> {
 
         const pathname = location.pathname.toLowerCase();
-        if (!pathname.endsWith('callback') || !location.search) {
-            return;
-        }
+        if (pathname.endsWith('callback')) {
 
-        const args = new URLSearchParams(location.search);
-        const state = args.get('state');
-        if (state) {
+            const args = new URLSearchParams(location.search);
+            const state = args.get('state');
+            if (state) {
 
-            // Only try to process a login response if the state exists
-            const storedState = await this.userManager.settings.stateStore?.get(state);
-            if (storedState) {
+                // Only try to process a login response if the state exists
+                const storedState = await this.userManager.settings.stateStore?.get(state);
+                if (storedState) {
 
-                let redirectLocation = '#';
-                try {
+                    let redirectLocation = '#';
+                    try {
 
-                    // Handle the login response
-                    const user = await this.userManager.signinRedirectCallback();
+                        // Handle the login response
+                        const user = await this.userManager.signinRedirectCallback();
 
-                    // We will return to the app location before the login redirect
-                    redirectLocation = (user.state as any).hash;
+                        // We will return to the app location before the login redirect
+                        redirectLocation = (user.state as any).hash;
 
-                } catch (e: any) {
+                    } catch (e: any) {
 
-                    // Handle and rethrow OAuth response errors
-                    throw ErrorFactory.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
+                        // Handle and rethrow OAuth response errors
+                        throw ErrorFactory.getFromLoginOperation(e, ErrorCodes.loginResponseFailed);
 
-                } finally {
+                    } finally {
 
-                    // Always replace the browser location, to remove OAuth details from back navigation
-                    history.replaceState({}, document.title, redirectLocation);
+                        // Always replace the browser location, to remove OAuth details from back navigation
+                        history.replaceState({}, document.title, redirectLocation);
+                    }
                 }
             }
         }
