@@ -30,13 +30,13 @@ export class HeaderButtonsView {
         const html =
             `<div class='flex flex-wrap'>
                 <div class='w-1/3 p-1 my-2 flex justify-center'>
-                    <button id='btnHome' type='button' class='w-4/5 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg'>Home</button>
+                    <button id='btnHome' type='button' class='w-full p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg'>Home</button>
                 </div>
                 <div class='w-1/3 p-1 my-2 flex justify-center'>
-                    <button id='btnReloadData' type='button' disabled class='w-4/5 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'>Reload Data</button>
+                    <button id='btnReloadData' type='button' disabled class='w-full p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'>Reload Data</button>
                 </div>
                 <div class='w-1/3 p-1 my-2 flex justify-center'>
-                    <button id='btnExpireAccessToken' type='button' disabled class='w-4/5 p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'>Expire Token</button>
+                    <button id='btnExpireAccessToken' type='button' disabled class='w-full p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50'>Expire Token</button>
                 </div>
             </div>`;
         DomUtils.html('#headerbuttons', html);
