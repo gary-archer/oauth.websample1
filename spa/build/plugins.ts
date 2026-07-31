@@ -16,7 +16,7 @@ export function copyFiles(outputDir: string, files: string[]): Plugin {
 
                 for (const file of files) {
 
-                    const targetPath = path.join(outputDir, file);
+                    const targetPath = path.join(outputDir, path.basename(file));
                     await fs.copyFile(file, targetPath);
                 }
             },
