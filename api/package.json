@@ -18,7 +18,7 @@
     "express": "^5.2.1",
     "jose": "^6.2.3",
     "on-headers": "^1.0.2",
-    "undici": "^8.9.0",
+    "undici": "^8.10.2",
     "winston": "^3.19.0"
   },
   "devDependencies": {
