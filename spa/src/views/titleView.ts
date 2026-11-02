@@ -1,4 +1,4 @@
-import {OAuthClient} from '../plumbing/oauth/oauthClient';
+import {OAuthClient} from '../oauth/oauthClient';
 import {DomUtils} from './domUtils';
 import {UserInfoView} from './userInfoView';
 
