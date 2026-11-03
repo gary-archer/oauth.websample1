@@ -1,6 +1,6 @@
 import {UserManager, WebStorageStateStore} from 'oidc-client-ts';
-import {UserInfo} from '../../api/entities/userInfo';
-import {OAuthConfiguration} from '../../configuration/oauthConfiguration';
+import {UserInfo} from '../api/entities/userInfo';
+import {OAuthConfiguration} from '../configuration/oauthConfiguration';
 import {ErrorCodes} from '../errors/errorCodes';
 import {ErrorFactory} from '../errors/errorFactory';
 
