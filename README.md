@@ -21,9 +21,9 @@ The SPA is a simple UI with some basic navigation between views, to render ficti
 ## Local Development Quick Start
 
 The SPA and API use [Real World OAuth Development URLs](https://github.com/gary-archer/oauth.blog/blob/master/public/posts/developer-ssl-setup.mdx#real-world-oauth-development-urls) on a local computer.  
-To run the code sample locally, you must configure infrastructure before you run the code.  
+You must use admin permissions to configure infrastructure before you run the code.  
 
-### One Time Admin Operations
+### Infrastructure Setup
 
 Add DNS entries to your `/etc/hosts` file:
 
