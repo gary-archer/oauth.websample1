@@ -28,7 +28,6 @@ fi
 
 #
 # On Linux ensure that you have first granted Node.js permissions to listen on port 80:
-# - sudo setcap 'cap_net_bind_service=+ep' $(which node)
 #
 npm start
 if [ $? -ne 0 ]; then
