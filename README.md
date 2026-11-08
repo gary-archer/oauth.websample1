@@ -39,7 +39,7 @@ mkdir -p "$SECRETS_FOLDER"
 ./certs/create.sh
 ```
 
-Configure [HTTPS Trust](http://localhost:3000/posts/developer-ssl-setup#configure-operating-system-trust) for the SSL root certificate at the following location:
+Configure [HTTPS Trust](https://github.com/gary-archer/oauth.blog/blob/master/public/posts/developer-ssl-setup.mdx#configure-operating-system-trust) for the SSL root certificate at the following location:
 
 ```text
 ./certs/authsamples-dev.ca.crt
