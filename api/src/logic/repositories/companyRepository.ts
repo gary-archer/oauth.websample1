@@ -1,6 +1,6 @@
 import {Company} from '../entities/company.js';
+import {JsonFileReader} from '../../utilities/jsonFileReader.js';
 import {CompanyTransactions} from '../entities/companyTransactions.js';
-import {JsonFileReader} from '../utilities/jsonFileReader.js';
 
 /*
  * A simple repository class for getting data

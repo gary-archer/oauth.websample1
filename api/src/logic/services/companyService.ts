@@ -1,8 +1,8 @@
-import {ClaimsPrincipal} from '../entities/claimsPrincipal.js';
+import {ClaimsPrincipal} from '../../middleware/claims/claimsPrincipal.js';
+import {ClientError} from '../../middleware/errors/clientError.js';
+import {ErrorCodes} from '../../middleware/errors/errorCodes.js';
 import {Company} from '../entities/company.js';
 import {CompanyTransactions} from '../entities/companyTransactions.js';
-import {ClientError} from '../errors/clientError.js';
-import {ErrorCodes} from '../errors/errorCodes.js';
 import {CompanyRepository} from '../repositories/companyRepository.js';
 
 /*

@@ -1,8 +1,8 @@
 import {Response} from 'express';
-import {ClientError} from '../../logic/errors/clientError.js';
-import {ServerError} from '../../logic/errors/serverError.js';
 import {LogEntry} from '../logging/logEntry.js';
+import {ClientError} from './clientError.js';
 import {ErrorFactory} from './errorFactory.js';
+import {ServerError} from './serverError.js';
 
 /*
  * A class to handle trapping errors
