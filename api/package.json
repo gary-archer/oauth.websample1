@@ -10,7 +10,7 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "start": "tsx watch src/host/startup/app.ts",
+    "start": "tsx watch src/host/app.ts",
     "buildRelease": "tsc --sourceMap false"
   },
   "dependencies": {

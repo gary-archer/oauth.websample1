@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
-import {ErrorCodes} from '../errors/errorCodes.js';
-import {ServerError} from '../errors/serverError.js';
+import {ErrorCodes} from '../middleware/errors/errorCodes.js';
+import {ServerError} from '../middleware/errors/serverError.js';
 
 /*
  * A simple utility to deal with the infrastructure of reading JSON files

@@ -3,8 +3,8 @@ import {Application} from 'express';
 import fs from 'node:fs/promises';
 import https from 'node:https';
 import {Configuration} from '../configuration/configuration.js';
-import {ApiController} from '../controller/apiController.js';
-import {ApiLogger} from '../logging/apiLogger.js';
+import {ApiController} from '../logic/controllers/apiController.js';
+import {ApiLogger} from '../middleware/logging/apiLogger.js';
 
 /*
  * Configure behaviour of the HTTP server during application startup

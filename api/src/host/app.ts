@@ -1,8 +1,8 @@
 import express from 'express';
 import fs from 'node:fs/promises';
 import {Configuration} from '../configuration/configuration.js';
-import {ErrorFactory} from '../errors/errorFactory.js';
-import {ApiLogger} from '../logging/apiLogger.js';
+import {ErrorFactory} from '../middleware/errors/errorFactory.js';
+import {ApiLogger} from '../middleware/logging/apiLogger.js';
 import {HttpServerConfiguration} from './httpServerConfiguration.js';
 
 const logger = new ApiLogger();

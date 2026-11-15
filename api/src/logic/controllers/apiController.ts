@@ -1,17 +1,17 @@
 import {NextFunction, Request, Response} from 'express';
 import onHeaders from 'on-headers';
-import {ClientError} from '../../logic/errors/clientError.js';
-import {ErrorCodes} from '../../logic/errors/errorCodes.js';
-import {CompanyRepository} from '../../logic/repositories/companyRepository.js';
-import {CompanyService} from '../../logic/services/companyService.js';
-import {JsonFileReader} from '../../logic/utilities/jsonFileReader.js';
-import {Configuration} from '../configuration/configuration.js';
-import {ErrorFactory} from '../errors/errorFactory.js';
-import {ExceptionHandler} from '../errors/exceptionHandler.js';
-import {AccessTokenValidator} from '../oauth/accessTokenValidator.js';
-import {JwksRetriever} from '../oauth/jwksRetriever.js';
-import {HttpProxy} from '../utilities/httpProxy.js';
-import {ResponseWriter} from '../utilities/responseWriter.js';
+import {Configuration} from '../../configuration/configuration.js';
+import {ClientError} from '../../middleware/errors/clientError.js';
+import {ErrorCodes} from '../../middleware/errors/errorCodes.js';
+import {ErrorFactory} from '../../middleware/errors/errorFactory.js';
+import {ExceptionHandler} from '../../middleware/errors/exceptionHandler.js';
+import {AccessTokenValidator} from '../../middleware/oauth/accessTokenValidator.js';
+import {JwksRetriever} from '../../middleware/oauth/jwksRetriever.js';
+import {HttpProxy} from '../../utilities/httpProxy.js';
+import {JsonFileReader} from '../../utilities/jsonFileReader.js';
+import {ResponseWriter} from '../../utilities/responseWriter.js';
+import {CompanyRepository} from '../repositories/companyRepository.js';
+import {CompanyService} from '../services/companyService.js';
 
 /*
  * Entry point handling for API requests

@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import winston from 'winston';
-import {ServerError} from '../../logic/errors/serverError.js';
+import {ServerError} from '../errors/serverError.js';
 import {LogEntry} from './logEntry.js';
 
 /*

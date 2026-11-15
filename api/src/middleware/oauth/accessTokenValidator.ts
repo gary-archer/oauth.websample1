@@ -1,7 +1,7 @@
 import {Request} from 'express';
 import {JWTVerifyOptions, jwtVerify} from 'jose';
-import {ClaimsPrincipal} from '../../logic/entities/claimsPrincipal.js';
-import {OAuthConfiguration} from '../configuration/oauthConfiguration.js';
+import {OAuthConfiguration} from '../../configuration/oauthConfiguration.js';
+import {ClaimsPrincipal} from '../claims/claimsPrincipal.js';
 import {ErrorFactory} from '../errors/errorFactory.js';
 import {JwksRetriever} from './jwksRetriever.js';
 
