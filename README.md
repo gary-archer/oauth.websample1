@@ -20,12 +20,13 @@ The SPA is a simple UI with some basic navigation between views, to render ficti
 
 ## Local Development Quick Start
 
+Run the code sample from a terminal on Linux, macOS or Windows (with Git bash).  
 The SPA and API use [Real World OAuth Development URLs](https://github.com/gary-archer/oauth.blog/blob/master/public/posts/developer-ssl-setup.mdx#real-world-oauth-development-urls) on a local computer.  
+
+### Administrator Setup
+
 You must use admin permissions to configure infrastructure before you run the code.  
-
-### Infrastructure Setup
-
-Add DNS entries to your `/etc/hosts` file:
+First, add DNS entries to your `/etc/hosts` file:
 
 ```bash
 127.0.0.1 localhost www.authsamples-dev.com api.authsamples-dev.com
